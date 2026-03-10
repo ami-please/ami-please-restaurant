@@ -1,91 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ami Please Cafe & Restaurant</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
-font-family:Poppins;
 margin:0;
-background:#f6f6f6;
+font-family:Poppins;
+background:#0f0f1a;
+color:white;
 }
-
-/* HEADER */
 
 header{
-background:#111;
-color:white;
-padding:18px;
-font-size:22px;
-font-weight:700;
-}
-
-/* HERO */
-
-.hero{
-height:260px;
-background:url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1400&auto=format&fit=crop");
-background-size:cover;
-background-position:center;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size:34px;
-font-weight:700;
-text-shadow:0 4px 20px rgba(0,0,0,0.6);
-}
-
-/* SEARCH */
-
-.search{
-padding:15px;
-}
-
-.search input{
+position:fixed;
+top:0;
 width:100%;
-padding:12px;
-border-radius:8px;
-border:1px solid #ddd;
-}
-
-/* CATEGORY */
-
-.categories{
+background:#111;
+padding:15px;
 display:flex;
-gap:10px;
-overflow:auto;
-padding:10px;
+justify-content:space-between;
+z-index:1000;
 }
 
-.cat{
-background:white;
+.logo{
+font-size:20px;
+font-weight:600;
+}
+
+.cart-btn{
+background:#ff3d3d;
 padding:8px 14px;
 border-radius:20px;
 cursor:pointer;
-box-shadow:0 3px 10px rgba(0,0,0,.1);
 }
 
-/* MENU */
+.hero{
+margin-top:60px;
+height:240px;
+background:url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4") center/cover;
+display:flex;
+align-items:center;
+justify-content:center;
+}
 
-#menu{
+.hero h1{
+background:rgba(0,0,0,0.6);
+padding:10px 20px;
+border-radius:10px;
+}
+
+.menu{
+padding:20px;
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:16px;
-padding:16px;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:20px;
 }
 
 .food{
-background:white;
-border-radius:14px;
+background:#1b1b2f;
+border-radius:10px;
 overflow:hidden;
-box-shadow:0 6px 20px rgba(0,0,0,.08);
 }
 
 .food img{
@@ -94,66 +72,43 @@ height:150px;
 object-fit:cover;
 }
 
-.info{
+.food-info{
 padding:10px;
 }
 
-.name{
-font-weight:600;
+.price{
+color:#ffd700;
 }
 
 .rating{
-color:gold;
+color:#ffd700;
 font-size:13px;
 }
 
-.price{
-color:#ff5200;
-font-weight:700;
-}
-
-.qty{
-display:flex;
-gap:8px;
-margin-top:5px;
-}
-
-.qty button{
-background:#ff5200;
-color:white;
+button{
+margin-top:6px;
+padding:6px 10px;
 border:none;
-width:26px;
-height:26px;
-border-radius:4px;
-}
-
-/* CART BUTTON */
-
-.cartBtn{
-position:fixed;
-bottom:25px;
-right:25px;
-background:black;
+background:#ff3d3d;
 color:white;
-padding:15px 18px;
-border-radius:40px;
-font-weight:600;
+border-radius:6px;
 cursor:pointer;
 }
 
-/* CART PANEL */
+.upload{
+background:#333;
+width:100%;
+}
 
 .cart{
 position:fixed;
+right:-350px;
 top:0;
-right:-100%;
-width:100%;
-max-width:420px;
+width:320px;
 height:100%;
-background:white;
-transition:.3s;
-box-shadow:-10px 0 30px rgba(0,0,0,.25);
+background:#111;
 padding:20px;
+transition:0.4s;
 overflow:auto;
 }
 
@@ -164,49 +119,25 @@ right:0;
 .cart-item{
 display:flex;
 justify-content:space-between;
-margin-bottom:10px;
+margin-bottom:8px;
 }
 
 .total{
-font-size:18px;
-font-weight:700;
+margin-top:15px;
+font-weight:bold;
 }
 
-.done{
-background:#ff5200;
-color:white;
-border:none;
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:8px;
+.form{
+display:none;
+margin-top:15px;
 }
 
 input{
 width:100%;
-padding:10px;
-margin-bottom:10px;
-border-radius:6px;
-border:1px solid #ddd;
-}
-
-.location{
-width:100%;
-padding:10px;
+padding:8px;
+margin-top:6px;
 border:none;
-background:#eee;
-margin-bottom:10px;
 border-radius:6px;
-}
-
-.order{
-width:100%;
-padding:12px;
-background:#25D366;
-color:white;
-border:none;
-border-radius:8px;
-font-weight:600;
 }
 
 </style>
@@ -214,33 +145,20 @@ font-weight:600;
 
 <body>
 
-<header>Ami Please Cafe & Restaurant</header>
+<header>
+<div class="logo">Ami Please</div>
+<div class="cart-btn" onclick="toggleCart()">Cart (<span id="count">0</span>)</div>
+</header>
 
 <div class="hero">
-Delicious Food
+<h1>Ami Please Cafe & Restaurant</h1>
 </div>
 
-<div class="search">
-<input id="search" placeholder="Search food..." onkeyup="render()">
-</div>
+<div class="menu" id="menu"></div>
 
-<div class="categories">
-<div class="cat" onclick="cat='all';render()">All</div>
-<div class="cat" onclick="cat='burger';render()">Burger</div>
-<div class="cat" onclick="cat='pizza';render()">Pizza</div>
-<div class="cat" onclick="cat='biryani';render()">Biryani</div>
-<div class="cat" onclick="cat='drink';render()">Drinks</div>
-</div>
+<div class="cart" id="cartBox">
 
-<div id="menu"></div>
-
-<div class="cartBtn" onclick="toggleCart()">
-Cart (<span id="count">0</span>)
-</div>
-
-<div class="cart" id="cart">
-
-<h2>Cart <span style="float:right;cursor:pointer" onclick="toggleCart()">✕</span></h2>
+<h3>Your Cart</h3>
 
 <div id="cartItems"></div>
 
@@ -248,100 +166,132 @@ Cart (<span id="count">0</span>)
 Total ₹ <span id="total">0</span>
 </div>
 
-<button class="done" onclick="showForm()">Done</button>
+<button onclick="showForm()" style="width:100%">Done</button>
 
-<form id="form" style="display:none">
+<div class="form" id="orderForm">
 
 <input id="phone" placeholder="Phone Number">
-<input id="pincode" placeholder="Pincode">
-<input id="city" placeholder="City">
-<input id="district" placeholder="District">
+
 <input id="house" placeholder="House Number">
+
 <input id="area" placeholder="Area">
 
-<button type="button" class="location" onclick="getLocation()">Use My Location</button>
+<input id="city" placeholder="City">
 
-<button type="button" class="order" onclick="order()">Send Order</button>
+<input id="pincode" placeholder="Pincode">
 
-</form>
+<button onclick="getLocation()">Use My Location</button>
+
+<button onclick="sendOrder()" style="background:green;width:100%">Place Order</button>
+
+</div>
 
 </div>
 
 <script>
 
-function img(q){
-return "https://source.unsplash.com/400x300/?"+q
-}
-
-let cat="all"
-
 const foods=[
 
-{name:"Zinger Burger",price:120,cat:"burger"},
-{name:"Cheese Burger",price:130,cat:"burger"},
-{name:"Chicken Burger",price:110,cat:"burger"},
-{name:"Double Burger",price:150,cat:"burger"},
+{name:"Steamed Momos",price:120},
+{name:"Fried Momos",price:130},
+{name:"Afghani Momos",price:150},
+{name:"Tandoori Momos",price:140},
+{name:"Chilli Momos",price:150},
+{name:"Altabaq Special Platter",price:180},
 
-{name:"Veg Pizza",price:220,cat:"pizza"},
-{name:"Chicken Pizza",price:250,cat:"pizza"},
-{name:"Paneer Pizza",price:240,cat:"pizza"},
+{name:"Chicken Biryani",price:250},
+{name:"Classic Chicken Fried Rice",price:250},
+{name:"Classic Veg Fried Rice",price:200},
+{name:"Schezwan Chicken Fried Rice",price:280},
+{name:"Schezwan Veg Fried Rice",price:250},
+{name:"Zeera Rice",price:120},
+{name:"Plain Rice",price:100},
 
-{name:"Chicken Biryani",price:200,cat:"biryani"},
-{name:"Mutton Biryani",price:280,cat:"biryani"},
-{name:"Veg Biryani",price:160,cat:"biryani"},
+{name:"Roomali Roti",price:25},
+{name:"Roomali Butter Roti",price:40},
+{name:"Plain Naan",price:40},
+{name:"Butter Naan",price:60},
 
-{name:"Cold Coffee",price:90,cat:"drink"},
-{name:"Chocolate Shake",price:120,cat:"drink"},
-{name:"Strawberry Shake",price:120,cat:"drink"}
+{name:"Chicken Shawarma Roll",price:170},
+{name:"Chicken Roll",price:150},
+{name:"Kathi Roll",price:170},
+{name:"Afghani Chicken Roll",price:250},
+{name:"Veg Roll",price:100},
+
+{name:"Margherita Pizza",price:200},
+{name:"Farmhouse Pizza",price:250},
+{name:"Chicken Pizza",price:280},
+{name:"Cheese Pizza",price:220},
+{name:"Tandoori Chicken Pizza",price:300},
+
+{name:"Veg Burger",price:120},
+{name:"Chicken Burger",price:150},
+{name:"Cheese Burger",price:170},
+
+{name:"French Fries",price:100},
+{name:"Cheese Fries",price:120},
+
+{name:"Chicken Nuggets",price:180},
+{name:"Chicken Wings",price:220},
+
+{name:"Paneer Tikka",price:250},
+{name:"Chicken Tikka",price:300},
+
+{name:"Paneer Butter Masala",price:260},
+{name:"Chicken Butter Masala",price:320},
+
+{name:"Cold Coffee",price:120},
+{name:"Cappuccino",price:140},
+{name:"Latte",price:150},
+
+{name:"Chocolate Shake",price:150},
+{name:"Oreo Shake",price:160},
+
+{name:"Vanilla Ice Cream",price:90},
+{name:"Chocolate Ice Cream",price:100},
+{name:"Strawberry Ice Cream",price:100},
+
+{name:"Brownie",price:150},
+{name:"Chocolate Cake",price:200}
 
 ]
 
-let cart={}
-
-function render(){
-
-let s=document.getElementById("search").value.toLowerCase()
-
-let html=""
+const menu=document.getElementById("menu")
 
 foods.forEach((f,i)=>{
 
-if(cat!="all" && f.cat!=cat) return
-if(!f.name.toLowerCase().includes(s)) return
+menu.innerHTML+=`
 
-html+=`
 <div class="food">
-<img loading="lazy" src="${img(f.cat)}">
-<div class="info">
-<div class="name">${f.name}</div>
-<div class="rating">★★★★☆</div>
+
+<img id="img${i}" src="https://picsum.photos/300?random=${i}">
+
+<div class="food-info">
+
+<div>${f.name}</div>
+
+<div class="rating">⭐4.5</div>
+
 <div class="price">₹${f.price}</div>
 
-<div class="qty">
-<button onclick="add(${i})">+</button>
-<button onclick="remove(${i})">-</button>
+<button onclick="addCart('${f.name}',${f.price})">Add</button>
+
+<input type="file" accept="image/*" onchange="loadImg(event,'img${i}')" class="upload">
+
 </div>
 
 </div>
-</div>
+
 `
 
 })
 
-menu.innerHTML=html
+let cart=[]
 
-}
+function addCart(name,price){
 
-function add(i){
+cart.push({name,price})
 
-cart[i]=(cart[i]||0)+1
-updateCart()
-
-}
-
-function remove(i){
-
-if(cart[i]) cart[i]--
 updateCart()
 
 }
@@ -350,81 +300,75 @@ function updateCart(){
 
 let html=""
 let total=0
-let count=0
 
-for(let i in cart){
+cart.forEach(c=>{
 
-if(cart[i]<=0) continue
+html+=`<div class="cart-item">
+<span>${c.name}</span>
+<span>₹${c.price}</span>
+</div>`
 
-let f=foods[i]
+total+=c.price
 
-html+=`<div class="cart-item">${f.name} x${cart[i]} <span>₹${f.price*cart[i]}</span></div>`
+})
 
-total+=f.price*cart[i]
-count+=cart[i]
-
-}
-
-cartItems.innerHTML=html
+document.getElementById("cartItems").innerHTML=html
 document.getElementById("total").innerText=total
-document.getElementById("count").innerText=count
+document.getElementById("count").innerText=cart.length
 
 }
 
 function toggleCart(){
+document.getElementById("cartBox").classList.toggle("active")
+}
 
-document.getElementById("cart").classList.toggle("active")
-
+function loadImg(e,id){
+document.getElementById(id).src=URL.createObjectURL(e.target.files[0])
 }
 
 function showForm(){
-
-document.getElementById("form").style.display="block"
-
+document.getElementById("orderForm").style.display="block"
 }
-
-let locationLink=""
 
 function getLocation(){
 
-navigator.geolocation.getCurrentPosition(p=>{
+navigator.geolocation.getCurrentPosition(pos=>{
 
-locationLink=`https://maps.google.com/?q=${p.coords.latitude},${p.coords.longitude}`
-alert("Location Added")
+window.userLocation=
+pos.coords.latitude+","+pos.coords.longitude
+
+alert("Location captured")
 
 })
 
 }
 
-function order(){
+function sendOrder(){
 
-let msg="Order:%0A"
+let phone=document.getElementById("phone").value
+let house=document.getElementById("house").value
+let area=document.getElementById("area").value
+let city=document.getElementById("city").value
+let pin=document.getElementById("pincode").value
 
-for(let i in cart){
+let order="Order:%0A"
 
-if(cart[i]>0){
+cart.forEach(c=>{
+order+=c.name+" ₹"+c.price+"%0A"
+})
 
-let f=foods[i]
+order+="%0APhone:"+phone
+order+="%0AAddress:"+house+","+area+","+city+","+pin
 
-msg+=`${f.name} x${cart[i]} ₹${f.price*cart[i]}%0A`
-
+if(window.userLocation){
+order+="%0ALocation:https://maps.google.com/?q="+window.userLocation
 }
 
-}
-
-msg+=`Total ₹${total.innerText}%0A`
-msg+=`Phone:${phone.value}%0A`
-msg+=`City:${city.value}%0A`
-msg+=`Area:${area.value}%0A`
-msg+=`Location:${locationLink}`
-
-window.location.href=`sms:8899242083?body=${msg}`
+window.location.href="sms:8899242083?body="+order
 
 }
-
-render()
 
 </script>
 
 </body>
-                                                        </html>
+</html>
