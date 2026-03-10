@@ -1,535 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ami Please Cafe & Restaurant</title>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ami Please Cafe & Restaurant</title>
 
-    <style>
-        :root {
-            --primary: #ff5200;
-            --primary-dark: #e04800;
-            --secondary: #2d3436;
-            --bg: #f8f9fa;
-            --white: #ffffff;
-            --shadow: 0 10px 30px rgba(0,0,0,0.08);
-            --radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+<style>
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg);
-            color: var(--secondary);
-            padding-bottom: 100px;
-        }
+body{
+font-family:Poppins;
+margin:0;
+background:#f5f5f5;
+}
 
-        /* --- Header --- */
-        header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 15px 20px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+header{
+background:#ff5200;
+color:white;
+padding:15px;
+font-size:22px;
+font-weight:600;
+}
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
+#menu{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+padding:15px;
+}
 
-        .brand i {
-            font-size: 1.5rem;
-        }
+.food{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
 
-        /* --- Hero Banner --- */
-        .hero {
-            position: relative;
-            height: 250px;
-            overflow: hidden;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-        }
+.food img{
+width:100%;
+height:160px;
+object-fit:cover;
+}
 
-        .hero img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.food-info{
+padding:10px;
+}
 
-        .hero-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 30px 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: white;
-        }
+.food-name{
+font-weight:600;
+}
 
-        .hero h1 {
-            font-size: 2rem;
-            margin-bottom: 5px;
-        }
+.food-price{
+color:#ff5200;
+font-weight:bold;
+}
 
-        .hero p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
+.rating{
+color:gold;
+font-size:14px;
+}
 
-        /* --- Search --- */
-        .search-wrapper {
-            padding: 20px;
-            position: sticky;
-            top: 70px;
-            background: var(--bg);
-            z-index: 90;
-        }
+.add{
+background:#ff5200;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+}
 
-        .search-box {
-            position: relative;
-        }
+.cart-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:black;
+color:white;
+padding:14px 20px;
+border-radius:30px;
+cursor:pointer;
+}
 
-        .search-box i {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-        }
+.cart{
+position:fixed;
+right:-100%;
+top:0;
+width:100%;
+max-width:400px;
+height:100%;
+background:white;
+transition:.3s;
+box-shadow:-5px 0 20px rgba(0,0,0,.2);
+overflow:auto;
+padding:20px;
+}
 
-        #search {
-            width: 100%;
-            padding: 16px 20px 16px 50px;
-            border-radius: 50px;
-            border: none;
-            background: var(--white);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            font-size: 1rem;
-            font-family: inherit;
-            transition: var(--transition);
-        }
+.cart.active{
+right:0;
+}
 
-        #search:focus {
-            outline: none;
-            box-shadow: 0 4px 20px rgba(255, 82, 0, 0.15);
-        }
+.cart-item{
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+}
 
-        /* --- Menu Grid --- */
-        #menu {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 20px;
-        }
+.total{
+font-weight:bold;
+font-size:18px;
+margin-top:10px;
+}
 
-        .category-title {
-            grid-column: 1 / -1;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 20px 0 10px 0;
-            padding-left: 10px;
-            border-left: 4px solid var(--primary);
-            color: var(--secondary);
-        }
+.done{
+background:#ff5200;
+color:white;
+border:none;
+width:100%;
+padding:12px;
+margin-top:10px;
+}
 
-        .food-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
+.close{
+font-size:22px;
+cursor:pointer;
+}
 
-        .food-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
-        }
+form{
+display:none;
+}
 
-        .food-img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
+input{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+}
 
-        .food-info {
-            padding: 15px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
+.location{
+background:#eee;
+padding:10px;
+border:none;
+width:100%;
+margin-bottom:10px;
+}
 
-        .food-name {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            line-height: 1.4;
-        }
+.order{
+background:#25D366;
+color:white;
+padding:12px;
+border:none;
+width:100%;
+}
 
-        .food-rating {
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .food-rating i {
-            color: #ffc107;
-        }
-
-        .food-footer {
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .food-price {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .add-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            font-size: 1.1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .add-btn:active {
-            transform: scale(0.9);
-            background: var(--primary-dark);
-        }
-
-        /* --- Floating Cart Button --- */
-        .cart-float {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--secondary);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            cursor: pointer;
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .cart-float:hover {
-            transform: translateY(-5px);
-        }
-
-        .cart-count {
-            background: var(--primary);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        /* --- Cart Sidebar --- */
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            max-width: 450px;
-            height: 100%;
-            background: var(--white);
-            z-index: 300;
-            transition: var(--transition);
-            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-sidebar.active {
-            right: 0;
-        }
-
-        .cart-header {
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-header h2 {
-            font-size: 1.5rem;
-        }
-
-        .close-cart {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-        }
-
-        .cart-items {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 15px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 20px;
-        }
-
-        .cart-item img {
-            width: 70px;
-            height: 70px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        .cart-item-details {
-            flex-grow: 1;
-        }
-
-        .cart-item-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .cart-item-price {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .cart-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .qty-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid #ddd;
-            background: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .cart-footer {
-            padding: 20px;
-            background: #f9f9f9;
-            border-top: 1px solid #eee;
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            padding: 16px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .checkout-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        /* --- Checkout Form --- */
-        .checkout-form {
-            display: none;
-            padding: 20px;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.95rem;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .location-btn {
-            width: 100%;
-            padding: 12px;
-            background: #e3f2fd;
-            color: #1976d2;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .place-order-btn {
-            width: 100%;
-            padding: 16px;
-            background: #25D366; /* WhatsApp Green */
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        /* --- Toast Notification --- */
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #333;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: var(--transition);
-            z-index: 400;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        /* --- Responsive --- */
-        @media (max-width: 480px) {
-            #menu {
-                grid-template-columns: 1fr;
-            }
-            .hero {
-                height: 200px;
-            }
-            .cart-sidebar {
-                max-width: 100%;
-            }
-        }
-    </style>
+</style>
 </head>
+
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="brand">
-            <i class="fas fa-utensils"></i>
-            <span>Ami Please</span>
-        </div>
-        <div style="font-size: 0.8rem; color: #666;">Cafe & Restaurant</div>
-    </header>
+<header>
+Ami Please Cafe & Restaurant
+</header>
 
-    <!-- Hero Banner -->
-    <div class="hero">
-        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Restaurant Banner">
-        <div class="hero-overlay">
-            <h1>Delicious Food</h1>
-            <p>Order now and get it delivered to your doorstep</p>
-        </div>
-    </div>
+<div id="menu"></div>
 
-    <!-- Search -->
-    <div class="search-wrapper">
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="search" placeholder="Search for food..." onkeyup="searchFood()">
-        </div>
-    </div>
+<div class="cart-btn" onclick="toggleCart()">
+Cart (<span id="count">0</span>)
+</div>
 
-    <!-- Menu Grid -->
-    <div id="menu"></div>
+<div class="cart" id="cart">
 
-    <!-- Floating Cart Button -->
-    <div class="cart-float" onclick="toggleCart()">
-        <i class="fas fa-shopping-bag"></i>
-        <span>Cart</span>
-        <span class="cart-count" id="
+<div style="display:flex;justify-content:space-between">
+<h2>Cart</h2>
+<div class="close" onclick="toggleCart()">✕</div>
+</div>
+
+<div id="cartItems"></div>
+
+<div class="total">
+Total ₹ <span id="total">0</span>
+</div>
+
+<button class="done" onclick="showForm()">Done</button>
+
+<form id="orderForm">
+
+<input placeholder="Phone Number" id="phone">
+
+<input placeholder="Pincode" id="pincode">
+
+<input placeholder="City" id="city">
+
+<input placeholder="District" id="district">
+
+<input placeholder="House Number" id="house">
+
+<input placeholder="Area" id="area">
+
+<button type="button" class="location" onclick="getLocation()">Use My Location</button>
+
+<button type="button" class="order" onclick="placeOrder()">Send Order</button>
+
+</form>
+
+</div>
+
+<script>
+
+const foods = [
+
+{name:"Zinger Burger",price:120,img:"https://source.unsplash.com/400x300/?burger"},
+{name:"Chicken Burger",price:110,img:"https://source.unsplash.com/400x300/?chicken-burger"},
+{name:"Cheese Burger",price:130,img:"https://source.unsplash.com/400x300/?cheese-burger"},
+{name:"French Fries",price:80,img:"https://source.unsplash.com/400x300/?fries"},
+{name:"Chicken Pizza",price:250,img:"https://source.unsplash.com/400x300/?pizza"},
+{name:"Veg Pizza",price:220,img:"https://source.unsplash.com/400x300/?veg-pizza"},
+{name:"Chicken Shawarma",price:150,img:"https://source.unsplash.com/400x300/?shawarma"},
+{name:"Chicken Roll",price:120,img:"https://source.unsplash.com/400x300/?chicken-roll"},
+{name:"Paneer Roll",price:110,img:"https://source.unsplash.com/400x300/?paneer-roll"},
+{name:"Chicken Biryani",price:200,img:"https://source.unsplash.com/400x300/?biryani"},
+{name:"Mutton Biryani",price:280,img:"https://source.unsplash.com/400x300/?mutton-biryani"},
+{name:"Chicken Momos",price:120,img:"https://source.unsplash.com/400x300/?momos"},
+{name:"Veg Momos",price:100,img:"https://source.unsplash.com/400x300/?veg-momos"},
+{name:"Chicken Sandwich",price:90,img:"https://source.unsplash.com/400x300/?sandwich"},
+{name:"Grilled Sandwich",price:110,img:"https://source.unsplash.com/400x300/?grilled-sandwich"},
+{name:"Cold Coffee",price:90,img:"https://source.unsplash.com/400x300/?cold-coffee"},
+{name:"Chocolate Shake",price:120,img:"https://source.unsplash.com/400x300/?chocolate-shake"},
+{name:"Strawberry Shake",price:120,img:"https://source.unsplash.com/400x300/?strawberry-milkshake"},
+{name:"Ice Cream",price:70,img:"https://source.unsplash.com/400x300/?ice-cream"},
+{name:"Chocolate Cake",price:150,img:"https://source.unsplash.com/400x300/?chocolate-cake"}
+
+];
+
+let cart=[]
+
+const menu=document.getElementById("menu")
+
+foods.forEach((f,i)=>{
+menu.innerHTML+=`
+<div class="food">
+<img src="${f.img}">
+<div class="food-info">
+<div class="food-name">${f.name}</div>
+<div class="rating">★★★★☆</div>
+<div class="food-price">₹${f.price}</div>
+<button class="add" onclick="add(${i})">Add</button>
+</div>
+</div>`
+})
+
+function add(i){
+cart.push(foods[i])
+updateCart()
+}
+
+function updateCart(){
+
+document.getElementById("count").innerText=cart.length
+
+let items=""
+let total=0
+
+cart.forEach(i=>{
+items+=`<div class="cart-item">${i.name}<span>₹${i.price}</span></div>`
+total+=i.price
+})
+
+document.getElementById("cartItems").innerHTML=items
+document.getElementById("total").innerText=total
+
+}
+
+function toggleCart(){
+document.getElementById("cart").classList.toggle("active")
+}
+
+function showForm(){
+document.getElementById("orderForm").style.display="block"
+}
+
+let userLocation=""
+
+function getLocation(){
+navigator.geolocation.getCurrentPosition(pos=>{
+userLocation=`https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`
+alert("Location added")
+})
+}
+
+function placeOrder(){
+
+let total=document.getElementById("total").innerText
+
+let text="Order:%0A"
+
+cart.forEach(i=>{
+text+=`${i.name} ₹${i.price}%0A`
+})
+
+text+=`Total ₹${total}%0A`
+
+text+=`Phone:${phone.value}%0A`
+text+=`City:${city.value}%0A`
+text+=`Area:${area.value}%0A`
+text+=`Location:${userLocation}`
+
+window.location.href=`sms:8899242083?body=${text}`
+
+}
+
+</script>
+
+</body>
+</html>
