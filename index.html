@@ -45,7 +45,6 @@ body {
   position: relative;
 }
 
-/* Overlay */
 body::before {
   content: '';
   position: absolute;
@@ -66,16 +65,15 @@ body::before {
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 /* Decorative Gold Line */
 .container::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
   background: linear-gradient(90deg, transparent, var(--primary), transparent);
 }
 
@@ -96,7 +94,24 @@ h2 {
   font-weight: 300;
 }
 
-form { display: flex; flex-direction: column; position: relative; width: 100%; }
+form {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: var(--transition);
+  opacity: 0;
+  pointer-events: none;
+}
+
+form.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
 
 .input-group { position: relative; margin-bottom: 20px; }
 
@@ -105,7 +120,7 @@ input {
   padding: 15px 15px 15px 45px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255,255,255,0.05);
   color: var(--text-main);
   font-size: 14px;
   transition: var(--transition);
@@ -113,9 +128,9 @@ input {
 }
 
 input:focus {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   border-color: var(--primary);
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 15px rgba(212,175,55,0.2);
 }
 
 input::placeholder { color: #666; }
@@ -151,7 +166,7 @@ button {
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 5px 15px rgba(212,175,55,0.3);
   filter: brightness(1.1);
 }
 
@@ -171,9 +186,17 @@ button:active { transform: translateY(0); }
   transform: translate(-50%, -50%);
 }
 
-@keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
 
-.toggle { text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 13px; }
+.toggle {
+  text-align: center;
+  margin-top: 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
 
 .toggle span {
   color: var(--primary);
@@ -183,11 +206,6 @@ button:active { transform: translateY(0); }
 }
 
 .toggle span:hover { color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
-
-#signup-form { position: absolute; top: 0; left: 100%; width: 100%; height: 100%; transition: var(--transition); z-index: 1; }
-#login-form { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transition: var(--transition); z-index: 2; }
-#signup-form.active { left: 0; }
-#login-form.active { left: -100%; }
 
 #toast {
   visibility: hidden;
@@ -207,12 +225,17 @@ button:active { transform: translateY(0); }
   border-left: 4px solid var(--primary);
 }
 
-#toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+#toast.show {
+  visibility: visible;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
 
-@keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-@keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+@keyframes fadein { from {bottom:0; opacity:0;} to {bottom:30px; opacity:1;} }
+@keyframes fadeout { from {bottom:30px; opacity:1;} to {bottom:0; opacity:0;} }
 
-@media (max-width: 480px) { .container { width: 90%; padding: 30px 20px; } }
+@media (max-width: 480px) {
+  .container { width: 90%; padding: 30px 20px; }
+}
 </style>
 </head>
 <body>
@@ -220,7 +243,7 @@ button:active { transform: translateY(0); }
 <div class="container">
 
   <!-- Login Form -->
-  <form id="login-form" class="animate__animated animate__fadeIn">
+  <form id="login-form" class="active animate__animated animate__fadeIn">
     <h2>Ami Please</h2>
     <div class="subtitle">Welcome back, Chef.</div>
     
@@ -268,12 +291,14 @@ button:active { transform: translateY(0); }
 
 </div>
 
+<!-- Toast Notification -->
 <div id="toast">Notification Message</div>
 
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
@@ -288,35 +313,33 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Elements
+// UI Elements
 const loginForm = document.getElementById("login-form");
 const signupForm = document.getElementById("signup-form");
 const loginBtn = document.getElementById("login-btn");
 const signupBtn = document.getElementById("signup-btn");
 
-// Toggle forms
+// Toggle Functions
 window.showSignup = () => {
   signupForm.classList.add("active", "animate__fadeInRight");
-  loginForm.classList.add("animate__fadeOutLeft");
-  setTimeout(() => loginForm.classList.remove("animate__fadeOutLeft"), 500);
-}
-window.showLogin = () => {
-  signupForm.classList.remove("active");
-  signupForm.classList.add("animate__fadeOutRight");
-  loginForm.classList.add("animate__fadeInLeft");
-  setTimeout(() => signupForm.classList.remove("animate__fadeOutRight"), 500);
+  loginForm.classList.remove("active");
 }
 
-// Toast
-window.showToast = (msg, type='success') => {
+window.showLogin = () => {
+  loginForm.classList.add("active", "animate__fadeInLeft");
+  signupForm.classList.remove("active");
+}
+
+// Toast Notification
+window.showToast = (message, type = 'success') => {
   const toast = document.getElementById("toast");
-  toast.innerText = msg;
+  toast.innerText = message;
   toast.style.borderLeftColor = type === 'error' ? '#ff4d4d' : '#D4AF37';
   toast.className = "show";
-  setTimeout(()=>{ toast.className = toast.className.replace("show",""); }, 3000);
+  setTimeout(() => toast.className = toast.className.replace("show", ""), 3000);
 }
 
-// Loading toggle
+// Loading Spinner
 const toggleLoading = (btn, isLoading) => {
   const spinner = btn.querySelector('.spinner');
   const text = btn.querySelector('.btn-text');
@@ -337,42 +360,55 @@ const toggleLoading = (btn, isLoading) => {
 window.signup = () => {
   const email = document.getElementById("signup-email").value;
   const password = document.getElementById("signup-password").value;
-  if(!email || !password) return showToast("Fill all fields","error");
-  toggleLoading(signupBtn,true);
-  createUserWithEmailAndPassword(auth,email,password)
-    .then(()=> { showToast("Account created!"); setTimeout(()=>showLogin(),1500); toggleLoading(signupBtn,false); })
-    .catch(err=>{ showToast(err.message,"error"); toggleLoading(signupBtn,false); });
+  if(!email || !password) return showToast("Please fill in all fields", "error");
+
+  toggleLoading(signupBtn, true);
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      showToast("Account created successfully!");
+      setTimeout(() => showLogin(), 1500);
+    })
+    .catch((err) => {
+      showToast(err.message, "error");
+      toggleLoading(signupBtn, false);
+    });
 }
 
 // Login
 window.login = () => {
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
-  if(!email || !password) return showToast("Fill all fields","error");
-  toggleLoading(loginBtn,true);
-  signInWithEmailAndPassword(auth,email,password)
-    .then(()=> { showToast("Welcome back!"); toggleLoading(loginBtn,false); window.location.href="dashboard.html"; })
-    .catch(err=>{ showToast(err.message,"error"); toggleLoading(loginBtn,false); });
+  if(!email || !password) return showToast("Please fill in all fields", "error");
+
+  toggleLoading(loginBtn, true);
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      showToast("Welcome back!");
+      // Redirect to your dashboard here
+    })
+    .catch((err) => {
+      showToast(err.message, "error");
+      toggleLoading(loginBtn, false);
+    });
 }
 
-// Forgot password
+// Forgot Password
 window.forgetPassword = () => {
   const email = document.getElementById("login-email").value;
-  if(!email) return showToast("Enter your email","error");
-  toggleLoading(loginBtn,true);
-  sendPasswordResetEmail(auth,email)
-    .then(()=>{ showToast("Reset link sent!"); toggleLoading(loginBtn,false); })
-    .catch(err=>{ showToast(err.message,"error"); toggleLoading(loginBtn,false); });
+  if(!email) return showToast("Please enter your email first", "error");
+
+  toggleLoading(loginBtn, true);
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      showToast("Reset link sent to your email!");
+      toggleLoading(loginBtn, false);
+    })
+    .catch((err) => {
+      showToast(err.message, "error");
+      toggleLoading(loginBtn, false);
+    });
 }
-
-// Keep user logged in
-onAuthStateChanged(auth, user => {
-  if(user){
-    // Redirect to dashboard if logged in
-    window.location.href="dashboard.html";
-  }
-});
-
 </script>
+
 </body>
-</html>
+  </html>
