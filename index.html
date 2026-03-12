@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>Ami Please Restaurant</title>
+<title>Ami Please Cafe & Restaurant</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
 
-body{
-font-family:Arial;
+*{
 margin:0;
-background:#111;
-color:white;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
 }
 
-/* LOGIN */
+/* BACKGROUND */
+
+body{
+background:linear-gradient(135deg,#ff6a00,#ee0979);
+min-height:100vh;
+}
+
+/* LOGIN PAGE */
 
 #loginPage{
 display:flex;
@@ -24,167 +32,180 @@ align-items:center;
 height:100vh;
 }
 
-.box{
-background:#1e1e1e;
-padding:30px;
-border-radius:10px;
+.loginBox{
+background:white;
+padding:35px;
+border-radius:15px;
 width:320px;
 text-align:center;
+box-shadow:0 10px 40px rgba(0,0,0,0.2);
+animation:fade 1s;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+.loginBox h1{
+margin-bottom:15px;
+color:#ff4d4d;
 }
 
 input{
-width:90%;
+width:100%;
 padding:10px;
-margin:10px;
-border:none;
-border-radius:5px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ddd;
 }
 
 button{
-padding:10px 15px;
-background:gold;
+width:100%;
+padding:10px;
+background:#ff4d4d;
 border:none;
-border-radius:5px;
+color:white;
+border-radius:6px;
+font-size:16px;
 cursor:pointer;
 }
 
-a{
-color:gold;
-cursor:pointer;
+button:hover{
+background:#e63939;
 }
 
-/* MENU */
+.link{
+color:#ff4d4d;
+cursor:pointer;
+font-size:14px;
+margin-top:10px;
+display:block;
+}
+
+/* MENU PAGE */
 
 #menuPage{
 display:none;
-background:#fafafa;
-color:black;
+background:#f7f7f7;
 min-height:100vh;
 }
 
 header{
 background:#ff4d4d;
 color:white;
+text-align:center;
 padding:15px;
-text-align:center;
 font-size:22px;
+font-weight:600;
 }
 
-.search{
-text-align:center;
-padding:10px;
-}
-
-.search input{
-width:80%;
-padding:10px;
-border:1px solid #ddd;
-}
-
-.grid{
+.foodGrid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-padding:20px;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:15px;
+padding:15px;
 }
 
 .food{
 background:white;
 border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
 padding:10px;
 text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
 .food img{
 width:100%;
-height:150px;
+height:120px;
 object-fit:cover;
-border-radius:10px;
+border-radius:8px;
 }
 
-.qty{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-top:10px;
+.food h4{
+margin:5px 0;
 }
 
-.qty button{
+.addBtn{
 background:#ff4d4d;
 color:white;
+padding:5px 10px;
+border-radius:5px;
+cursor:pointer;
 }
 
 /* CART */
 
-.cartBtn{
+#cartBtn{
 position:fixed;
 bottom:20px;
 right:20px;
 background:black;
 color:white;
-padding:12px 20px;
-border-radius:20px;
+padding:12px 18px;
+border-radius:30px;
 cursor:pointer;
 }
 
-#cartBox{
+#cart{
 position:fixed;
 top:0;
 right:-350px;
 width:350px;
 height:100%;
 background:white;
-color:black;
 padding:20px;
-box-shadow:-5px 0 10px rgba(0,0,0,0.3);
 transition:0.4s;
 overflow:auto;
 }
 
-.cartItem{
-border-bottom:1px solid #ddd;
-padding:10px;
+#overlay{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:black;
+color:white;
+padding:10px 20px;
+border-radius:20px;
+display:none;
 }
 
 </style>
-
 </head>
 
 <body>
 
+<div id="overlay"></div>
 
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
 
 <div id="loginPage">
 
-<div class="box">
+<div class="loginBox">
 
-<h2>Ami Please</h2>
+<h1>Ami Please</h1>
 
-<div id="loginBox">
+<div id="loginForm">
 
-<input id="loginEmail" placeholder="Email">
-
-<input id="loginPassword" type="password" placeholder="Password">
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
 
-<p><a onclick="showSignup()">Create account</a></p>
-
-<p><a onclick="resetPassword()">Forgot password</a></p>
+<span class="link" onclick="showSignup()">Create Account</span>
+<span class="link" onclick="resetPass()">Forgot Password</span>
 
 </div>
 
-<div id="signupBox" style="display:none">
+<div id="signupForm" style="display:none">
 
-<input id="signupEmail" placeholder="Email">
-
-<input id="signupPassword" type="password" placeholder="Password">
+<input id="sEmail" placeholder="Email">
+<input id="sPassword" type="password" placeholder="Password">
 
 <button onclick="signup()">Signup</button>
 
-<p><a onclick="showLogin()">Back</a></p>
+<span class="link" onclick="showLogin()">Back to Login</span>
 
 </div>
 
@@ -192,45 +213,29 @@ padding:10px;
 
 </div>
 
-
-<!-- MENU -->
+<!-- MENU PAGE -->
 
 <div id="menuPage">
 
-<header>
+<header>Ami Please Cafe & Restaurant</header>
 
-Ami Please Cafe & Restaurant
+<div class="foodGrid" id="menu"></div>
 
-</header>
-
-<div class="search">
-
-<input id="search" placeholder="Search food..." onkeyup="searchFood()">
+<div id="cartBtn" onclick="openCart()">Cart (<span id="count">0</span>)</div>
 
 </div>
-
-<div class="grid" id="menu"></div>
-
-<div class="cartBtn" onclick="openCart()">
-
-Cart (<span id="count">0</span>)
-
-</div>
-
-</div>
-
 
 <!-- CART -->
 
-<div id="cartBox">
+<div id="cart">
 
 <h2>Your Cart</h2>
 
-<div id="orders"></div>
+<div id="cartItems"></div>
 
 <h3 id="total"></h3>
 
-<button onclick="placeOrder()">Place Order</button>
+<button onclick="closeCart()">Done</button>
 
 </div>
 
@@ -238,54 +243,28 @@ Cart (<span id="count">0</span>)
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail }
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
 /* FIREBASE CONFIG */
 
-const firebaseConfig={
-apiKey:"YOUR_API_KEY",
-authDomain:"YOUR_DOMAIN",
-projectId:"YOUR_PROJECT_ID"
+const firebaseConfig = {
+  apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
+  authDomain: "ami-please-restaurant.firebaseapp.com",
+  projectId: "ami-please-restaurant",
+  storageBucket: "ami-please-restaurant.firebasestorage.app",
+  messagingSenderId: "590274660115",
+  appId: "1:590274660115:web:998a7c8bb31e4a2696fce6",
+  measurementId: "G-8FGXXT0Z8L"
 };
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
+/* LOGIN */
 
-/* LOGIN SYSTEM */
+window.login = function(){
 
-window.showSignup=()=>{
-
-loginBox.style.display="none"
-signupBox.style.display="block"
-
-}
-
-window.showLogin=()=>{
-
-signupBox.style.display="none"
-loginBox.style.display="block"
-
-}
-
-window.signup=()=>{
-
-createUserWithEmailAndPassword(auth,signupEmail.value,signupPassword.value)
-.then(()=>{
-
-alert("Account created")
-showLogin()
-
-})
-.catch(e=>alert(e.message))
-
-}
-
-window.login=()=>{
-
-signInWithEmailAndPassword(auth,loginEmail.value,loginPassword.value)
+signInWithEmailAndPassword(auth,email.value,password.value)
 .then(()=>{
 
 loginPage.style.display="none"
@@ -296,38 +275,55 @@ menuPage.style.display="block"
 
 }
 
-window.resetPassword=()=>{
+/* SIGNUP */
 
-sendPasswordResetEmail(auth,loginEmail.value)
+window.signup = function(){
+
+createUserWithEmailAndPassword(auth,sEmail.value,sPassword.value)
+.then(()=>alert("Account created"))
+.catch(e=>alert(e.message))
+
+}
+
+/* RESET PASSWORD */
+
+window.resetPass = function(){
+
+sendPasswordResetEmail(auth,email.value)
 .then(()=>alert("Reset email sent"))
 
 }
 
+/* FORM SWITCH */
 
-/* MENU ITEMS */
+window.showSignup=function(){
+loginForm.style.display="none"
+signupForm.style.display="block"
+}
+
+window.showLogin=function(){
+signupForm.style.display="none"
+loginForm.style.display="block"
+}
+
+/* MENU */
 
 const foods=[
-
 {name:"Veg Momos",price:80,img:"https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"},
 {name:"Fried Momos",price:100,img:"https://images.unsplash.com/photo-1625943553852-781c6dd46faa"},
-{name:"Burger",price:150,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
 {name:"Pizza",price:250,img:"https://images.unsplash.com/photo-1601924928376-4c9b13e0a5d9"},
-{name:"Chicken Roll",price:120,img:"https://images.unsplash.com/photo-1601050690597-df0568f70950"},
-{name:"Sandwich",price:90,img:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af"},
-{name:"French Fries",price:70,img:"https://images.unsplash.com/photo-1541592106381-b31e9677c0e5"}
-
+{name:"Burger",price:150,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
+{name:"French Fries",price:90,img:"https://images.unsplash.com/photo-1541592106381-b31e9677c0e5"},
+{name:"Chicken Roll",price:120,img:"https://images.unsplash.com/photo-1601050690597-df0568f70950"}
 ]
 
 let cart={}
 
+/* SHOW MENU */
 
-/* DISPLAY MENU */
+function showMenu(){
 
-function showMenu(list){
-
-menu.innerHTML=""
-
-list.forEach((f,i)=>{
+foods.forEach((f,i)=>{
 
 menu.innerHTML+=`
 
@@ -335,19 +331,11 @@ menu.innerHTML+=`
 
 <img src="${f.img}">
 
-<h3>${f.name}</h3>
+<h4>${f.name}</h4>
 
 <p>₹${f.price}</p>
 
-<div class="qty">
-
-<button onclick="remove(${i})">-</button>
-
-<span id="q${i}">0</span>
-
-<button onclick="add(${i})">+</button>
-
-</div>
+<button class="addBtn" onclick="add(${i})">Add</button>
 
 </div>
 
@@ -357,78 +345,39 @@ menu.innerHTML+=`
 
 }
 
-showMenu(foods)
+showMenu()
 
+/* ADD CART */
 
-/* SEARCH */
-
-window.searchFood=()=>{
-
-let s=search.value.toLowerCase()
-
-let filtered=foods.filter(f=>f.name.toLowerCase().includes(s))
-
-showMenu(filtered)
-
-}
-
-
-/* CART */
-
-window.add=(i)=>{
+window.add=function(i){
 
 cart[i]=(cart[i]||0)+1
 
-document.getElementById("q"+i).innerText=cart[i]
+count.innerText=Object.values(cart).reduce((a,b)=>a+b)
 
-updateCart()
+overlay.innerText=foods[i].name+" added"
+overlay.style.display="block"
 
-}
-
-window.remove=(i)=>{
-
-if(cart[i]) cart[i]--
-
-document.getElementById("q"+i).innerText=cart[i]||0
-
-updateCart()
+setTimeout(()=>overlay.style.display="none",1500)
 
 }
 
-function updateCart(){
+/* OPEN CART */
 
-let c=0
+window.openCart=function(){
 
-for(let i in cart) c+=cart[i]
-
-count.innerText=c
-
-}
-
-
-/* CART PANEL */
-
-window.openCart=()=>{
-
-cartBox.style.right="0"
-
-orders.innerHTML=""
+cart.style.right="0"
 
 let total=0
+cartItems.innerHTML=""
 
 for(let i in cart){
 
-if(cart[i]>0){
-
 let item=foods[i]
 
-orders.innerHTML+=`
+cartItems.innerHTML+=`
 
-<div class="cartItem">
-
-${item.name} x ${cart[i]} = ₹${item.price*cart[i]}
-
-</div>
+<p>${item.name} x ${cart[i]} = ₹${item.price*cart[i]}</p>
 
 `
 
@@ -436,30 +385,19 @@ total+=item.price*cart[i]
 
 }
 
-}
-
-total.innerText="Total ₹"+total
+document.getElementById("total").innerText="Total ₹"+total
 
 }
 
+/* CLOSE CART */
 
-/* ORDER */
+window.closeCart=function(){
 
-window.placeOrder=()=>{
-
-alert("Order placed successfully!")
-
-cart={}
-
-count.innerText=0
-
-cartBox.style.right="-350px"
-
-showMenu(foods)
+document.getElementById("cart").style.right="-350px"
 
 }
 
 </script>
 
 </body>
-  </html>
+</html>
