@@ -3,119 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ami Please Restaurant - Login</title>
+<title>Ami Please Restaurant - Access</title>
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- Font Awesome -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<!-- Animate.css -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
 <style>
-:root {
-  --primary:#c9a227;
-  --accent:#e94560;
-  --bg:#0f0f1a;
-  --card:#1a1a2e;
-  --text:#fff;
-  --text-muted:#a0a0a0;
-  --radius:12px;
-  --transition:0.4s ease;
-}
-
 body {
   font-family: 'Poppins', sans-serif;
-  background: var(--bg);
-  margin:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+  background: #0f0f13 url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  color: #fff;
 }
 
 .container {
-  width: 350px;
-  background: var(--card);
-  padding: 30px;
-  border-radius: var(--radius);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  position: relative;
-  overflow: hidden;
+  background: rgba(20,20,25,0.85);
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  backdrop-filter: blur(20px);
 }
 
-h2 {
-  text-align:center;
-  margin-bottom: 20px;
-  color: var(--primary);
-}
+h2 { text-align:center; color:#D4AF37; margin-bottom:10px; font-family:'Playfair Display', serif;}
+.subtitle { text-align:center; color:#aaa; margin-bottom:30px; font-size:0.9rem; }
 
-form {
-  display: flex;
-  flex-direction: column;
-}
+.input-group { position: relative; margin-bottom: 20px; }
+input { width: 100%; padding: 15px 15px 15px 45px; border-radius:8px; background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; outline:none; }
+.input-icon { position:absolute; left:15px; top:50%; transform:translateY(-50%); color:#aaa; }
 
-input {
-  margin-bottom:15px;
-  padding:12px 15px;
-  border:none;
-  border-radius: var(--radius);
-  background:#2c2c3c;
-  color: var(--text);
-  font-size:14px;
-}
+button { width:100%; padding:15px; border:none; border-radius:8px; background: linear-gradient(135deg, #D4AF37, #b8962e); color:#000; font-weight:600; cursor:pointer; font-size:16px; margin-top:10px; position:relative; }
+.spinner { display:none; width:18px; height:18px; border:2px solid #000; border-top:2px solid transparent; border-radius:50%; animation:spin 0.8s linear infinite; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); }
+@keyframes spin { 0%{transform:translate(-50%,-50%) rotate(0deg);} 100%{transform:translate(-50%,-50%) rotate(360deg);} }
 
-input:focus {
-  outline:none;
-  box-shadow:0 0 8px var(--primary);
-}
+.toggle { text-align:center; margin-top:20px; font-size:13px; color:#aaa; }
+.toggle span { color:#D4AF37; cursor:pointer; font-weight:600; }
 
-button {
-  padding:12px;
-  border:none;
-  border-radius: var(--radius);
-  background: var(--primary);
-  color:white;
-  font-weight:600;
-  cursor:pointer;
-  transition: var(--transition);
-}
-
-button:hover {
-  background: var(--accent);
-}
-
-.toggle {
-  text-align:center;
-  margin-top:10px;
-  color: var(--text-muted);
-  font-size:13px;
-  cursor:pointer;
-}
-
-.toggle span {
-  color: var(--primary);
-  font-weight:600;
-}
-
-/* Animation forms */
-#signup-form {
-  position:absolute;
-  top:0;
-  left:100%;
-  width:100%;
-  transition: var(--transition);
-}
-
-#signup-form.active {
-  left:0;
-}
-
-#login-form.active {
-  left:-100%;
-}
+#toast { visibility:hidden; min-width:250px; background:#333; color:#fff; text-align:center; border-radius:8px; padding:16px; position:fixed; z-index:100; left:50%; bottom:30px; transform:translateX(-50%); font-size:14px; border-left:4px solid #D4AF37; }
+#toast.show { visibility:visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+@keyframes fadein { from{bottom:0;opacity:0;} to{bottom:30px;opacity:1;} }
+@keyframes fadeout{ from{bottom:30px;opacity:1;} to{bottom:0;opacity:0;} }
 </style>
 </head>
 <body>
@@ -123,94 +54,122 @@ button:hover {
 <div class="container">
 
   <!-- Login Form -->
-  <form id="login-form" class="animate__animated animate__fadeIn">
-    <h2>Login</h2>
-    <input type="email" id="login-email" placeholder="Email" required>
-    <input type="password" id="login-password" placeholder="Password" required>
-    <button type="button" onclick="login()">Login</button>
-    <div class="toggle">Don't have an account? <span onclick="showSignup()">Sign Up</span></div>
-    <div class="toggle"><span onclick="forgetPassword()">Forgot Password?</span></div>
+  <form id="login-form">
+    <h2>Ami Please</h2>
+    <div class="subtitle">Welcome back, Chef.</div>
+
+    <div class="input-group">
+      <input type="email" id="login-email" placeholder="Email Address" required>
+      <i class="fas fa-envelope input-icon"></i>
+    </div>
+    <div class="input-group">
+      <input type="password" id="login-password" placeholder="Password" required>
+      <i class="fas fa-lock input-icon"></i>
+    </div>
+
+    <button type="button" onclick="login()" id="login-btn">
+      <span class="btn-text">Sign In</span>
+      <div class="spinner"></div>
+    </button>
+
+    <div class="toggle">Don't have an account? <span onclick="showSignup()">Create Account</span></div>
+    <div class="toggle" style="margin-top:5px;"><span onclick="forgetPassword()">Forgot Password?</span></div>
   </form>
 
   <!-- Signup Form -->
-  <form id="signup-form" class="animate__animated">
-    <h2>Sign Up</h2>
-    <input type="email" id="signup-email" placeholder="Email" required>
-    <input type="password" id="signup-password" placeholder="Password" required>
-    <button type="button" onclick="signup()">Sign Up</button>
-    <div class="toggle">Already have an account? <span onclick="showLogin()">Login</span></div>
+  <form id="signup-form" style="display:none;">
+    <h2>Join Us</h2>
+    <div class="subtitle">Start your culinary journey.</div>
+
+    <div class="input-group">
+      <input type="email" id="signup-email" placeholder="Email Address" required>
+      <i class="fas fa-envelope input-icon"></i>
+    </div>
+    <div class="input-group">
+      <input type="password" id="signup-password" placeholder="Password" required>
+      <i class="fas fa-lock input-icon"></i>
+    </div>
+
+    <button type="button" onclick="signup()" id="signup-btn">
+      <span class="btn-text">Register</span>
+      <div class="spinner"></div>
+    </button>
+
+    <div class="toggle">Already have an account? <span onclick="showLogin()">Sign In</span></div>
   </form>
 
 </div>
 
-<!-- Firebase SDK -->
+<div id="toast"></div>
+
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } 
-    from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
-    authDomain: "ami-please-restaurant.firebaseapp.com",
-    projectId: "ami-please-restaurant",
-    storageBucket: "ami-please-restaurant.appspot.com",
-    messagingSenderId: "590274660115",
-    appId: "1:590274660115:web:998a7c8bb31e4a2696fce6",
-    measurementId: "G-8FGXXT0Z8L"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
+  authDomain: "ami-please-restaurant.firebaseapp.com",
+  projectId: "ami-please-restaurant",
+  storageBucket: "ami-please-restaurant.appspot.com",
+  messagingSenderId: "590274660115",
+  appId: "1:590274660115:web:998a7c8bb31e4a2696fce6",
+  measurementId: "G-8FGXXT0Z8L"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  // Forms
-  const loginForm = document.getElementById("login-form");
-  const signupForm = document.getElementById("signup-form");
+const loginForm = document.getElementById("login-form");
+const signupForm = document.getElementById("signup-form");
+const loginBtn = document.getElementById("login-btn");
+const signupBtn = document.getElementById("signup-btn");
 
-  // Show signup
-  window.showSignup = () => {
-    signupForm.classList.add("active", "animate__fadeInRight");
-    loginForm.classList.add("active", "animate__fadeOutLeft");
-    setTimeout(() => loginForm.classList.remove("animate__fadeOutLeft"), 500);
-  }
+window.showSignup = ()=>{ loginForm.style.display="none"; signupForm.style.display="block"; }
+window.showLogin = ()=>{ signupForm.style.display="none"; loginForm.style.display="block"; }
 
-  // Show login
-  window.showLogin = () => {
-    signupForm.classList.remove("active");
-    signupForm.classList.add("animate__fadeOutRight");
-    loginForm.classList.remove("active");
-    loginForm.classList.add("active", "animate__fadeInLeft");
-    setTimeout(() => signupForm.classList.remove("animate__fadeOutRight"), 500);
-  }
+window.showToast = (msg,type='success')=>{
+  const toast = document.getElementById("toast");
+  toast.innerText=msg;
+  toast.style.borderLeftColor=type==='error'?'#ff4d4d':'#D4AF37';
+  toast.className="show";
+  setTimeout(()=>{toast.className=toast.className.replace("show","");},3000);
+}
 
-  // Signup function
-  window.signup = () => {
-    const email = document.getElementById("signup-email").value;
-    const password = document.getElementById("signup-password").value;
-    if(!email || !password) return alert("Enter email and password");
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(() => alert("Account created successfully!"))
-      .catch(err => alert(err.message));
-  }
+const toggleLoading = (btn,isLoading)=>{
+  const spinner = btn.querySelector('.spinner');
+  const text = btn.querySelector('.btn-text');
+  if(isLoading){ spinner.style.display='block'; text.style.display='none'; btn.disabled=true; }
+  else{ spinner.style.display='none'; text.style.display='block'; btn.disabled=false; }
+}
 
-  // Login function
-  window.login = () => {
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-    if(!email || !password) return alert("Enter email and password");
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => alert("Logged in successfully!"))
-      .catch(err => alert(err.message));
-  }
+window.signup=()=>{
+  const email=document.getElementById("signup-email").value;
+  const password=document.getElementById("signup-password").value;
+  if(!email||!password)return showToast("Fill all fields","error");
+  toggleLoading(signupBtn,true);
+  createUserWithEmailAndPassword(auth,email,password)
+    .then(()=>{ showToast("Account created!"); toggleLoading(signupBtn,false); showLogin(); })
+    .catch(err=>{ showToast(err.message,"error"); toggleLoading(signupBtn,false); });
+}
 
-  // Forget password
-  window.forgetPassword = () => {
-    const email = document.getElementById("login-email").value;
-    if(!email) return alert("Enter your email to reset password");
-    sendPasswordResetEmail(auth, email)
-      .then(() => alert("Password reset email sent!"))
-      .catch(err => alert(err.message));
-  }
+window.login=()=>{
+  const email=document.getElementById("login-email").value;
+  const password=document.getElementById("login-password").value;
+  if(!email||!password)return showToast("Fill all fields","error");
+  toggleLoading(loginBtn,true);
+  signInWithEmailAndPassword(auth,email,password)
+    .then(()=>{ showToast("Welcome back!"); toggleLoading(loginBtn,false); })
+    .catch(err=>{ showToast(err.message,"error"); toggleLoading(loginBtn,false); });
+}
 
+window.forgetPassword=()=>{
+  const email=document.getElementById("login-email").value;
+  if(!email)return showToast("Enter email first","error");
+  toggleLoading(loginBtn,true);
+  sendPasswordResetEmail(auth,email)
+    .then(()=>{ showToast("Reset link sent!"); toggleLoading(loginBtn,false); })
+    .catch(err=>{ showToast(err.message,"error"); toggleLoading(loginBtn,false); });
+}
 </script>
 </body>
-</html>
+  </html>
