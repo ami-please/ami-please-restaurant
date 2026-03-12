@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ami Please Cafe & Restaurant</title>
 
@@ -40,7 +41,7 @@ cursor:pointer;
 
 .hero{
 margin-top:60px;
-height:240px;
+height:220px;
 background:url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4") center/cover;
 display:flex;
 align-items:center;
@@ -96,8 +97,8 @@ cursor:pointer;
 }
 
 .upload{
-background:#333;
 width:100%;
+margin-top:6px;
 }
 
 .cart{
@@ -127,19 +128,6 @@ margin-top:15px;
 font-weight:bold;
 }
 
-.form{
-display:none;
-margin-top:15px;
-}
-
-input{
-width:100%;
-padding:8px;
-margin-top:6px;
-border:none;
-border-radius:6px;
-}
-
 </style>
 </head>
 
@@ -166,26 +154,6 @@ border-radius:6px;
 Total ₹ <span id="total">0</span>
 </div>
 
-<button onclick="showForm()" style="width:100%">Done</button>
-
-<div class="form" id="orderForm">
-
-<input id="phone" placeholder="Phone Number">
-
-<input id="house" placeholder="House Number">
-
-<input id="area" placeholder="Area">
-
-<input id="city" placeholder="City">
-
-<input id="pincode" placeholder="Pincode">
-
-<button onclick="getLocation()">Use My Location</button>
-
-<button onclick="sendOrder()" style="background:green;width:100%">Place Order</button>
-
-</div>
-
 </div>
 
 <script>
@@ -197,42 +165,30 @@ const foods=[
 {name:"Afghani Momos",price:150},
 {name:"Tandoori Momos",price:140},
 {name:"Chilli Momos",price:150},
-{name:"Altabaq Special Platter",price:180},
 
 {name:"Chicken Biryani",price:250},
-{name:"Classic Chicken Fried Rice",price:250},
-{name:"Classic Veg Fried Rice",price:200},
-{name:"Schezwan Chicken Fried Rice",price:280},
-{name:"Schezwan Veg Fried Rice",price:250},
-{name:"Zeera Rice",price:120},
-{name:"Plain Rice",price:100},
+{name:"Chicken Fried Rice",price:250},
+{name:"Veg Fried Rice",price:200},
+{name:"Schezwan Chicken Rice",price:280},
+{name:"Schezwan Veg Rice",price:250},
 
 {name:"Roomali Roti",price:25},
-{name:"Roomali Butter Roti",price:40},
-{name:"Plain Naan",price:40},
 {name:"Butter Naan",price:60},
+{name:"Plain Naan",price:40},
 
 {name:"Chicken Shawarma Roll",price:170},
 {name:"Chicken Roll",price:150},
-{name:"Kathi Roll",price:170},
-{name:"Afghani Chicken Roll",price:250},
 {name:"Veg Roll",price:100},
 
 {name:"Margherita Pizza",price:200},
 {name:"Farmhouse Pizza",price:250},
 {name:"Chicken Pizza",price:280},
-{name:"Cheese Pizza",price:220},
-{name:"Tandoori Chicken Pizza",price:300},
-
-{name:"Veg Burger",price:120},
-{name:"Chicken Burger",price:150},
-{name:"Cheese Burger",price:170},
 
 {name:"French Fries",price:100},
 {name:"Cheese Fries",price:120},
 
-{name:"Chicken Nuggets",price:180},
 {name:"Chicken Wings",price:220},
+{name:"Chicken Nuggets",price:180},
 
 {name:"Paneer Tikka",price:250},
 {name:"Chicken Tikka",price:300},
@@ -249,7 +205,6 @@ const foods=[
 
 {name:"Vanilla Ice Cream",price:90},
 {name:"Chocolate Ice Cream",price:100},
-{name:"Strawberry Ice Cream",price:100},
 
 {name:"Brownie",price:150},
 {name:"Chocolate Cake",price:200}
@@ -260,11 +215,17 @@ const menu=document.getElementById("menu")
 
 foods.forEach((f,i)=>{
 
+let savedImage=localStorage.getItem("foodImage"+i)
+
+let img=savedImage ? savedImage : "https://picsum.photos/300?random="+i
+
+let hideUpload=savedImage ? "display:none" : ""
+
 menu.innerHTML+=`
 
 <div class="food">
 
-<img id="img${i}" src="https://picsum.photos/300?random=${i}">
+<img id="img${i}" src="${img}">
 
 <div class="food-info">
 
@@ -276,7 +237,13 @@ menu.innerHTML+=`
 
 <button onclick="addCart('${f.name}',${f.price})">Add</button>
 
-<input type="file" accept="image/*" onchange="loadImg(event,'img${i}')" class="upload">
+<input 
+type="file"
+id="upload${i}"
+class="upload"
+accept="image/*"
+style="${hideUpload}"
+onchange="saveImage(event,'img${i}',${i})">
 
 </div>
 
@@ -291,7 +258,6 @@ let cart=[]
 function addCart(name,price){
 
 cart.push({name,price})
-
 updateCart()
 
 }
@@ -319,52 +285,28 @@ document.getElementById("count").innerText=cart.length
 }
 
 function toggleCart(){
+
 document.getElementById("cartBox").classList.toggle("active")
-}
-
-function loadImg(e,id){
-document.getElementById(id).src=URL.createObjectURL(e.target.files[0])
-}
-
-function showForm(){
-document.getElementById("orderForm").style.display="block"
-}
-
-function getLocation(){
-
-navigator.geolocation.getCurrentPosition(pos=>{
-
-window.userLocation=
-pos.coords.latitude+","+pos.coords.longitude
-
-alert("Location captured")
-
-})
 
 }
 
-function sendOrder(){
+function saveImage(e,imgId,index){
 
-let phone=document.getElementById("phone").value
-let house=document.getElementById("house").value
-let area=document.getElementById("area").value
-let city=document.getElementById("city").value
-let pin=document.getElementById("pincode").value
+const file=e.target.files[0]
 
-let order="Order:%0A"
+const reader=new FileReader()
 
-cart.forEach(c=>{
-order+=c.name+" ₹"+c.price+"%0A"
-})
+reader.onload=function(){
 
-order+="%0APhone:"+phone
-order+="%0AAddress:"+house+","+area+","+city+","+pin
+document.getElementById(imgId).src=reader.result
 
-if(window.userLocation){
-order+="%0ALocation:https://maps.google.com/?q="+window.userLocation
+localStorage.setItem("foodImage"+index,reader.result)
+
+document.getElementById("upload"+index).style.display="none"
+
 }
 
-window.location.href="sms:8899242083?body="+order
+reader.readAsDataURL(file)
 
 }
 
