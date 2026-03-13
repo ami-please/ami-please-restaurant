@@ -131,7 +131,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/fireba
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";  
 import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";  
   
-// Firebase Config  
 const firebaseConfig = {  
   apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",  
   authDomain: "ami-please-restaurant.firebaseapp.com",  
@@ -147,31 +146,40 @@ const auth = getAuth(app);
 const db = getFirestore(app);  
 const adminEmail="beejumble43@gmail.com";  
   
-// State  
 let cart=[], foods=[], editingFoodId=null;  
   
-// LOGIN / SIGNUP / FORGOT  
+// LOGIN  
 document.getElementById('loginBtn').addEventListener('click', async () => {  
   const email=document.getElementById('email').value.trim();  
   const password=document.getElementById('password').value.trim();  
   if(!email||!password) return alert("Fill all fields");  
-  try { await signInWithEmailAndPassword(auth,email,password); }   
-  catch(err){ alert("Login failed: "+err.message); }  
+  try{  
+    const userCredential = await signInWithEmailAndPassword(auth,email,password);  
+    const user = userCredential.user;  
+    alert(`Welcome, ${user.email}!`);  
+    document.getElementById('loginPage').style.display="none";  
+    document.getElementById('menu').style.display="block";  
+  } catch(err){ alert("Login failed: "+err.message); }  
 });  
   
+// SIGNUP  
 document.getElementById('signupBtn').addEventListener('click', async () => {  
   const email=document.getElementById('email').value.trim();  
   const password=document.getElementById('password').value.trim();  
   if(!email||!password) return alert("Fill all fields");  
-  try { await createUserWithEmailAndPassword(auth,email,password); }   
-  catch(err){ alert("Signup failed: "+err.message); }  
+  try{  
+    await createUserWithEmailAndPassword(auth,email,password);  
+    alert("Signup successful. Please login.");  
+  } catch(err){ alert("Signup failed: "+err.message); }  
 });  
   
+// FORGOT PASSWORD  
 document.getElementById('forgotLink').addEventListener('click', async () => {  
   const email = prompt("Enter your email");  
   if(email) sendPasswordResetEmail(auth,email).then(()=>alert("Reset email sent")).catch(err=>alert(err.message));  
 });  
   
+// LOGOUT  
 document.getElementById('logoutBtn').addEventListener('click', ()=>signOut(auth).catch(err=>alert(err.message)));  
   
 // AUTH STATE CHANGE  
@@ -180,25 +188,23 @@ onAuthStateChanged(auth,user=>{
     document.getElementById('loginPage').style.display="none";  
     document.getElementById('menu').style.display="block";  
     if(user.email===adminEmail){  
-      document.getElementById('adminMenu').style.display = "flex";  
-      document.getElementById('adminOrders').style.display = "block";  
+      document.getElementById('adminMenu').style.display="flex";  
+      document.getElementById('adminOrders').style.display="block";  
       loadOrders();  
     } else {  
-      document.getElementById('adminMenu').style.display = "none";  
-      document.getElementById('adminOrders').style.display = "none";  
+      document.getElementById('adminMenu').style.display="none";  
+      document.getElementById('adminOrders').style.display="none";  
     }  
     loadFoods();  
   } else {  
     document.getElementById('loginPage').style.display="flex";  
     document.getElementById('menu').style.display="none";  
-    document.getElementById('adminMenu').style.display="none";  
-    document.getElementById('adminOrders').style.display="none";  
   }  
 });  
   
-// FOOD FUNCTIONS  
+// LOAD FOODS  
 async function loadFoods(){  
-  foods=[];   
+  foods=[];  
   const snap = await getDocs(collection(db,"foods"));  
   snap.forEach(d=>{ const data=d.data(); if(!data.deleted) foods.push({id:d.id,...data}); });  
   renderFoods();  
@@ -220,7 +226,7 @@ function renderFoods(){
   });  
 }  
   
-// CART FUNCTIONS  
+// CART  
 function updateCart(id,change){  
   let item = cart.find(i=>i.id===id);  
   if(item){ item.qty+=change; if(item.qty<0) item.qty=0; }   
@@ -241,156 +247,33 @@ function updateCartUI(){
 document.getElementById('cartBtn').addEventListener('click',()=>document.getElementById('cartModal').style.display='flex');  
 document.getElementById('closeCart').addEventListener('click',()=>document.getElementById('cartModal').style.display='none');  
   
-// ADMIN PANEL  
-document.getElementById('addFoodBtn').addEventListener('click', ()=>{  
-  editingFoodId=null; document.getElementById('adminFormTitle').innerText='Add Food';  
-  document.getElementById('foodName').value=''; document.getElementById('foodPrice').value=''; document.getElementById('foodRating').value='';  
-  document.getElementById('adminPanel').style.display='flex';  
-});  
-document.getElementById('closeAdminBtn').addEventListener('click', ()=>document.getElementById('adminPanel').style.display='none');  
-document.getElementById('submitFoodBtn').addEventListener('click', async ()=>{  
-  const name=document.getElementById('foodName').value;  
-  const price=Number(document.getElementById('foodPrice').value);  
-  const rating=Number(document.getElementById('foodRating').value);  
-  if(!name||!price||!rating){ alert("Fill all fields"); return; }  
-  if(editingFoodId){ await updateDoc(doc(db,"foods",editingFoodId),{name,price,rating}); editingFoodId=null; }   
-  else { await addDoc(collection(db,"foods"),{name,price,rating}); }  
-  document.getElementById('adminPanel').style.display='none'; loadFoods();  
-});  
+<!-- Part 10: Admin Orders and Final Scripts -->  
+<script type="module">  
+  // Your existing imports and code are already here  
+  // At the bottom, add:  
   
-// EDIT / DELETE  
-function editFood(id){ const f=foods.find(ff=>ff.id===id); if(!f) return; editingFoodId=id; document.getElementById('adminFormTitle').innerText='Edit Food'; document.getElementById('foodName').value=f.name; document.getElementById('foodPrice').value=f.price; document.getElementById('foodRating').value=f.rating; document.getElementById('adminPanel').style.display='flex'; }  
-async function deleteFood(id){ if(!confirm("Delete this food?")) return; await updateDoc(doc(db,"foods",id),{deleted:true}); loadFoods(); }  
+  // VIEW ORDERS BUTTON  
+  const viewOrdersBtn = document.getElementById('viewOrdersBtn');  
+  const adminOrdersDiv = document.getElementById('adminOrders');  
   
-// PLACE ORDER  
-document.getElementById('placeOrderBtn').addEventListener('click',  
-  
-// PLACE ORDER  
-document.getElementById('placeOrderBtn').addEventListener('click', ()=>{  
-  if(cart.length===0){ alert("Cart is empty"); return; }  
-  document.getElementById('orderFormOverlay').style.display='flex';  
-});  
-  
-document.getElementById('closeOrderFormBtn').addEventListener('click', ()=>document.getElementById('orderFormOverlay').style.display='none');  
-  
-// CHECK ORDER FORM  
-function checkOrderForm(){  
-  const phone=document.getElementById('phone').value;  
-  const pincode=document.getElementById('pincode').value;  
-  const area=document.getElementById('area').value;  
-  const city=document.getElementById('city').value;  
-  const loc=document.getElementById('locationLink').value;  
-  document.getElementById('confirmOrderBtn').disabled = !(phone && pincode && area && city && loc);  
-}  
-['phone','pincode','area','city','locationLink'].forEach(id=>document.getElementById(id).addEventListener('input', checkOrderForm));  
-  
-// GET LOCATION  
-document.getElementById('getLocationBtn').addEventListener('click', () => {  
-  if (navigator.geolocation) {  
-    navigator.geolocation.getCurrentPosition(  
-      (pos) => {  
-        const lat = pos.coords.latitude;  
-        const lng = pos.coords.longitude;  
-        document.getElementById('locationLink').value = `https://www.google.com/maps?q=${lat},${lng}`;  
-        checkOrderForm();  
-      },  
-      (err) => alert("Unable to fetch location: " + err.message)  
-    );  
-  } else {  
-    alert("Geolocation not supported by your browser");  
-  }  
-});  
-  
-// CONFIRM ORDER  
-document.getElementById('confirmOrderBtn').addEventListener('click', async () => {  
-  const phone = document.getElementById('phone').value.trim();  
-  const pincode = document.getElementById('pincode').value.trim();  
-  const area = document.getElementById('area').value.trim();  
-  const city = document.getElementById('city').value.trim();  
-  const loc = document.getElementById('locationLink').value.trim();  
-  
-  if (!phone || !pincode || !area || !city || !loc) {  
-    alert("Please fill all fields");  
-    return;  
-  }  
-  
-  try {  
-    await addDoc(collection(db, "orders"), {  
-      user: auth.currentUser.email,  
-      cart: cart,  
-      phone: phone,  
-      pincode: pincode,  
-      area: area,  
-      city: city,  
-      locationLink: loc,  
-      timestamp: Date.now(),  
-      status: "pending"  
-    });  
-  
-    // Clear cart and form  
-    cart = [];  
-    updateCartUI();  
-    document.getElementById('orderFormOverlay').style.display='none';  
-    document.getElementById('cartModal').style.display='none';  
-    ['phone','pincode','area','city','locationLink'].forEach(id => document.getElementById(id).value = "");  
-  
-    // Show thank you popup  
-    const popup = document.getElementById('thanksPopup');  
-    popup.classList.add('show');  
-    setTimeout(()=>popup.classList.remove('show'),2000);  
-  
-    // Refresh admin orders if admin  
-    if(auth.currentUser && auth.currentUser.email === adminEmail){  
+  viewOrdersBtn.addEventListener('click', () => {  
+    if (adminOrdersDiv.style.display === 'none' || adminOrdersDiv.style.display === '') {  
+      adminOrdersDiv.style.display = 'block';  
       loadOrders();  
+    } else {  
+      adminOrdersDiv.style.display = 'none';  
     }  
-  
-  } catch (err) {  
-    alert("Error placing order: " + err.message);  
-  }  
-});  
-  
-// ADMIN: VIEW ORDERS BUTTON  
-document.getElementById('viewOrdersBtn').addEventListener('click', ()=>{  
-  const ordersDiv = document.getElementById('adminOrders');  
-  if(ordersDiv.style.display === 'none' || ordersDiv.style.display === ''){  
-    ordersDiv.style.display='block';  
-    loadOrders();  
-  } else {  
-    ordersDiv.style.display='none';  
-  }  
-});  
-  
-// LOAD ORDERS  
-async function loadOrders(){  
-  const ordersList = document.getElementById('ordersList');  
-  ordersList.innerHTML = "Loading orders...";  
-  const snap = await getDocs(collection(db,"orders"));  
-  ordersList.innerHTML = "";  
-  snap.forEach(d => {  
-    const o = d.data();  
-    const div = document.createElement('div');  
-    div.className = "order-card";  
-    let itemsText = o.cart.map(c=>{  
-      const f = foods.find(ff=>ff.id===c.id);  
-      return f ? `${f.name} x ${c.qty}` : '';  
-    }).join(", ");  
-    div.innerHTML = `  
-      <p><strong>User:</strong> ${o.user}</p>  
-      <p><strong>Items:</strong> ${itemsText}</p>  
-      <p><strong>Phone:</strong> ${o.phone}</p>  
-      <p><strong>Address:</strong> ${o.area}, ${o.city} - ${o.pincode}</p>  
-      <p><strong>Location:</strong> <a href="${o.locationLink}" target="_blank">Map</a></p>  
-      <p><strong>Time:</strong> ${new Date(o.timestamp).toLocaleString()}</p>  
-      <p><strong>Status:</strong> ${o.status}</p>  
-      <button class="complete-btn">Mark Complete</button>  
-    `;  
-    const completeBtn = div.querySelector('.complete-btn');  
-    completeBtn.addEventListener('click', async ()=>{  
-      await updateDoc(doc(db,"orders",d.id), {status:"completed"});  
-      loadOrders();  
-    });  
-    ordersList.appendChild(div);  
   });  
-}  
-</script>  </body>  
-          </html>
+  
+  // Make sure the admin sees the view orders button on login  
+  onAuthStateChanged(auth, user => {  
+    if (user && user.email === adminEmail) {  
+      viewOrdersBtn.style.display = 'inline-block';  
+      adminOrdersDiv.style.display = 'block';  
+      loadOrders();  
+    } else {  
+      viewOrdersBtn.style.display = 'none';  
+      adminOrdersDiv.style.display = 'none';  
+    }  
+  });  
+    </script>
