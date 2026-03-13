@@ -5,211 +5,470 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ami Please Restaurant</title>
 
-<!-- Firebase SDKs -->
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+    --primary: #ff4d4d;
+    --secondary: #2d3436;
+    --bg: #fafafa;
+    --white: #fff;
+    --radius: 12px;
+    --transition: 0.3s;
+}
+
+/* General */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin:0;
+    padding:0;
+    background: var(--bg);
+}
+
+/* LOGIN PAGE */
+#loginPage {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover no-repeat;
+    display:flex; align-items:center; justify-content:center;
+    z-index:1000;
+}
+.loginBox {
+    background: rgba(255,255,255,0.95);
+    padding:40px;
+    border-radius: var(--radius);
+    width: 90%; max-width:400px;
+    text-align:center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+.loginBox h2 { font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom:10px;}
+.loginBox p { margin-bottom:20px; color:#666; }
+
+.input-group { margin-bottom:15px; text-align:left; }
+.input-group label { font-size:12px; margin-bottom:5px; display:block; color:#333; }
+.input-group input { width:100%; padding:12px; border-radius: var(--radius); border:1px solid #ddd; outline:none; }
+
+.btn { width:100%; padding:12px; border:none; border-radius: var(--radius); cursor:pointer; font-weight:600; margin-bottom:10px; }
+.btn-primary { background: var(--primary); color:white; }
+.btn-outline { background:transparent; border:2px solid var(--primary); color:var(--primary); }
+
+.auth-toggle { font-size:14px; margin-top:10px; }
+.auth-toggle a { color: var(--primary); cursor:pointer; text-decoration:none; }
+
+/* MAIN MENU */
+#menu { display:none; padding-bottom:100px; }
+header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:white; position:sticky; top:0; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+.logo { font-family: 'Playfair Display', serif; font-size:22px; color:var(--primary);}
+.cart-icon { position:relative; cursor:pointer; font-size:24px; color:var(--secondary);}
+.cart-badge { position:absolute; top:-8px; right:-8px; background:var(--primary); color:white; font-size:12px; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+.banner { background: url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5") center/cover; height:180px; display:flex; align-items:center; justify-content:center; color:white; font-family: 'Playfair Display', serif; font-size:28px; font-weight:600; text-shadow:0 2px 6px rgba(0,0,0,0.4); margin-bottom:20px; }
+
+.container { max-width:1200px; margin:0 auto; padding:0 15px; display:grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap:15px; }
+
+.food-card { background:white; padding:15px; border-radius:var(--radius); box-shadow:0 4px 15px rgba(0,0,0,0.08); position:relative; display:flex; flex-direction:column; }
+.food-card img { width:100%; height:180px; object-fit:cover; border-radius:var(--radius);}
+.food-info { margin-top:10px; }
+.food-info h3 { margin:5px 0; font-size:18px; }
+.food-info p { margin:0; color:var(--primary); font-weight:700; }
+.food-actions { display:flex; justify-content:space-between; align-items:center; margin-top:10px; }
+.add-btn, .minus-btn { background: var(--primary); color:white; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer; font-size:20px; transition:var(--transition); }
+.add-btn:hover, .minus-btn:hover { transform:scale(1.1); }
+
+.admin-menu { display:none; margin-bottom:20px; justify-content:flex-end; gap:10px; }
+.admin-menu button { padding:8px 15px; border:none; border-radius:var(--radius); cursor:pointer; font-weight:600; background:var(--primary); color:white; }
+.admin-food-options { position:absolute; bottom:10px; right:10px; cursor:pointer; font-size:20px; }
+
+/* CART MODAL */
+#cartModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:flex-end; z-index:20; }
+.cart-panel { background:white; width:85%; max-width:400px; height:100%; padding:20px; display:flex; flex-direction:column; }
+.cart-header { display:flex; justify-content:space-between; margin-bottom:15px; }
+.cart-items { flex:1; overflow-y:auto; }
+.cart-footer { margin-top:15px; border-top:1px solid #eee; padding-top:15px; }
+.total-row { display:flex; justify-content:space-between; font-weight:700; margin-bottom:15px; }
+.close-cart { cursor:pointer; font-size:24px; }
+
+/* OVERLAY DETAILS FORM */
+#orderFormOverlay { position:fixed; top:0; left:0;width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:30; }
+.order-form { background:white; padding:20px; border-radius:var(--radius); width:90%; max-width:400px; display:flex; flex-direction:column; gap:10px; }
+.order-form input { padding:10px; border-radius:var(--radius); border:1px solid #ddd; }
+.place-order-btn { background: var(--primary); color:white; padding:12px; border:none; border-radius:var(--radius); cursor:pointer; font-weight:600; margin-top:10px; }
+.place-order-btn:hover { opacity:0.9; }
+
+/* THANKS POPUP */
+#thanksPopup { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); background:var(--primary); color:white; padding:20px 30px; border-radius:var(--radius); z-index:40; font-size:18px; font-weight:600; transition:0.3s; }
+#thanksPopup.show { transform:translate(-50%,-50%) scale(1); }
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+    <div class="loginBox">
+        <h2>Ami Please</h2>
+        <p>Order your favorite food</p>
+        <div class="input-group"><label>Email</label><input id="email" type="email" placeholder="Enter your email"></div>
+        <div class="input-group"><label>Password</label><input id="password" type="password" placeholder="Enter your password"></div>
+        <button class="btn btn-primary" onclick="login()">Login</button>
+        <button class="btn btn-outline" onclick="signup()">Signup</button>
+        <div class="auth-toggle"><a onclick="forgot()">Forgot Password?</a></div>
+    </div>
+</div>
+
+<!-- MAIN MENU -->
+<div id="menu">
+    <header>
+        <div class="logo"><i class="fas fa-utensils"></i> Ami Please</div>
+        <div>
+            <span class="cart-icon" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i><span id="cartCount" class="cart-badge">0</span></span>
+            <button onclick="logout()" style="margin-left:10px;">Logout</button>
+        </div>
+    </header>
+    <div class="banner">Delicious Food Delivered</div>
+
+    <div class="admin-menu" id="adminMenu">
+        <button onclick="showUploadPanel()">Upload Food</button>
+        <button onclick="showOrders()">Orders</button>
+    </div>
+
+    <div class="container" id="foodList">
+        <!-- Food cards injected here -->
+    </div>
+</div>
+
+<!-- CART MODAL -->
+<div id="cartModal">
+    <div class="cart-panel">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="total-row"><span>Total:</span><span id="cartTotal">₹0</span></div>
+            <button class="place-order-btn" onclick="showOrderForm()">Done</button>
+        </div>
+    </div>
+</div>
+
+<!-- ORDER FORM -->
+<div id="orderFormOverlay">
+    <div class="order-form">
+        <input id="phone" placeholder="Phone number">
+        <input id="pincode" placeholder="Pincode">
+        <input id="area" placeholder="Area">
+        <input id="city" placeholder="City">
+        <input id="locationLink" placeholder="Current location link">
+        <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+    </div>
+</div>
+
+<!-- THANKS POPUP -->
+<div id="thanksPopup">Thanks for visiting Ami Please!</div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
+// --- Firebase Config ---
 const firebaseConfig = {
   apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
   authDomain: "ami-please-restaurant.firebaseapp.com",
   projectId: "ami-please-restaurant",
-  storageBucket: "ami-please-restaurant.appspot.com",
+  storageBucket: "ami-please-restaurant.firebasestorage.app",
   messagingSenderId: "590274660115",
-  appId: "1:590274660115:web:998a7c8bb31e4a2696fce6"
+  appId: "1:590274660115:web:998a7c8bb31e4a2696fce6",
+  measurementId: "G-8FGXXT0Z8L"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
-// DOM Elements
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const adminBtn = document.getElementById("adminBtn");
-const loginModal = document.getElementById("loginModal");
-const loginForm = document.getElementById("loginForm");
-const foodGrid = document.getElementById("foodGrid");
-const searchInput = document.getElementById("searchInput");
+const adminEmail = "beejumble43@gmail.com";
 
 let cart = [];
-let foods = [];
-let currentUser = null;
+let foods = [
+    {id:1,name:"Burger",price:100,rating:4,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
+    {id:2,name:"Pizza",price:250,rating:5,img:"https://images.unsplash.com/photo-1601924582975-1c8d3a9f10f2"},
+    {id:3,name:"Sandwich",price:150,rating:3,img:"https://images.unsplash.com/photo-1599785209707-1d9f5a7c9984"},
+    {id:4,name:"Pasta",price:200,rating:4,img:"https://images.unsplash.com/photo-1603079722225-0a11f8724f71"},
+    {id:5,name:"Sushi",price:350,rating:5,img:"https://images.unsplash.com/photo-1553621042-f6e147245754"}
+];
 
-// ---------- AUTH ----------
-loginBtn.addEventListener("click", () => {
-  loginModal.style.display = "flex";
+// --- AUTH FUNCTIONS ---
+window.login = () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    if(!email || !password) return alert("Fill all fields");
+    signInWithEmailAndPassword(auth,email,password)
+    .catch(e=>alert(e.message));
+}
+
+window.signup = () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    if(!email || !password) return alert("Fill all fields");
+    createUserWithEmailAndPassword(auth,email,password)
+    .catch(e=>alert(e.message));
+}
+
+window.forgot = () => {
+    const email = prompt("Enter your email");
+    if(email) sendPasswordResetEmail(auth,email).then(()=>alert("Reset email sent")).catch(e=>alert(e.message));
+}
+
+window.logout = () => {
+    signOut(auth).then(()=>console.log("Logged out")).catch(e=>alert(e.message));
+}
+
+// --- AUTH STATE MONITOR ---
+onAuthStateChanged(auth,user=>{
+    if(user){
+        document.getElementById('loginPage').style.display="none";
+        document.getElementById('menu').style.display="block";
+        if(user.email===adminEmail) document.getElementById('adminMenu').style.display="flex";
+        renderFoods();
+        updateCartUI();
+    }else{
+        document.getElementById('loginPage').style.display="flex";
+        document.getElementById('menu').style.display="none";
+        document.getElementById('adminMenu').style.display="none";
+    }
 });
 
-logoutBtn.addEventListener("click", async () => {
-  await signOut(auth);
-});
-
-// Login form submit
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    loginModal.style.display = "none";
-    loginForm.reset();
-  } catch(e) {
-    alert("Login failed!");
-  }
-});
-
-// Listen auth state
-onAuthStateChanged(auth, user => {
-  currentUser = user;
-  if(user) {
-    loginBtn.style.display = "none";
-    logoutBtn.style.display = "inline-block";
-    adminBtn.style.display = "inline-block";
-  } else {
-    loginBtn.style.display = "inline-block";
-    logoutBtn.style.display = "none";
-    adminBtn.style.display = "none";
-  }
-});
-
-// ---------- FOOD DATA ----------
-const foodsCollection = collection(db, "foods");
-
-async function loadFoods() {
-  const snapshot = await getDocs(foodsCollection);
-  foods = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  renderFoods(foods);
+// --- RENDER FOOD CARDS ---
+function renderFoods(){
+    const foodList = document.getElementById('foodList');
+    foodList.innerHTML="";
+    foods.forEach(food=>{
+        const div=document.createElement('div');
+        div.className="food-card";
+        div.innerHTML=`
+            <img src="${food.img}" alt="${food.name}">
+            <div class="food-info">
+                <h3>${food.name}</h3>
+                <p>₹${food.price} - ⭐ ${food.rating}</p>
+            </div>
+            <div class="food-actions">
+                <button class="minus-btn" onclick="updateCart(${food.id},-1)">-</button>
+                <span id="qty-${food.id}">0</span>
+                <button class="add-btn" onclick="updateCart(${food.id},1)">+</button>
+            </div>
+            ${auth.currentUser && auth.currentUser.email===adminEmail ? `<div class="admin-food-options" onclick="editFood(${food.id})"><i class="fas fa-ellipsis-h"></i></div>` : ""}
+        `;
+        foodList.appendChild(div);
+    });
 }
 
-// ---------- RENDER FOODS ----------
-function renderFoods(list) {
-  foodGrid.innerHTML = "";
-  list.forEach(food => {
-    const card = document.createElement("div");
-    card.className = "food-card";
-    card.innerHTML = `
-      <div class="food-image" style="background-image:url('${food.image}')"></div>
-      <div class="food-info">
-        <h3>${food.name}</h3>
-        <p>₹${food.price}</p>
-        <div class="quantity-controls">
-          <button onclick="changeQty('${food.id}', -1)">-</button>
-          <span id="qty-${food.id}">0</span>
-          <button onclick="changeQty('${food.id}', 1)">+</button>
-        </div>
-        <button onclick="addToCart('${food.id}')">Add to Cart</button>
-      </div>
-      ${currentUser ? `<div class="admin-dots">
-        <button onclick="editFood('${food.id}')">✎</button>
-        <button onclick="deleteFood('${food.id}')">🗑</button>
-      </div>` : ""}
-    `;
-    foodGrid.appendChild(card);
-  });
+// --- CART HANDLING ---
+window.updateCart = (id,change) => {
+    const item = cart.find(i=>i.id===id);
+    if(item){ item.qty+=change; if(item.qty<0)item.qty=0; }
+    else if(change>0) cart.push({id,qty:change});
+    document.getElementById(`qty-${id}`).innerText=(cart.find(i=>i.id===id)||{qty:0}).qty;
+    updateCartUI();
 }
 
-// ---------- CART ----------
-function changeQty(id, delta) {
-  const qtyEl = document.getElementById(`qty-${id}`);
-  let qty = parseInt(qtyEl.innerText) + delta;
-  if(qty < 0) qty = 0;
-  qtyEl.innerText = qty;
+function updateCartUI(){
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML="";
+    let total=0;
+    cart.forEach(ci=>{
+        const f = foods.find(f=>f.id===ci.id);
+        total+=f.price*ci.qty;
+        const div = document.createElement('div');
+        div.className="cart-item";
+        div.innerHTML=`<span>${f.name} x ${ci.qty}</span><span>₹${f.price*ci.qty}</span>`;
+        cartItems.appendChild(div);
+    });
+    document.getElementById('cartTotal').innerText=`₹${total}`;
 }
 
-function addToCart(id) {
-  const food = foods.find(f => f.id === id);
-  const qty = parseInt(document.getElementById(`qty-${id}`).innerText);
-  if(qty === 0) return;
-  const existing = cart.find(c => c.id === id);
-  if(existing) existing.qty = qty;
-  else cart.push({...food, qty});
-  console.log(cart);
+window.toggleCart = () => {
+    const cm=document.getElementById('cartModal');
+    cm.style.display = cm.style.display==="flex"?"none":"flex";
 }
 
-// ---------- ADMIN FUNCTIONS ----------
-async function addFood(name, price, category, imageFile) {
-  const storageRef = ref(storage, `foods/${imageFile.name}`);
-  await uploadBytes(storageRef, imageFile);
-  const url = await getDownloadURL(storageRef);
-  await addDoc(foodsCollection, { name, price, category, image: url });
-  await loadFoods();
+window.showOrderForm = () => {
+    if(cart.length===0){ alert("Cart is empty"); return;}
+    document.getElementById('orderFormOverlay').style.display="flex";
 }
 
-async function editFood(id) {
-  const food = foods.find(f => f.id === id);
-  const name = prompt("Food name:", food.name);
-  const price = prompt("Food price:", food.price);
-  if(!name || !price) return;
-  await updateDoc(doc(db, "foods", id), { name, price });
-  await loadFoods();
+window.placeOrder = async () => {
+    const phone=document.getElementById('phone').value;
+    const pin=document.getElementById('pincode').value;
+    const area=document.getElementById('area').value;
+    const city=document.getElementById('city').value;
+    const loc=document.getElementById('locationLink').value;
+    if(!phone || !pin || !area || !city || !loc){ alert("Fill all fields"); return;}
+
+    try{
+        const ordersRef = collection(db,"orders");
+        await addDoc(ordersRef,{
+            user: auth.currentUser.email,
+            phone, pin, area, city, loc,
+            items: cart.map(ci=>({id:ci.id,name:foods.find(f=>f.id===ci.id).name,qty:ci.qty})),
+            total: cart.reduce((sum,ci)=>sum+foods.find(f=>f.id===ci.id).price*ci.qty,0),
+            timestamp: Date.now()
+        });
+    }catch(e){ alert("Failed to save order: "+e.message); }
+
+    document.getElementById('orderFormOverlay').style.display="none";
+    document.getElementById('cartModal').style.display="none";
+    cart=[];
+    updateCartUI();
+
+    const popup=document.getElementById('thanksPopup');
+    popup.classList.add('show');
+    setTimeout(()=>{ popup.classList.remove('show'); },3000);
 }
 
-async function deleteFood(id) {
-  if(!confirm("Delete this food?")) return;
-  await deleteDoc(doc(db, "foods", id));
-  await loadFoods();
+// --- ADMIN FUNCTIONS ---
+window.showUploadPanel = ()=>{ alert("Upload food panel (implement UI)"); }
+window.showOrders = async ()=>{
+    const ordersRef = collection(db,"orders");
+    const snapshot = await getDocs(ordersRef);
+    let text = "Orders:\n";
+    snapshot.forEach(doc=>{ text+=JSON.stringify(doc.data())+"\n"; });
+    alert(text);
 }
+window.editFood = (id)=>{ alert("Edit food "+id+" (implement UI to edit image,name,price,rating)"); }
 
-// ---------- SEARCH ----------
-searchInput.addEventListener("input", () => {
-  const val = searchInput.value.toLowerCase();
-  renderFoods(foods.filter(f => f.name.toLowerCase().includes(val)));
-});
-
-// ---------- INIT ----------
-loadFoods();
 </script>
+<script type="module">
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
 
-<style>
-body{font-family:Arial,sans-serif;margin:0;padding:0;background:#fefefe;}
-.header{position:fixed;top:0;width:100%;background:#fff;display:flex;justify-content:space-between;padding:1rem 1.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:1000;}
-.logo{font-weight:700;font-size:1.5rem;}
-.header-actions button{margin-left:1rem;}
-.main-content{padding-top:80px;display:flex;flex-direction:column;gap:1rem;margin:1rem;}
-.food-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
-.food-card{border:1px solid #eee;border-radius:10px;overflow:hidden;background:#fff;}
-.food-image{height:150px;background-size:cover;background-position:center;}
-.food-info{padding:0.5rem 1rem;display:flex;flex-direction:column;gap:0.5rem;}
-.quantity-controls{display:flex;gap:0.5rem;align-items:center;}
-.quantity-controls button{width:30px;height:30px;}
-.food-info button{background:#D4A574;border:none;color:white;padding:0.5rem;cursor:pointer;border-radius:5px;}
-.admin-dots{position:absolute;top:5px;right:5px;display:flex;flex-direction:column;gap:5px;}
-.admin-dots button{background:#ff4d4d;color:white;border:none;border-radius:5px;padding:3px 6px;cursor:pointer;}
-#loginModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:2000;}
-.modal-content{background:#fff;padding:2rem;border-radius:15px;width:90%;max-width:400px;}
-.modal-content input{width:100%;padding:0.8rem;margin-bottom:1rem;border-radius:10px;border:1px solid #ccc;}
-.modal-content button{width:100%;padding:0.8rem;border:none;border-radius:10px;background:#D4A574;color:white;font-weight:700;cursor:pointer;}
-</style>
+// --- Firebase Storage ---
+const storage = getStorage(app);
 
-<body>
-<header class="header">
-  <div class="logo">Ami Please</div>
-  <div class="header-actions">
-    <button id="loginBtn">Login</button>
-    <button id="logoutBtn" style="display:none;">Logout</button>
-    <button id="adminBtn" style="display:none;">Admin</button>
-  </div>
-</header>
+// --- ADMIN UPLOAD PANEL ---
+window.showUploadPanel = () => {
+    // Create overlay
+    let overlay = document.createElement('div');
+    overlay.id = 'uploadOverlay';
+    overlay.style = `position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:50;`;
 
-<main class="main-content">
-  <input type="text" id="searchInput" placeholder="Search foods...">
-  <div class="food-grid" id="foodGrid"></div>
-</main>
+    overlay.innerHTML = `
+        <div style="background:white;padding:20px;border-radius:12px;width:90%;max-width:400px;display:flex;flex-direction:column;gap:10px;">
+            <h3>Upload Food</h3>
+            <input id="foodName" placeholder="Food Name">
+            <input id="foodPrice" type="number" placeholder="Price">
+            <input id="foodRating" type="number" placeholder="Rating 1-5" min="1" max="5">
+            <input id="foodImage" type="file" accept="image/*">
+            <div style="display:flex;justify-content:space-between;margin-top:10px;">
+                <button onclick="uploadFood()">Upload</button>
+                <button onclick="closeUploadPanel()">Cancel</button>
+            </div>
+        </div>
+    `;
 
-<!-- Login Modal -->
-<div id="loginModal">
-  <div class="modal-content">
-    <h3>Login</h3>
-    <form id="loginForm">
-      <input type="email" id="loginEmail" placeholder="Email" required>
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <button type="submit">Login</button>
-    </form>
-  </div>
-</div>
-</body>
-</html>
+    document.body.appendChild(overlay);
+}
+
+window.closeUploadPanel = () => {
+    const ov = document.getElementById('uploadOverlay');
+    if(ov) ov.remove();
+}
+
+// --- UPLOAD FOOD TO FIREBASE STORAGE ---
+window.uploadFood = async () => {
+    const name = document.getElementById('foodName').value;
+    const price = Number(document.getElementById('foodPrice').value);
+    const rating = Number(document.getElementById('foodRating').value);
+    const file = document.getElementById('foodImage').files[0];
+
+    if(!name || !price || !rating || !file) return alert("Fill all fields and select image");
+
+    try {
+        const storageRef = ref(storage, 'foods/' + Date.now() + '-' + file.name);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+
+        const newFood = {id:Date.now(), name, price, rating, img:url};
+        foods.push(newFood);
+        renderFoods();
+        closeUploadPanel();
+        alert("Food uploaded successfully!");
+    } catch(e) { alert("Upload failed: "+e.message); }
+}
+
+// --- EDIT FOOD FUNCTION ---
+window.editFood = (id) => {
+    const food = foods.find(f=>f.id===id);
+    if(!food) return alert("Food not found");
+
+    let overlay = document.createElement('div');
+    overlay.id = 'editOverlay';
+    overlay.style = `position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:50;`;
+
+    overlay.innerHTML = `
+        <div style="background:white;padding:20px;border-radius:12px;width:90%;max-width:400px;display:flex;flex-direction:column;gap:10px;">
+            <h3>Edit Food</h3>
+            <input id="editFoodName" value="${food.name}" placeholder="Food Name">
+            <input id="editFoodPrice" type="number" value="${food.price}" placeholder="Price">
+            <input id="editFoodRating" type="number" value="${food.rating}" placeholder="Rating 1-5" min="1" max="5">
+            <input id="editFoodImage" type="file" accept="image/*">
+            <div style="display:flex;justify-content:space-between;margin-top:10px;">
+                <button onclick="saveFood(${id})">Save</button>
+                <button onclick="closeEditPanel()">Cancel</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+window.closeEditPanel = () => {
+    const ov = document.getElementById('editOverlay');
+    if(ov) ov.remove();
+}
+
+// --- SAVE EDITED FOOD ---
+window.saveFood = async (id) => {
+    const food = foods.find(f=>f.id===id);
+    if(!food) return;
+
+    const name = document.getElementById('editFoodName').value;
+    const price = Number(document.getElementById('editFoodPrice').value);
+    const rating = Number(document.getElementById('editFoodRating').value);
+    const file = document.getElementById('editFoodImage').files[0];
+
+    if(!name || !price || !rating) return alert("Fill all fields");
+
+    food.name = name;
+    food.price = price;
+    food.rating = rating;
+
+    if(file){
+        try {
+            const storageRef = ref(storage, 'foods/' + Date.now() + '-' + file.name);
+            await uploadBytes(storageRef, file);
+            const url = await getDownloadURL(storageRef);
+            food.img = url;
+        } catch(e){ alert("Image upload failed: "+e.message); }
+    }
+
+    renderFoods();
+    closeEditPanel();
+    alert("Food updated!");
+}
+
+// --- MOBILE OPTIMIZATION ---
+const style = document.createElement('style');
+style.innerHTML = `
+@media (max-width:600px){
+    header { flex-direction:column; gap:10px; }
+    .container { grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); }
+    .food-card img { height:150px; }
+    .cart-panel { width:95%; max-width:350px; }
+    .order-form { width:95%; max-width:350px; }
+}
+`;
+document.head.appendChild(style);
+</script>
