@@ -1,118 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Ami Please Restaurant</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
 margin:0;
 font-family:Poppins;
+background:#fafafa;
 }
 
-/* LOGIN PAGE */
+/* loader */
+
+.loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+}
+
+.loader.hidden{display:none;}
+
+.loader-logo{
+font-size:30px;
+font-weight:700;
+color:#ff4d4d;
+margin-bottom:10px;
+}
+
+.spinner{
+width:40px;
+height:40px;
+border:4px solid #eee;
+border-top:4px solid #ff4d4d;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+/* login */
 
 #loginPage{
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-background:url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover;
+background:
+linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover;
 }
 
 .loginBox{
-background:rgba(255,255,255,0.95);
+background:white;
 padding:40px;
-border-radius:12px;
-width:300px;
+border-radius:20px;
+width:320px;
 text-align:center;
 }
 
 .loginBox h2{
+color:#ff4d4d;
 margin-bottom:20px;
 }
 
 input{
 width:100%;
-padding:10px;
+padding:12px;
 margin:8px 0;
+border-radius:8px;
+border:1px solid #ddd;
 }
 
 button{
 width:100%;
-padding:10px;
-background:#ff4d4d;
+padding:12px;
+margin-top:8px;
 border:none;
+border-radius:8px;
+background:#ff4d4d;
 color:white;
+font-weight:600;
 cursor:pointer;
 }
 
 a{
-cursor:pointer;
 display:block;
-margin-top:8px;
-font-size:14px;
+margin-top:10px;
+color:#ff4d4d;
+cursor:pointer;
+}
+
+/* menu */
+
+#menu{display:none;}
+
+header{
+background:white;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo{
+font-weight:700;
 color:#ff4d4d;
 }
 
-/* MENU PAGE */
-
-#menu{
-display:none;
-background:#f6f6f6;
-min-height:100vh;
-}
-
-/* TOP BANNER */
-
 .banner{
+height:180px;
 background:url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5") center/cover;
-height:200px;
-color:white;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:32px;
-font-weight:600;
+color:white;
+font-size:26px;
+font-family:Playfair Display;
 }
 
-/* FOOD */
-
-.food{
-background:white;
-margin:10px;
+.container{
 padding:15px;
-border-radius:10px;
+}
+
+.food-card{
+background:white;
+padding:18px;
+border-radius:12px;
+margin-bottom:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+.food-card h3{
+margin:0;
+font-size:16px;
+}
+
+.food-card p{
+margin:0;
+color:#ff4d4d;
+font-weight:600;
 }
 
 .add{
 background:black;
+width:35px;
+height:35px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
 color:white;
-padding:5px 12px;
-margin-top:6px;
-}
-
-#cart{
-position:fixed;
-bottom:20px;
-right:20px;
-background:black;
-color:white;
-padding:12px 18px;
-border-radius:30px;
 cursor:pointer;
 }
 
-#adminPanel{
+/* cart */
+
+#cartModal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
 display:none;
-background:#222;
-color:white;
-padding:10px;
+justify-content:center;
+align-items:center;
+}
+
+.cart-box{
+background:white;
+padding:20px;
+width:320px;
+border-radius:12px;
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+margin:6px 0;
 }
 
 </style>
@@ -121,7 +207,12 @@ padding:10px;
 
 <body>
 
-<!-- LOGIN PAGE -->
+<div class="loader" id="loader">
+<div class="loader-logo">Ami Please</div>
+<div class="spinner"></div>
+</div>
+
+<!-- LOGIN -->
 
 <div id="loginPage">
 
@@ -130,12 +221,10 @@ padding:10px;
 <h2>Ami Please</h2>
 
 <input id="email" placeholder="Email">
-
 <input id="password" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
-
-<button onclick="signup()">Signup</button>
+<button onclick="signup()">Create Account</button>
 
 <a onclick="forgot()">Forgot Password?</a>
 
@@ -143,35 +232,48 @@ padding:10px;
 
 </div>
 
-
-<!-- MENU PAGE -->
+<!-- MENU -->
 
 <div id="menu">
 
+<header>
+
+<div class="logo">Ami Please</div>
+
+<div onclick="toggleCart()">Cart (<span id="cartCount">0</span>)</div>
+
+</header>
+
 <div class="banner">
+Delicious Food Delivered
+</div>
 
-Ami Please Restaurant
+<div class="container" id="foodList"></div>
 
 </div>
 
-<div id="adminPanel">
+<!-- CART -->
 
-Admin Panel  
-<input type="file">
+<div id="cartModal">
+
+<div class="cart-box">
+
+<h3>Your Cart</h3>
+
+<div id="cartItems"></div>
+
+<h3>Total: ₹<span id="cartTotal">0</span></h3>
+
+<button onclick="checkout()">Checkout</button>
+<button onclick="toggleCart()">Close</button>
 
 </div>
 
-<div id="foodList"></div>
-
-<div id="cart">Cart</div>
-
 </div>
-
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-
 import {
 getAuth,
 signInWithEmailAndPassword,
@@ -181,115 +283,194 @@ onAuthStateChanged
 }
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
-
-const firebaseConfig = {
-
+const firebaseConfig={
 apiKey:"AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
 authDomain:"ami-please-restaurant.firebaseapp.com",
 projectId:"ami-please-restaurant",
 storageBucket:"ami-please-restaurant.firebasestorage.app",
 messagingSenderId:"590274660115",
 appId:"1:590274660115:web:998a7c8bb31e4a2696fce6"
-
 };
 
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
 
 const adminEmail="beejumble43@gmail.com";
 
-
-window.login=function(){
-
-signInWithEmailAndPassword(auth,email.value,password.value)
-.catch(e=>alert(e.message))
-
-}
-
-
-window.signup=function(){
-
-createUserWithEmailAndPassword(auth,email.value,password.value)
-.catch(e=>alert(e.message))
-
-}
-
-
-window.forgot=function(){
-
-sendPasswordResetEmail(auth,email.value)
-.then(()=>alert("Reset email sent"))
-
-}
-
-
-onAuthStateChanged(auth,(user)=>{
-
-if(user){
-
-loginPage.style.display="none"
-
-menu.style.display="block"
-
-if(user.email===adminEmail){
-
-adminPanel.style.display="block"
-
-}
-
-}
-
-})
-
+let cart=[];
 
 const foods=[
-
 {name:"Steamed Momos",price:110},
-
 {name:"Fried Momos",price:110},
-
-{name:"Schezwan Momos",price:150},
-
-{name:"Crispy Momos",price:140},
-
-{name:"Chicken Biryani",price:160},
-
+{name:"Tandoori Momos",price:140},
+{name:"Paneer Momos",price:130},
+{name:"Chicken Momos",price:150},
+{name:"Veg Burger",price:90},
+{name:"Chicken Burger",price:120},
+{name:"Cheese Burger",price:110},
+{name:"Veg Pizza",price:180},
+{name:"Margherita Pizza",price:200},
+{name:"Farmhouse Pizza",price:220},
+{name:"Paneer Pizza",price:210},
+{name:"Chicken Pizza",price:240},
+{name:"BBQ Pizza",price:260},
+{name:"Veg Roll",price:80},
+{name:"Chicken Roll",price:100},
+{name:"Paneer Roll",price:90},
+{name:"Egg Roll",price:70},
+{name:"Veg Chowmein",price:100},
+{name:"Chicken Chowmein",price:120},
+{name:"Hakka Noodles",price:110},
+{name:"Schezwan Noodles",price:120},
+{name:"Veg Fried Rice",price:100},
+{name:"Chicken Fried Rice",price:130},
+{name:"Egg Fried Rice",price:110},
+{name:"Chicken Biryani",price:180},
 {name:"Mutton Biryani",price:220},
-
-{name:"Chicken 65",price:150},
-
+{name:"Veg Biryani",price:140},
+{name:"Paneer Butter Masala",price:160},
+{name:"Chicken Curry",price:180},
+{name:"Butter Chicken",price:220},
+{name:"Garlic Naan",price:40},
+{name:"Butter Naan",price:35},
+{name:"Tandoori Roti",price:25},
 {name:"French Fries",price:90},
-
+{name:"Peri Peri Fries",price:110},
+{name:"Spring Rolls",price:120},
+{name:"Chicken Lollipop",price:180},
+{name:"Chilli Chicken",price:170},
 {name:"Tea",price:25},
+{name:"Coffee",price:40},
+{name:"Cold Coffee",price:70},
+{name:"Chocolate Shake",price:90},
+{name:"Vanilla Shake",price:80},
+{name:"Strawberry Shake",price:85},
+{name:"Soft Drink",price:40},
+{name:"Lemon Soda",price:30},
+{name:"Mineral Water",price:20}
+];
 
-{name:"Coffee",price:40}
+const foodList=document.getElementById("foodList");
+const cartItems=document.getElementById("cartItems");
+const cartTotal=document.getElementById("cartTotal");
+const cartCount=document.getElementById("cartCount");
 
-]
-
-
-foods.forEach(f=>{
+foods.forEach((f,i)=>{
 
 foodList.innerHTML+=`
 
-<div class="food">
+<div class="food-card">
 
+<div>
 <h3>${f.name}</h3>
-
 <p>₹${f.price}</p>
+</div>
 
-<button class="add">Add</button>
+<div class="add" onclick="addToCart(${i})">+</div>
 
 </div>
 
-`
+`;
 
-})
+});
+
+window.login=()=>{
+
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+
+signInWithEmailAndPassword(auth,email,password)
+.catch(e=>alert(e.message));
+
+}
+
+window.signup=()=>{
+
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+
+createUserWithEmailAndPassword(auth,email,password)
+.catch(e=>alert(e.message));
+
+}
+
+window.forgot=()=>{
+
+const email=document.getElementById("email").value;
+
+sendPasswordResetEmail(auth,email)
+.then(()=>alert("Reset email sent"));
+
+}
+
+onAuthStateChanged(auth,(user)=>{
+
+loader.classList.add("hidden");
+
+if(user){
+
+loginPage.style.display="none";
+menu.style.display="block";
+
+}
+
+});
+
+window.addToCart=(i)=>{
+
+cart.push(foods[i]);
+
+updateCart();
+
+}
+
+function updateCart(){
+
+let total=0;
+
+cartItems.innerHTML="";
+
+cart.forEach(item=>{
+
+total+=item.price;
+
+cartItems.innerHTML+=`
+<div class="cart-item">
+<span>${item.name}</span>
+<span>₹${item.price}</span>
+</div>
+`;
+
+});
+
+cartTotal.innerText=total;
+cartCount.innerText=cart.length;
+
+}
+
+window.toggleCart=()=>{
+
+cartModal.style.display=
+cartModal.style.display=="flex"?"none":"flex";
+
+}
+
+window.checkout=()=>{
+
+if(cart.length==0){
+alert("Cart empty");
+return;
+}
+
+alert("Order placed!");
+
+cart=[];
+updateCart();
+toggleCart();
+
+}
 
 </script>
 
 </body>
-
 </html>
