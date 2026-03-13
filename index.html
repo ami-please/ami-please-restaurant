@@ -4,116 +4,94 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ami Please Restaurant</title>
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
-    --primary: #1e3a8a;
-    --secondary: #2563eb;
-    --accent: #f59e0b;
-    --bg: #f3f4f6;
-    --card-bg: #ffffff;
-    --radius: 12px;
-    --transition: 0.3s;
+    --primary:#1e90ff;
+    --secondary:#2f3640;
+    --bg:#f5f6fa;
+    --radius:12px;
+    --transition:0.3s;
 }
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: var(--bg);
-}
+body { font-family:'Poppins',sans-serif; margin:0; padding:0; background:var(--bg); }
 button { cursor:pointer; }
 
 /* Login Page */
 #loginPage {
     position:fixed; top:0; left:0; width:100%; height:100%;
-    background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5));
+    background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4));
     display:flex; align-items:center; justify-content:center; z-index:1000;
 }
 .loginBox {
-    background:white; padding:40px; border-radius:var(--radius); width:90%; max-width:400px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    background:white; padding:40px; border-radius:var(--radius);
+    width:90%; max-width:400px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,0.3);
 }
-.loginBox h2 { font-family:'Playfair Display', serif; color:var(--primary); margin-bottom:10px; }
+.loginBox h2 { font-family:'Playfair Display',serif; color:var(--primary); margin-bottom:10px; }
 .input-group { margin-bottom:15px; text-align:left; }
 .input-group input { width:100%; padding:12px; border-radius:var(--radius); border:1px solid #ddd; outline:none; }
-.btn-primary { width:100%; padding:12px; margin-bottom:10px; background:var(--primary); color:white; border:none; border-radius:var(--radius); }
-.btn-outline { width:100%; padding:12px; margin-bottom:10px; background:white; border:2px solid var(--primary); color:var(--primary); border-radius:var(--radius); }
-.auth-toggle { margin-top:10px; text-align:right; }
-.auth-toggle a { cursor:pointer; color:var(--accent); text-decoration:underline; }
 
-/* Header */
-header {
-    display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:white; position:sticky; top:0; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-.logo { font-family:'Playfair Display',serif; font-size:22px; color:var(--primary); }
-.cart-icon { position:relative; font-size:24px; color:var(--secondary); }
-.cart-badge {
-    position:absolute; top:-8px; right:-8px; background:var(--accent); color:white; font-size:12px; width:20px; height:20px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center; transition: transform 0.3s ease;
-}
-#cartCount.pop { animation: popBadge 0.3s ease; }
-@keyframes popBadge { 0% { transform:scale(1);} 50%{transform:scale(1.6);} 100%{transform:scale(1);} }
+/* Header & Banner */
+header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:white; position:sticky; top:0; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+.logo { font-family:'Playfair Display',serif; font-size:22px; color:var(--primary);}
+.cart-icon { position:relative; font-size:24px; color:var(--secondary);}
+.cart-badge { position:absolute; top:-8px; right:-8px; background:var(--primary); color:white; font-size:12px; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center;}
+.banner { background:var(--primary); color:white; height:120px; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:28px; font-weight:600; margin-bottom:20px;}
 
-/* Food Grid */
-.container {
-    max-width:1200px; margin:0 auto; padding:15px; display:grid;
-    grid-template-columns: repeat(2, 1fr); gap:15px;
-}
-.food-card {
-    background: var(--card-bg); padding:15px; border-radius:var(--radius);
-    display:flex; flex-direction:column; box-shadow:0 4px 15px rgba(0,0,0,0.08);
-}
-.food-info { margin-bottom:10px; }
-.food-actions { display:flex; justify-content:space-between; align-items:center; }
-.add-btn, .minus-btn { width:30px; height:30px; border-radius:50%; border:none; background:var(--primary); color:white; font-weight:bold; }
-.add-btn:hover, .minus-btn:hover { transform:scale(1.1); transition:var(--transition); }
+/* Food Container */
+.container { max-width:1200px; margin:0 auto; padding:0 15px; display:grid; grid-template-columns:repeat(2,1fr); gap:15px;}
+.food-card { background:white; padding:20px; border-radius:var(--radius); box-shadow:0 4px 15px rgba(0,0,0,0.08); display:flex; flex-direction:column; justify-content:space-between;}
+.food-info h3 { margin:0 0 5px 0; color:var(--secondary);}
+.food-info p { margin:0; color:var(--secondary);}
+.food-actions { display:flex; justify-content:space-between; align-items:center; margin-top:10px; }
+.add-btn, .minus-btn { background:var(--primary); color:white; border:none; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; font-weight:bold; transition:transform 0.2s; }
+.add-btn:hover, .minus-btn:hover { transform:scale(1.2); }
 
-/* Admin panel & Modals */
+/* Modals */
 #adminPanel,#cartModal,#orderFormOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;}
-.admin-form,.cart-panel,.order-form { background:white; padding:20px; border-radius:var(--radius); width:90%; max-width:400px; display:flex; flex-direction:column; gap:10px; }
-.cart-items { max-height:300px; overflow-y:auto; }
+.admin-form,.cart-panel,.order-form { background:white; padding:20px; border-radius:var(--radius); width:90%; max-width:400px; display:flex; flex-direction:column; gap:10px;}
+
+/* Cart */
+.cart-items { max-height:300px; overflow-y:auto;}
 .cart-item { display:flex; justify-content:space-between; padding:5px 0; }
 
-/* Admin buttons */
-.admin-menu { display:none; justify-content:center; gap:10px; margin:10px 0; }
-.admin-menu button { padding:10px 15px; background:var(--secondary); color:white; border:none; border-radius:var(--radius); cursor:pointer; }
-.admin-menu button:hover { background:var(--primary); }
-
 /* Thanks Popup */
-#thanksPopup { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--accent); color:white; padding:15px 25px; border-radius:var(--radius); display:none; font-weight:600; z-index:1000;}
+#thanksPopup { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--primary); color:white; padding:15px 25px; border-radius:var(--radius); display:none; z-index:1000; font-weight:600;}
 #thanksPopup.show { display:block; animation:fadeInOut 2s forwards;}
 @keyframes fadeInOut {0%{opacity:0;}10%,90%{opacity:1;}100%{opacity:0;}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
 <div id="loginPage">
     <div class="loginBox">
         <h2>Ami Please</h2>
+        <p>Order your favorite food</p>
         <div class="input-group"><label>Email</label><input id="email" type="email" placeholder="Enter your email"></div>
         <div class="input-group"><label>Password</label><input id="password" type="password" placeholder="Enter your password"></div>
-        <button class="btn-primary" onclick="login()">Login</button>
-        <button class="btn-outline" onclick="signup()">Signup</button>
+        <button onclick="login()">Login</button>
+        <button onclick="signup()">Signup</button>
         <div class="auth-toggle"><a onclick="forgot()">Forgot Password?</a></div>
     </div>
 </div>
 
-<!-- MENU -->
-<div id="menu">
+<!-- MAIN MENU -->
+<div id="menu" style="display:none;">
     <header>
-        <div class="logo">Ami Please</div>
+        <div class="logo"><i class="fas fa-utensils"></i> Ami Please</div>
         <div>
-            <span class="cart-icon" onclick="toggleCart()">🛒 <span id="cartCount" class="cart-badge">0</span></span>
+            <span class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cartCount" class="cart-badge">0</span>
+            </span>
             <button onclick="logout()" style="margin-left:10px;">Logout</button>
         </div>
     </header>
-
-    <div class="admin-menu" id="adminMenu">
-        <button onclick="openAdminPanel()">Add Food</button>
-        <button onclick="showOrders()">Orders</button>
+    <div class="banner">Delicious Food Delivered</div>
+    <div class="admin-menu" id="adminMenu" style="display:none; margin-bottom:10px;">
+        <button onclick="openAdminPanel()">Add / Edit Food</button>
     </div>
-
     <div class="container" id="foodList"></div>
 </div>
 
@@ -123,7 +101,7 @@ header {
         <h3 id="adminFormTitle">Add Food</h3>
         <input type="text" id="foodName" placeholder="Food Name">
         <input type="number" id="foodPrice" placeholder="Price">
-        <input type="number" id="foodRating" placeholder="Rating 1-5">
+        <input type="number" id="foodRating" placeholder="Rating (1-5)">
         <button onclick="submitFood()">Submit</button>
         <button onclick="closeAdminPanel()" style="background:#ccc;color:#000;">Cancel</button>
     </div>
@@ -132,13 +110,15 @@ header {
 <!-- CART MODAL -->
 <div id="cartModal">
     <div class="cart-panel">
-        <h3>Your Cart</h3>
-        <span style="cursor:pointer;" onclick="toggleCart()">✖</span>
-        <div id="cartItems" class="cart-items"></div>
-        <div style="display:flex; justify-content:space-between; margin-top:10px;">
-            <span>Total:</span><span id="cartTotal">₹0</span>
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
         </div>
-        <button onclick="showOrderForm()">Checkout</button>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="total-row"><span>Total:</span><span id="cartTotal">₹0</span></div>
+            <button onclick="showOrderForm()">Done</button>
+        </div>
     </div>
 </div>
 
@@ -149,6 +129,7 @@ header {
         <input id="pincode" placeholder="Pincode">
         <input id="area" placeholder="Area">
         <input id="city" placeholder="City">
+        <input id="locationLink" placeholder="Current location link">
         <button onclick="placeOrder()">Place Order</button>
     </div>
 </div>
@@ -161,18 +142,18 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/fireba
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-// Firebase
+// Firebase Config
 const firebaseConfig = {
-  apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
-  authDomain: "ami-please-restaurant.firebaseapp.com",
-  projectId: "ami-please-restaurant"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID"
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Globals
-const adminEmail = "beejumble43@gmail.com";
+const adminEmail = "youradmin@example.com"; // set your admin email
 let cart=[], foods=[], editingFoodId=null;
 
 // --- AUTH ---
@@ -192,12 +173,12 @@ window.forgot = () => {
 }
 window.logout = () => signOut(auth).catch(err=>alert(err.message));
 
-// --- AUTH STATE ---
+// Auth state
 onAuthStateChanged(auth,user=>{
     if(user){
         document.getElementById('loginPage').style.display="none";
         document.getElementById('menu').style.display="block";
-        if(user.email===adminEmail) document.getElementById('adminMenu').style.display="flex";
+        if(user.email===adminEmail) document.getElementById('adminMenu').style.display="block";
         loadFoods();
     } else {
         document.getElementById('loginPage').style.display="flex";
@@ -219,41 +200,39 @@ async function loadFoods(){
 
 // --- RENDER FOODS ---
 function renderFoods(){
-    const container = document.getElementById('foodList');
+    const container=document.getElementById('foodList');
     container.innerHTML="";
     foods.forEach(f=>{
         const div=document.createElement('div'); div.className="food-card";
-        div.innerHTML = `<div class="food-info"><h3>${f.name}</h3><p>₹${f.price} - ⭐${f.rating}</p></div>
-            <div class="food-actions">
-                <button class="minus-btn" onclick="updateCart('${f.id}',-1)">-</button>
-                <span id="qty-${f.id}">0</span>
-                <button class="add-btn" onclick="updateCart('${f.id}',1)">+</button>
-            </div>
-            ${auth.currentUser && auth.currentUser.email===adminEmail?`
-            <div>
-                <button onclick="editFood('${f.id}')">Edit</button>
-                <button onclick="deleteFood('${f.id}')">Delete</button>
-            </div>`:""}`;
+        div.innerHTML=`<div class="food-info"><h3>${f.name}</h3><p>₹${f.price} - ⭐${f.rating}</p></div>
+        <div class="food-actions">
+            <button class="minus-btn" onclick="updateCart('${f.id}',-1)">-</button>
+            <span id="qty-${f.id}">0</span>
+            <button class="add-btn" onclick="updateCart('${f.id}',1)">+</button>
+        </div>
+        ${auth.currentUser && auth.currentUser.email===adminEmail?`
+        <div style="margin-top:10px;">
+            <button onclick="editFood('${f.id}')">Edit</button>
+            <button onclick="deleteFood('${f.id}')">Delete</button>
+        </div>`:""}`;
         container.appendChild(div);
     });
 }
 
 // --- CART ---
 function updateCart(id,change){
-    let item = cart.find(i=>i.id===id);
+    let item=cart.find(i=>i.id===id);
     if(item){ item.qty+=change; if(item.qty<0)item.qty=0; }
     else if(change>0) cart.push({id,qty:change});
     document.getElementById(`qty-${id}`).innerText=(cart.find(i=>i.id===id)||{qty:0}).qty;
     updateCartUI();
-    const badge=document.getElementById('cartCount'); badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop');
 }
 function updateCartUI(){
     const ci=document.getElementById('cartItems'); ci.innerHTML="";
     let total=0;
     cart.forEach(c=>{
         const f=foods.find(ff=>ff.id===c.id);
-        if(f && c.qty>0){
-            total+=f.price*c.qty;
+        if(f){ total+=f.price*c.qty;
             const div=document.createElement('div'); div.className="cart-item";
             div.innerHTML=`<span>${f.name} x ${c.qty}</span><span>₹${f.price*c.qty}</span>`;
             ci.appendChild(div);
@@ -263,14 +242,19 @@ function updateCartUI(){
     document.getElementById('cartCount').innerText=cart.reduce((a,b)=>a+b.qty,0);
 }
 window.toggleCart=()=>{ const cm=document.getElementById('cartModal'); cm.style.display=(cm.style.display==="flex")?"none":"flex"; }
-window.showOrderForm=()=>{ if(cart.length===0){ alert("Cart is empty"); return; } document.getElementById('orderFormOverlay').style.display="flex"; }
+window.showOrderForm=()=>{ if(cart.length===0){ alert("Cart empty"); return; } document.getElementById('orderFormOverlay').style.display="flex"; }
 window.placeOrder=async ()=>{
-    const p=document.getElementById('phone').value, pin=document.getElementById('pincode')?.value||"", a=document.getElementById('area').value, c=document.getElementById('city').value;
-    if(!p||!a||!c){ alert("Fill all fields"); return; }
-    await addDoc(collection(db,"orders"), {user:auth.currentUser.email, cart, phone:p, pin, area:a, city:c, timestamp:Date.now()});
-    document.getElementById('orderFormOverlay').style.display="none"; document.getElementById('cartModal').style.display="none";
+    const p=document.getElementById('phone').value,
+          pin=document.getElementById('pincode').value,
+          a=document.getElementById('area').value,
+          c=document.getElementById('city').value,
+          l=document.getElementById('locationLink').value;
+    if(!p||!pin||!a||!c||!l){ alert("Fill all fields"); return; }
+    await addDoc(collection(db,"orders"),{user:auth.currentUser.email,cart,phone:p,pin,area:a,city:c,loc:l,timestamp:Date.now()});
+    document.getElementById('orderFormOverlay').style.display="none";
+    document.getElementById('cartModal').style.display="none";
     cart=[]; updateCartUI();
-    document.getElementById('phone').value=""; document.getElementById('pincode')?.value=""; document.getElementById('area').value=""; document.getElementById('city').value="";
+    document.getElementById('phone').value=""; document.getElementById('pincode').value=""; document.getElementById('area').value=""; document.getElementById('city').value=""; document.getElementById('locationLink').value="";
     const popup=document.getElementById('thanksPopup'); popup.classList.add('show'); setTimeout(()=>popup.classList.remove('show'),2000);
 }
 
@@ -278,7 +262,9 @@ window.placeOrder=async ()=>{
 window.openAdminPanel=()=>{
     editingFoodId=null;
     document.getElementById('adminFormTitle').innerText="Add Food";
-    document.getElementById('foodName').value=""; document.getElementById('foodPrice').value=""; document.getElementById('foodRating').value="";
+    document.getElementById('foodName').value="";
+    document.getElementById('foodPrice').value="";
+    document.getElementById('foodRating').value="";
     document.getElementById('adminPanel').style.display="flex";
 }
 window.closeAdminPanel=()=>{ document.getElementById('adminPanel').style.display="none"; }
@@ -288,38 +274,20 @@ window.submitFood=async ()=>{
     const rating=Number(document.getElementById('foodRating').value);
     if(!name||!price||!rating){ alert("Fill all fields"); return; }
     if(editingFoodId){
-        await updateDoc(doc(db,"foods",editingFoodId),{name,price,rating});
-        editingFoodId=null;
-    } else {
-        await addDoc(collection(db,"foods"),{name,price,rating});
-    }
+        const foodRef=doc(db,"foods",editingFoodId);
+        await updateDoc(foodRef,{name,price,rating}); editingFoodId=null;
+    } else { await addDoc(collection(db,"foods"),{name,price,rating}); }
     closeAdminPanel(); loadFoods();
 }
 window.editFood=(id)=>{
     const f=foods.find(ff=>ff.id===id); if(!f) return;
     editingFoodId=id; document.getElementById('adminFormTitle').innerText="Edit Food";
-    document.getElementById('foodName').value=f.name;
-    document.getElementById('foodPrice').value=f.price;
-    document.getElementById('foodRating').value=f.rating;
+    document.getElementById('foodName').value=f.name; document.getElementById('foodPrice').value=f.price; document.getElementById('foodRating').value=f.rating;
     document.getElementById('adminPanel').style.display="flex";
 }
-window.deleteFood=async (id)=>{
-    if(!confirm("Delete this food?")) return;
-    await updateDoc(doc(db,"foods",id),{deleted:true});
-    loadFoods();
-}
-
-// --- SHOW ORDERS ---
-window.showOrders=async ()=>{
-    const snap = await getDocs(collection(db,"orders"));
-    let ordersHtml="<h3>Orders</h3>";
-    snap.forEach(d=>{
-        const od=d.data();
-        ordersHtml+=`<p><b>User:</b> ${od.user}<br><b>Cart:</b> ${JSON.stringify(od.cart)}<br>
-        <b>Phone:</b> ${od.phone}<br><b>Area:</b> ${od.area}, ${od.city}<br><b>Pincode:</b> ${od.pin || ''}<hr></p>`;
-    });
-    const win=window.open("","Orders","width=600,height=600"); win.document.write(ordersHtml); win.document.close();
+window.deleteFood=async (id)=>{ if(!confirm("Delete this food?")) return;
+    const foodRef=doc(db,"foods",id); await updateDoc(foodRef,{deleted:true}); loadFoods();
 }
 </script>
 </body>
-    </html>
+</html>
