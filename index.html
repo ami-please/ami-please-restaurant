@@ -3,9 +3,9 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>Ami Please</title>
+<title>Ami Please Restaurant</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
@@ -20,150 +20,206 @@ background:#fafafa;
 /* LOGIN PAGE */
 
 #loginPage{
+
 height:100vh;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
+
 background:
-linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
 url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover;
+
 }
 
 .loginBox{
+
 background:white;
 padding:40px;
 border-radius:14px;
 width:320px;
 text-align:center;
+
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+
 }
 
-input{
+.loginBox h1{
+
+font-family:"Playfair Display";
+margin-bottom:10px;
+
+}
+
+.loginBox input{
+
 width:100%;
 padding:10px;
 margin:8px 0;
 border-radius:6px;
 border:1px solid #ccc;
+
 }
 
-button{
+.loginBox button{
+
+width:100%;
 padding:10px;
+margin-top:6px;
+
 border:none;
 border-radius:6px;
+
 background:#ff4d4d;
 color:white;
 cursor:pointer;
-width:100%;
-margin-top:5px;
+
 }
 
 /* HEADER */
 
 header{
+
 display:flex;
 justify-content:space-between;
 align-items:center;
+
 padding:12px;
+
 background:white;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
+
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+
 }
 
 .logo{
-font-family:Playfair Display;
-font-size:22px;
+
+font-family:"Playfair Display";
+font-size:24px;
 color:#ff4d4d;
+
 }
 
 .banner{
+
 height:180px;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size:32px;
+
 background:
 linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)),
 url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5") center/cover;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+color:white;
+font-size:30px;
+
 }
 
 /* MENU */
 
 .menuGrid{
+
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:14px;
-padding:14px;
+gap:12px;
+padding:12px;
+
 }
 
 .foodCard{
+
 background:white;
 border-radius:10px;
 box-shadow:0 2px 8px rgba(0,0,0,.1);
+
 overflow:hidden;
+
 }
 
 .foodImg{
+
 height:120px;
 background:#eee;
+
 }
 
 .foodInfo{
+
 padding:10px;
+
 }
 
 .rating{
+
 color:orange;
+
 }
 
-.qty{
-display:flex;
-gap:6px;
-margin-top:5px;
-}
+.foodInfo button{
 
-.qty button{
-width:30px;
-height:30px;
-padding:0;
-}
+margin-top:6px;
 
-.cartBtn{
 background:#333;
-margin-top:5px;
+
 }
 
 /* CART */
 
 #cartBox{
+
 position:fixed;
+
 bottom:0;
 left:0;
 right:0;
+
 background:white;
+
 padding:10px;
+
 box-shadow:0 -2px 10px rgba(0,0,0,.2);
+
 display:none;
+
 }
 
-/* ADMIN */
+/* ADMIN PANEL */
 
 #adminPanel{
+
 display:none;
+
 background:#222;
 color:white;
+
 padding:15px;
-margin:10px;
+
+margin:12px;
+
 border-radius:10px;
+
 }
 
-/* THANK YOU POPUP */
+#adminPanel input{
 
-#thanksPopup{
+width:100%;
+padding:8px;
+margin:6px 0;
+
+}
+
+/* POPUP */
+
+#popup{
 
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
+
 background:rgba(0,0,0,.6);
 
 display:flex;
@@ -176,22 +232,29 @@ transition:.4s;
 
 }
 
-#thanksPopup.active{
+#popup.active{
+
 opacity:1;
 pointer-events:auto;
+
 }
 
 .popupBox{
+
 background:white;
 padding:40px;
-border-radius:16px;
+border-radius:14px;
 text-align:center;
+
 animation:pop .4s ease;
+
 }
 
 @keyframes pop{
-0%{transform:scale(.5)}
+
+0%{transform:scale(.6)}
 100%{transform:scale(1)}
+
 }
 
 </style>
@@ -205,19 +268,23 @@ animation:pop .4s ease;
 
 <div class="loginBox">
 
-<h2>Ami Please</h2>
+<h1>Ami Please</h1>
 
 <input id="email" placeholder="Email">
+
 <input id="password" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
+
 <button onclick="signup()">Signup</button>
-<button onclick="reset()">Forgot Password</button>
+
+<button onclick="resetPass()">Forgot Password</button>
 
 </div>
+
 </div>
 
-<!-- MAIN SITE -->
+<!-- WEBSITE -->
 
 <div id="site" style="display:none">
 
@@ -229,22 +296,21 @@ animation:pop .4s ease;
 
 </header>
 
-<div class="banner">
-Delicious Food
-</div>
-
-<!-- ADMIN PANEL -->
+<div class="banner">Delicious Food</div>
 
 <div id="adminPanel">
 
-<h3>Admin Upload</h3>
+<h3>Admin Upload Food</h3>
 
 <input id="foodName" placeholder="Food name">
+
 <input id="foodPrice" placeholder="Price">
+
 <input id="foodRating" placeholder="Rating">
+
 <input type="file" id="foodImage">
 
-<button onclick="uploadFood()">Upload / Update</button>
+<button onclick="uploadFood()">Upload Food</button>
 
 <h3>Orders</h3>
 
@@ -264,118 +330,119 @@ Delicious Food
 
 </div>
 
-<div id="thanksPopup">
+<div id="popup">
+
 <div class="popupBox">
+
 <h2>Thank You</h2>
+
 <p>Thanks for visiting Ami Please</p>
+
 </div>
+
 </div>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
-import { getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,onAuthStateChanged,signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
-import { getFirestore,doc,setDoc,getDoc,collection,addDoc,getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
-import { getStorage,ref,uploadBytes,getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js"
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,onAuthStateChanged,signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getFirestore,doc,setDoc,getDoc,collection,addDoc,getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { getStorage,ref,uploadBytes,getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
 
-const firebaseConfig={
-apiKey:"YOUR_KEY",
-authDomain:"YOUR_DOMAIN",
-projectId:"YOUR_PROJECT",
-storageBucket:"YOUR_BUCKET",
-appId:"YOUR_APP_ID"
-}
+const firebaseConfig = {
+  apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
+  authDomain: "ami-please-restaurant.firebaseapp.com",
+  projectId: "ami-please-restaurant",
+  storageBucket: "ami-please-restaurant.appspot.com",
+  messagingSenderId: "590274660115",
+  appId: "1:590274660115:web:998a7c8bb31e4a2696fce6"
+};
 
-const app=initializeApp(firebaseConfig)
-const auth=getAuth(app)
-const db=getFirestore(app)
-const storage=getStorage(app)
+const app=initializeApp(firebaseConfig);
 
-const adminEmail="beejumble43@gmail.com"
+const auth=getAuth(app);
+const db=getFirestore(app);
+const storage=getStorage(app);
 
-let cart=[]
+const adminEmail="beejumble43@gmail.com";
+
+let cart=[];
 
 const foods=[
-"Steamed Momos","Fried Momos","Paneer Momos","Chicken Momos",
-"Veg Burger","Chicken Burger","Cheese Burger",
-"Veg Pizza","Paneer Pizza","Chicken Pizza",
-"Veg Roll","Chicken Roll","Egg Roll",
-"Veg Chowmein","Chicken Chowmein",
-"Veg Fried Rice","Chicken Fried Rice",
-"Chicken Biryani","Veg Biryani",
-"French Fries","Spring Rolls",
-"Tea","Coffee","Cold Coffee",
-"Chocolate Shake","Vanilla Shake"
-]
-
-/* LOGIN */
+"Veg Burger","Chicken Burger","Veg Pizza","Chicken Pizza",
+"French Fries","Veg Chowmein","Chicken Chowmein",
+"Veg Fried Rice","Chicken Fried Rice","Chicken Biryani",
+"Veg Roll","Chicken Roll","Coffee","Cold Coffee"
+];
 
 window.login=()=>{
 
 signInWithEmailAndPassword(auth,email.value,password.value)
-.catch(e=>alert(e.message))
+.catch(e=>alert(e.message));
 
-}
+};
 
 window.signup=()=>{
 
 createUserWithEmailAndPassword(auth,email.value,password.value)
-.catch(e=>alert(e.message))
+.catch(e=>alert(e.message));
 
-}
+};
 
-window.reset=()=>{
+window.resetPass=()=>{
 
 sendPasswordResetEmail(auth,email.value)
-.then(()=>alert("Reset email sent"))
+.then(()=>alert("Reset email sent"));
 
-}
+};
 
 window.logout=()=>{
 
-signOut(auth)
+signOut(auth).then(()=>{
+location.reload();
+});
 
-}
-
-/* AUTH STATE */
+};
 
 onAuthStateChanged(auth,user=>{
 
 if(user){
 
-loginPage.style.display="none"
-site.style.display="block"
+loginPage.style.display="none";
+site.style.display="block";
 
 if(user.email===adminEmail){
-adminPanel.style.display="block"
-loadOrders()
-}
 
-loadMenu()
+adminPanel.style.display="block";
+loadOrders();
 
 }
 
-})
+loadMenu();
 
-/* MENU */
+}
+
+});
 
 async function loadMenu(){
 
-menuGrid.innerHTML=""
+menuGrid.innerHTML="";
 
 for(let name of foods){
 
-let image=""
-let price=""
-let rating=""
+let image="";
+let price="";
+let rating="";
 
-const snap=await getDoc(doc(db,"foods",name))
+const snap=await getDoc(doc(db,"foods",name));
 
 if(snap.exists()){
-const d=snap.data()
-image=d.image
-price=d.price
-rating=d.rating
+
+const d=snap.data();
+image=d.image;
+price=d.price;
+rating=d.rating;
+
 }
 
 menuGrid.innerHTML+=`
@@ -392,42 +459,29 @@ menuGrid.innerHTML+=`
 
 <span class="rating">${"⭐".repeat(rating||0)}</span>
 
-<div class="qty">
-
 <button onclick="addCart('${name}')">Add</button>
 
 </div>
 
 </div>
 
-</div>
-
-`
+`;
 
 }
 
 }
-
-/* CART */
 
 window.addCart=(name)=>{
 
-cart.push(name)
+cart.push(name);
 
-cartBox.style.display="block"
+cartBox.style.display="block";
 
-cartCount.innerText=cart.length
+cartCount.innerText=cart.length;
 
-}
-
-/* PLACE ORDER */
+};
 
 window.placeOrder=async()=>{
-
-if(cart.length===0){
-alert("Cart empty")
-return
-}
 
 await addDoc(collection(db,"orders"),{
 
@@ -435,65 +489,59 @@ email:auth.currentUser.email,
 items:cart,
 time:new Date().toLocaleString()
 
-})
+});
 
-cart=[]
-cartBox.style.display="none"
+cart=[];
 
-showPopup()
+cartBox.style.display="none";
 
-}
+showPopup();
 
-/* POPUP */
+};
 
 function showPopup(){
 
-thanksPopup.classList.add("active")
+popup.classList.add("active");
 
 setTimeout(()=>{
 
-thanksPopup.classList.remove("active")
+popup.classList.remove("active");
 
-},3000)
+},3000);
 
 }
-
-/* ADMIN FOOD UPLOAD */
 
 window.uploadFood=async()=>{
 
-const name=foodName.value
-const price=foodPrice.value
-const rating=foodRating.value
-const file=foodImage.files[0]
+const file=foodImage.files[0];
 
-const storageRef=ref(storage,"foods/"+name)
+const storageRef=ref(storage,"foods/"+foodName.value);
 
-await uploadBytes(storageRef,file)
+await uploadBytes(storageRef,file);
 
-const url=await getDownloadURL(storageRef)
+const url=await getDownloadURL(storageRef);
 
-await setDoc(doc(db,"foods",name),{
-price:price,
-rating:rating,
+await setDoc(doc(db,"foods",foodName.value),{
+
+price:foodPrice.value,
+rating:foodRating.value,
 image:url
-})
 
-alert("Food updated")
+});
 
-loadMenu()
+alert("Food uploaded");
 
-}
+loadMenu();
 
-/* ADMIN ORDERS */
+};
 
 async function loadOrders(){
 
-const query=await getDocs(collection(db,"orders"))
+const query=await getDocs(collection(db,"orders"));
 
 query.forEach(doc=>{
 
-const d=doc.data()
+const d=doc.data();
 
 orders.innerHTML+=`
 
@@ -503,13 +551,13 @@ orders.innerHTML+=`
 
 Items: ${d.items.join(",")}<br>
 
-Time: ${d.time}
+${d.time}
 
 </div>
 
-`
+`;
 
-})
+});
 
 }
 
