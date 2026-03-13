@@ -4,78 +4,112 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ami Please Restaurant</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Premium Food Delivery">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
---primary:#ff4d4d; --primary-dark:#d63030; --secondary:#2d3436; --bg:#fafafa;
---radius:12px; --shadow:0 4px 15px rgba(0,0,0,0.1);
+--primary:#ff4d4d; --primary-dark:#d63030; --secondary:#2d3436; --white:#fff; --bg:#fafafa; --radius:12px; --transition:0.3s;
 }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:var(--bg); color:var(--secondary); overflow-x:hidden;}
+h1,h2,h3,h4,h5,h6{font-family:'Playfair Display',serif;}
+button{cursor:pointer; transition: var(--transition);}
+.hidden{display:none !important;}
 
-body{margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--secondary);}
+/* LOGIN PAGE */
+#loginPage{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover fixed;
+position:fixed; top:0; left:0; width:100%; z-index:1000;
+}
+.loginBox{
+background: rgba(255,255,255,0.95);
+padding:40px;
+border-radius:30px;
+width:90%;
+max-width:400px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+.loginBox h2{color:var(--primary); margin-bottom:10px; font-size:32px;}
+.loginBox p{color:#666; font-size:14px; margin-bottom:20px;}
+.input-group{margin-bottom:15px; text-align:left;}
+.input-group label{display:block; font-size:12px; color:#666; margin-bottom:5px;}
+.input-group input{width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; outline:none; transition:0.3s;}
+.input-group input:focus{border-color:var(--primary);}
+.btn{border:none; padding:12px 20px; border-radius:12px; font-weight:600; width:100%; margin-top:10px;}
+.btn-primary{background: var(--primary); color:white;}
+.btn-outline{background:transparent; border:2px solid var(--primary); color:var(--primary);}
+.auth-toggle{margin-top:15px; font-size:14px;}
+.auth-toggle a{color:var(--primary); text-decoration:none; font-weight:600; cursor:pointer;}
 
-.hidden{display:none;}
+/* HEADER */
+header{display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:white; position:sticky; top:0; z-index:100; box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+.logo{font-size:24px; font-weight:700; color:var(--primary);}
+.cart-icon{position:relative; font-size:24px; cursor:pointer;}
+.cart-badge{position:absolute; top:-8px; right:-8px; background:var(--primary); color:white; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px;}
 
-header{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.05);position:sticky;top:0;z-index:100;}
-.logo{font-family:'Playfair Display',serif;font-size:24px;color:var(--primary);font-weight:700;}
-.cart-icon{position:relative;cursor:pointer;font-size:24px;}
-.cart-badge{position:absolute;top:-8px;right:-8px;background:var(--primary);color:white;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
+/* BANNER */
+.banner{background: linear-gradient(135deg, rgba(255,77,77,0.8) 0%, rgba(45,52,54,0.8) 100%), url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5") center/cover; height:180px; display:flex; align-items:center; justify-content:center; color:white; font-size:28px; font-weight:600; margin-bottom:20px; text-shadow:0 2px 10px rgba(0,0,0,0.3);}
 
-#loginPage{position:fixed;top:0;left:0;width:100%;height:100vh;background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('https://images.unsplash.com/photo-1504674900247-0877df9cc836') center/cover;display:flex;justify-content:center;align-items:center;z-index:1000;}
-.loginBox{background:rgba(255,255,255,0.95);padding:40px;border-radius:20px;width:90%;max-width:400px;text-align:center;}
-.loginBox h2{color:var(--primary);font-family:'Playfair Display',serif;font-size:32px;margin-bottom:10px;}
-.loginBox input{width:100%;padding:12px;margin-bottom:15px;border-radius:8px;border:1px solid #ddd;font-size:14px;}
-.btn{padding:12px;border:none;border-radius:12px;font-weight:600;cursor:pointer;width:100%;margin-top:10px;font-size:16px;}
-.btn-primary{background:var(--primary);color:white;}
-.btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary);}
+/* CONTAINER */
+.container{max-width:1200px; margin:0 auto; padding:0 15px;}
+.food-grid{display:grid; grid-template-columns:1fr 1fr; gap:15px;}
 
-#menu{display:none;}
-.banner{background:linear-gradient(rgba(255,77,77,0.7),rgba(45,52,54,0.7)),url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5') center/cover;height:180px;color:white;display:flex;justify-content:center;align-items:center;font-size:28px;font-weight:600;margin-bottom:20px;}
-.container{max-width:1200px;margin:0 auto;padding:0 15px;}
-.food-card{background:white;border-radius:var(--radius);padding:20px;margin-bottom:15px;display:flex;justify-content:space-between;align-items:center;position:relative;box-shadow:var(--shadow);}
-.food-info h3{margin:0 0 5px;}
-.food-info p{margin:0;color:var(--primary);font-weight:700;}
-.add-btn{background:var(--primary);color:white;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:18px;}
-.admin-controls{position:absolute;bottom:10px;right:10px;display:flex;gap:10px;}
+/* FOOD CARD */
+.food-card{background:white; border-radius:20px; padding:15px; box-shadow:0 4px 15px rgba(0,0,0,0.1); position:relative; overflow:hidden; display:flex; flex-direction:column; align-items:center; gap:10px;}
+.food-card img{width:100%; border-radius:20px; max-height:200px; object-fit:cover;}
+.food-info{width:100%; text-align:center;}
+.food-info h3{margin:5px 0; font-size:18px; font-weight:600;}
+.food-info p{margin:5px 0; color:var(--primary); font-weight:700; font-size:16px;}
+.food-controls{display:flex; justify-content:center; gap:10px; align-items:center;}
+.add-btn{width:40px; height:40px; border-radius:50%; border:none; background:var(--primary); color:white; font-size:20px;}
+.quantity{font-size:16px; font-weight:600;}
+.food-admin{position:absolute; bottom:10px; right:10px; cursor:pointer; display:flex; gap:5px;}
+.food-admin i{color:var(--primary); font-size:20px;}
 
-#cartModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:flex-end;z-index:200;display:none;}
-.cart-panel{background:white;width:90%;max-width:400px;height:100%;padding:20px;display:flex;flex-direction:column;}
-.cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-.cart-items{flex:1;overflow-y:auto;}
-.cart-footer{border-top:1px solid #eee;padding-top:15px;}
-.total-row{display:flex;justify-content:space-between;font-weight:700;margin-bottom:10px;}
-.close-cart{font-size:24px;cursor:pointer;}
+/* CART MODAL */
+.modal{position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:200; display:flex; justify-content:flex-end;}
+.cart-panel{background:white; width:85%; max-width:400px; height:100%; padding:20px; display:flex; flex-direction:column; animation: slideIn 0.3s ease;}
+@keyframes slideIn{from{transform:translateX(100%);}to{transform:translateX(0);}}
+.cart-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+.close-cart{font-size:24px; cursor:pointer;}
+.cart-items{flex:1; overflow-y:auto;}
+.cart-item{display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:10px 0;}
+.cart-footer{margin-top:20px;}
 
-#orderFormPopup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:300;}
-#orderFormPopup .popupBox{background:white;padding:20px;border-radius:12px;width:90%;max-width:350px;text-align:center;}
-#orderFormPopup input{width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:1px solid #ddd;font-size:14px;}
-
-#adminPanel{background:#2d3436;color:white;padding:15px;margin:15px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;}
-#adminPanel input[type="file"]{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;padding:5px;border-radius:8px;}
-#adminPanel span{font-weight:600;}
+/* ADMIN PANEL */
+#adminPanel{display:flex; justify-content:space-between; padding:15px; background:#2d3436; color:white; border-radius:12px; margin-bottom:15px;}
+#adminPanel input[type="file"]{background:rgba(255,255,255,0.1); color:white; padding:5px; border-radius:8px; border:none;}
+#adminPanel button{background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="loginPage">
-  <div class="loginBox">
-    <h2>Ami Please</h2>
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-    <button class="btn btn-primary" onclick="login()">Login</button>
-    <button class="btn btn-outline" onclick="signup()">Create Account</button>
-    <p style="margin-top:15px;"><a href="#" onclick="forgot()">Forgot Password?</a></p>
-  </div>
+<div class="loginBox">
+<h2>Ami Please</h2>
+<p>Order your favorite food</p>
+<div class="input-group"><label>Email</label><input type="email" id="email" placeholder="Enter your email"></div>
+<div class="input-group"><label>Password</label><input type="password" id="password" placeholder="Enter your password"></div>
+<button class="btn btn-primary" onclick="login()">Login</button>
+<button class="btn btn-outline" onclick="signup()">Sign Up</button>
+<div class="auth-toggle"><a onclick="forgot()">Forgot Password?</a></div>
+</div>
 </div>
 
-<!-- MENU -->
-<div id="menu">
+<!-- MAIN APP -->
+<div id="menu" class="hidden">
 <header>
-<div class="logo">Ami Please</div>
-<div class="cart-icon" onclick="toggleCart()">
-<i class="fas fa-shopping-cart"></i>
-<span id="cartCount" class="cart-badge">0</span>
+<div class="logo"><i class="fas fa-hamburger"></i> Ami Please</div>
+<div style="display:flex;align-items:center;gap:15px;">
+<div class="cart-icon" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i><span id="cartCount" class="cart-badge">0</span></div>
+<button onclick="logout()" class="btn btn-outline">Logout</button>
 </div>
 </header>
 
@@ -83,197 +117,226 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
 
 <div id="adminPanel" class="hidden">
 <span>Admin Mode</span>
-<input type="file" id="foodImageInput">
+<input type="file" id="foodImage">
+<input type="text" id="foodName" placeholder="Food Name">
+<input type="number" id="foodPrice" placeholder="Price">
+<input type="number" id="foodRating" placeholder="Rating 1-5">
 <button onclick="uploadFood()">Upload Food</button>
-<button onclick="viewOrders()">Orders</button>
-<button onclick="logout()">Logout</button>
 </div>
 
-<div class="container" id="foodList"></div>
+<div class="container">
+<div class="food-grid" id="foodList">
+<!-- Foods injected here -->
+</div>
+</div>
 </div>
 
 <!-- CART -->
-<div id="cartModal">
+<div id="cartModal" class="modal hidden">
 <div class="cart-panel">
-<div class="cart-header"><h3>Your Cart</h3><span class="close-cart" onclick="toggleCart()">&times;</span></div>
+<div class="cart-header">
+<h3>Your Cart</h3>
+<span class="close-cart" onclick="toggleCart()">&times;</span>
+</div>
 <div id="cartItems" class="cart-items"></div>
 <div class="cart-footer">
-<div class="total-row"><span>Total:</span><span id="cartTotal">₹0</span></div>
-<button class="btn btn-primary" onclick="placeOrder()">Place Order</button>
+<button class="btn btn-primary" onclick="openOrderForm()">Done</button>
 </div>
 </div>
 </div>
 
-<!-- ORDER DETAILS POPUP -->
-<div id="orderFormPopup">
-<div class="popupBox">
-<h3>Order Details</h3>
-<input id="customerName" placeholder="Your Name">
-<input id="customerAddress" placeholder="Delivery Address">
-<input id="customerNote" placeholder="Note (optional)">
-<button onclick="submitOrder()">Done</button>
-<button onclick="closeOrderForm()">Cancel</button>
+<!-- ORDER FORM OVERLAY -->
+<div id="orderForm" class="modal hidden" style="justify-content:center;align-items:center;">
+<div class="cart-panel" style="width:400px;">
+<h3>Enter Details</h3>
+<div class="input-group"><label>Phone</label><input type="text" id="orderPhone"></div>
+<div class="input-group"><label>Pincode</label><input type="text" id="orderPincode"></div>
+<div class="input-group"><label>Area</label><input type="text" id="orderArea"></div>
+<div class="input-group"><label>City</label><input type="text" id="orderCity"></div>
+<div class="input-group"><label>Current Location URL</label><input type="text" id="orderLocation"></div>
+<button class="btn btn-primary" onclick="placeOrder()">Place Order</button>
 </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
+import { getDatabase, ref as dbRef, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-// FIREBASE CONFIG
 const firebaseConfig = {
-  apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
-  authDomain: "ami-please-restaurant.firebaseapp.com",
-  projectId: "ami-please-restaurant",
-  storageBucket: "ami-please-restaurant.firebasestorage.app",
-  messagingSenderId: "590274660115",
-  appId: "1:590274660115:web:998a7c8bb31e4a2696fce6",
-  measurementId: "G-8FGXXT0Z8L"
+apiKey:"AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
+authDomain:"ami-please-restaurant.firebaseapp.com",
+projectId:"ami-please-restaurant",
+storageBucket:"ami-please-restaurant.firebasestorage.app",
+messagingSenderId:"590274660115",
+appId:"1:590274660115:web:998a7c8bb31e4a2696fce6",
+measurementId:"G-8FGXXT0Z8L"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 const storage = getStorage(app);
+const db = getDatabase(app);
+
 const adminEmail = "beejumble43@gmail.com";
+let cart = [];
 
-let cart=[];
-
-// DOM Elements
 const loginPage = document.getElementById('loginPage');
 const menuPage = document.getElementById('menu');
-const foodList = document.getElementById('foodList');
 const adminPanel = document.getElementById('adminPanel');
+const foodList = document.getElementById('foodList');
 const cartModal = document.getElementById('cartModal');
 const cartItemsContainer = document.getElementById('cartItems');
 const cartCountEl = document.getElementById('cartCount');
-const cartTotalEl = document.getElementById('cartTotal');
-const orderFormPopup = document.getElementById('orderFormPopup');
+const orderForm = document.getElementById('orderForm');
 
-// AUTH
-window.login = async ()=>{
-let email = document.getElementById('email').value;
-let password = document.getElementById('password').value;
-if(!email||!password){alert("Fill all fields");return;}
-try{await signInWithEmailAndPassword(auth,email,password);}catch(e){alert(e.message);}
-}
-window.signup = async ()=>{
-let email = document.getElementById('email').value;
-let password = document.getElementById('password').value;
-if(!email||!password){alert("Fill all fields");return;}
-try{await createUserWithEmailAndPassword(auth,email,password);}catch(e){alert(e.message);}
-}
-window.forgot=()=>{let email=document.getElementById('email').value;if(!email){alert("Enter email");return;}sendPasswordResetEmail(auth,email).then(()=>alert("Check email"))}
-
-// LOGOUT
-window.logout=()=>{signOut(auth);}
-
-// AUTH STATE CHANGE
-onAuthStateChanged(auth,user=>{
-if(user){
-loginPage.style.display="none";
-menuPage.style.display="block";
-if(user.email==adminEmail){adminPanel.classList.remove("hidden");}else{adminPanel.classList.add("hidden");}
-loadFoods();
-}else{loginPage.style.display="flex";menuPage.style.display="none";}
-});
-
-// FOOD DATA
-let foods=[
-{name:"Burger",price:120,rating:4.5,image:""},
-{name:"Pizza",price:250,rating:4.8,image:""},
-{name:"Pasta",price:180,rating:4.2,image:""},
-{name:"Sandwich",price:90,rating:4.0,image:""},
-{name:"Fries",price:60,rating:4.1,image:""},
-{name:"Soda",price:40,rating:4.0,image:""},
-{name:"Ice Cream",price:80,rating:4.3,image:""},
-{name:"Cake",price:150,rating:4.6,image:""},
-{name:"Noodles",price:130,rating:4.4,image:""},
-{name:"Salad",price:70,rating:4.1,image:""}
-];
-
-// LOAD FOODS
-function loadFoods(){
-foodList.innerHTML="";
-foods.forEach((food,i)=>{
-let card=document.createElement("div");card.className="food-card";
-let html=`<div class="food-info"><h3>${food.name}</h3><p>₹${food.price} ⭐${food.rating}</p></div>
-<button class="add-btn" onclick="addToCart(${i})">+</button>`;
-if(auth.currentUser.email==adminEmail){
-html+=`<div class="admin-controls">
-<button onclick="editFood(${i})">✏️</button>
-<button onclick="deleteFood(${i})">🗑️</button>
+function renderFoods(foods){
+foodList.innerHTML = "";
+foods.forEach(food=>{
+let adminHtml = "";
+if(currentUser && currentUser.email===adminEmail){
+adminHtml=`<div class="food-admin">
+<i onclick="editFood('${food.id}')" class="fas fa-ellipsis-h"></i>
 </div>`;
 }
-card.innerHTML=html;
-foodList.appendChild(card);
+foodList.innerHTML+=`
+<div class="food-card">
+<img src="${food.img}" alt="${food.name}">
+<div class="food-info"><h3>${food.name}</h3><p>₹${food.price} | ⭐${food.rating}</p></div>
+<div class="food-controls">
+<button class="add-btn" onclick="addToCart('${food.id}')">+</button>
+<span class="quantity" id="qty-${food.id}">0</span>
+<button class="add-btn" onclick="removeFromCart('${food.id}')">-</button>
+</div>
+${adminHtml}
+</div>
+`;
 });
 }
 
-// CART
-function addToCart(i){cart.push(foods[i]);updateCart();}
-function updateCart(){
+let currentUser = null;
+onAuthStateChanged(auth,user=>{
+currentUser=user;
+if(user){
+loginPage.classList.add('hidden');
+menuPage.classList.remove('hidden');
+if(user.email===adminEmail) adminPanel.classList.remove('hidden');
+loadFoods();
+}else{
+loginPage.classList.remove('hidden');
+menuPage.classList.add('hidden');
+adminPanel.classList.add('hidden');
+}
+});
+
+// AUTH FUNCTIONS
+window.login=()=>{
+const email=document.getElementById('email').value;
+const password=document.getElementById('password').value;
+if(!email||!password)return alert("Fill all fields");
+signInWithEmailAndPassword(auth,email,password).catch(e=>alert(e.message));
+}
+window.signup=()=>{
+const email=document.getElementById('email').value;
+const password=document.getElementById('password').value;
+if(!email||!password)return alert("Fill all fields");
+createUserWithEmailAndPassword(auth,email,password).catch(e=>alert(e.message));
+}
+window.logout=()=>{signOut(auth);}
+window.forgot=()=>{
+const email=document.getElementById('email').value;
+if(!email)return alert("Enter email");
+sendPasswordResetEmail(auth,email).then(()=>alert("Reset link sent")).catch(e=>alert(e.message));
+}
+
+// FOOD FUNCTIONS
+async function loadFoods(){
+onValue(dbRef(db,'foods'),snapshot=>{
+let foods=[];
+snapshot.forEach(child=>{
+foods.push({id:child.key,...child.val()});
+});
+renderFoods(foods);
+});
+}
+
+async function uploadFood(){
+const name=document.getElementById('foodName').value;
+const price=document.getElementById('foodPrice').value;
+const rating=document.getElementById('foodRating').value;
+const file=document.getElementById('foodImage').files[0];
+if(!name||!price||!rating||!file)return alert("Fill all fields");
+const imgRef=ref(storage,'foods/'+file.name);
+uploadBytes(imgRef,file).then(snapshot=>{
+getDownloadURL(snapshot.ref).then(url=>{
+const newRef=push(dbRef(db,'foods'));
+set(newRef,{name,price,rating,img:url});
+document.getElementById('foodName').value="";
+document.getElementById('foodPrice').value="";
+document.getElementById('foodRating').value="";
+document.getElementById('foodImage').value="";
+});
+});
+}
+
+window.editFood=(id)=>{
+const name=prompt("New Name:");
+const price=prompt("New Price:");
+const rating=prompt("New Rating:");
+const fileInput=document.createElement('input');
+fileInput.type='file';
+fileInput.onchange=()=>{const file=fileInput.files[0]; const imgRef=ref(storage,'foods/'+file.name);
+uploadBytes(imgRef,file).then(snapshot=>getDownloadURL(snapshot.ref).then(url=>{
+set(dbRef(db,'foods/'+id),{name,price,rating,img:url});
+}));};
+fileInput.click();
+}
+
+// CART FUNCTIONS
+function addToCart(id){
+let qtyEl=document.getElementById('qty-'+id);
+let qty=parseInt(qtyEl.innerText)||0; qty++; qtyEl.innerText=qty;
+if(cart.find(c=>c.id===id)) cart.find(c=>c.id===id).qty=qty;
+else cart.push({id,qty});
+updateCartUI();
+}
+function removeFromCart(id){
+let qtyEl=document.getElementById('qty-'+id);
+let qty=parseInt(qtyEl.innerText)||0; if(qty>0) qty--; qtyEl.innerText=qty;
+let index=cart.findIndex(c=>c.id===id);
+if(index!==-1){if(qty===0) cart.splice(index,1); else cart[index].qty=qty;}
+updateCartUI();
+}
+function updateCartUI(){
 cartItemsContainer.innerHTML="";
-if(cart.length==0){cartItemsContainer.innerHTML="<p style='text-align:center;margin-top:20px;'>Cart empty</p>";cartTotalEl.innerText="₹0";cartCountEl.innerText=0;return;}
-let total=0;cart.forEach((item,index)=>{
-total+=item.price;
-let div=document.createElement("div");
-div.innerHTML=`${item.name} - ₹${item.price} <button onclick="removeFromCart(${index})">-</button>`;
+let total=0;
+if(cart.length===0)cartItemsContainer.innerHTML='<p style="text-align:center;">Cart is empty</p>';
+cart.forEach(c=>{
+onValue(dbRef(db,'foods/'+c.id),snapshot=>{
+let f=snapshot.val();
+let div=document.createElement('div'); div.className='cart-item';
+div.innerHTML=`<span>${f.name} x ${c.qty}</span><span>₹${f.price*c.qty}</span>`;
 cartItemsContainer.appendChild(div);
 });
-cartTotalEl.innerText=`₹${total}`;
-cartCountEl.innerText=cart.length;
+});
+cartCountEl.innerText=cart.reduce((a,b)=>a+b.qty,0);
 }
-function removeFromCart(i){cart.splice(i,1);updateCart();}
-function toggleCart(){cartModal.style.display=cartModal.style.display=="flex"?"none":"flex";}
-
-// PLACE ORDER
-window.placeOrder=()=>{orderFormPopup.style.display="flex";}
-window.closeOrderForm=()=>{orderFormPopup.style.display="none";}
-window.submitOrder=async()=>{
-let name=document.getElementById("customerName").value;
-let address=document.getElementById("customerAddress").value;
-let note=document.getElementById("customerNote").value;
-if(!name||!address){alert("Fill details");return;}
-await addDoc(collection(db,"orders"),{email:auth.currentUser.email,name,address,note,items:cart,status:"Pending",time:new Date().toLocaleString()});
-cart=[];updateCart();orderFormPopup.style.display="none";cartModal.style.display="none";
-alert("🎉 Thanks for visiting Ami Please!");}
-
-// ADMIN FUNCTIONS
-window.uploadFood=async()=>{
-let name=prompt("Food Name");if(!name)return;
-let price=parseInt(prompt("Price"));if(!price)return;
-let rating=parseFloat(prompt("Rating 0-5"));if(isNaN(rating))rating=0;
-let imageFile=document.getElementById("foodImageInput").files[0];
-let imageUrl="";
-if(imageFile){
-let imageRef=ref(storage,`foods/${imageFile.name}`);
-await uploadBytes(imageRef,imageFile);
-imageUrl=await getDownloadURL(imageRef);
+function toggleCart(){cartModal.classList.toggle('hidden');}
+function openOrderForm(){cartModal.classList.add('hidden'); orderForm.classList.remove('hidden');}
+function placeOrder(){
+const phone=document.getElementById('orderPhone').value;
+const pincode=document.getElementById('orderPincode').value;
+const area=document.getElementById('orderArea').value;
+const city=document.getElementById('orderCity').value;
+const loc=document.getElementById('orderLocation').value;
+if(!phone||!pincode||!area||!city||!loc)return alert("Fill all fields");
+const orderRef=push(dbRef(db,'orders'));
+set(orderRef,{cart,phone,pincode,area,city,loc,status:"pending"});
+cart=[]; updateCartUI();
+orderForm.classList.add('hidden');
+alert("Thanks for visiting Ami Please! Your order has been placed."); 
 }
-foods.push({name,price,rating,image:imageUrl});
-loadFoods();
-alert("Food uploaded!");
-}
-window.editFood=async(i)=>{
-let food=foods[i];
-let name=prompt("Food Name",food.name);if(!name)return;
-let price=parseInt(prompt("Price",food.price));if(!price)return;
-let rating=parseFloat(prompt("Rating",food.rating));if(isNaN(rating))rating=0;
-let imageFile=document.getElementById("foodImageInput").files[0];
-let imageUrl=food.image;
-if(imageFile){
-let imageRef=ref(storage,`foods/${imageFile.name}`);
-await uploadBytes(imageRef,imageFile);
-imageUrl=await getDownloadURL(imageRef);
-}
-foods[i]={name,price,rating,image:imageUrl};
-loadFoods();
-alert("Food updated!");
-}
-window.deleteFood=(i)=>{if(confirm("Delete food?")){foods.splice(i,1);loadFoods();}}
 </script>
 </body>
   </html>
