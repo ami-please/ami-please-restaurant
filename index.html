@@ -90,11 +90,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
       <button id="logoutBtn" style="margin-left:10px;">Logout</button>  
     </div>  
   </header>  
-  <div class="banner">Delicious Food Delivered</div>  
-  <div class="admin-menu" id="adminMenu">  
+  <div class="banner">Delicious Food Delivered</div>    <!-- ADMIN MENU -->    <div class="admin-menu" id="adminMenu">  
     <button id="addFoodBtn">Add Food</button>  
-  </div>  
-  <div class="container" id="foodList"></div>    <!-- Admin Orders -->    <div class="admin-orders" id="adminOrders">  
+    <button id="viewOrdersBtn">View Orders</button>  
+  </div>    <!-- FOOD LIST -->    <div class="container" id="foodList"></div>    <!-- ADMIN ORDERS -->    <div class="admin-orders" id="adminOrders">  
     <h3>New Orders</h3>  
     <div id="ordersList"></div>  
   </div>  
@@ -197,7 +196,7 @@ onAuthStateChanged(auth,user=>{
   }  
 });  
   
-// LOAD FOODS  
+// FOOD FUNCTIONS  
 async function loadFoods(){  
   foods=[];   
   const snap = await getDocs(collection(db,"foods"));  
@@ -205,7 +204,6 @@ async function loadFoods(){
   renderFoods();  
 }  
   
-// RENDER FOODS  
 function renderFoods(){  
   const container = document.getElementById('foodList'); container.innerHTML="";  
   foods.forEach(f=>{  
@@ -222,7 +220,7 @@ function renderFoods(){
   });  
 }  
   
-// CART  
+// CART FUNCTIONS  
 function updateCart(id,change){  
   let item = cart.find(i=>i.id===id);  
   if(item){ item.qty+=change; if(item.qty<0) item.qty=0; }   
@@ -265,10 +263,12 @@ function editFood(id){ const f=foods.find(ff=>ff.id===id); if(!f) return; editin
 async function deleteFood(id){ if(!confirm("Delete this food?")) return; await updateDoc(doc(db,"foods",id),{deleted:true}); loadFoods(); }  
   
 // PLACE ORDER  
+document.getElementById('placeOrderBtn').addEventListener('click',  
+  
+// PLACE ORDER  
 document.getElementById('placeOrderBtn').addEventListener('click', ()=>{  
   if(cart.length===0){ alert("Cart is empty"); return; }  
-  document.getElementById('orderFormOverlay').  
-.style.display='flex';  
+  document.getElementById('orderFormOverlay').style.display='flex';  
 });  
   
 document.getElementById('closeOrderFormBtn').addEventListener('click', ()=>document.getElementById('orderFormOverlay').style.display='none');  
@@ -315,7 +315,7 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
   }  
   
   try {  
-    const orderRef = await addDoc(collection(db, "orders"), {  
+    await addDoc(collection(db, "orders"), {  
       user: auth.currentUser.email,  
       cart: cart,  
       phone: phone,  
@@ -327,19 +327,19 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
       status: "pending"  
     });  
   
-    // Clear cart and order form  
+    // Clear cart and form  
     cart = [];  
     updateCartUI();  
-    document.getElementById('orderFormOverlay').style.display = 'none';  
-    document.getElementById('cartModal').style.display = 'none';  
+    document.getElementById('orderFormOverlay').style.display='none';  
+    document.getElementById('cartModal').style.display='none';  
     ['phone','pincode','area','city','locationLink'].forEach(id => document.getElementById(id).value = "");  
   
     // Show thank you popup  
     const popup = document.getElementById('thanksPopup');  
     popup.classList.add('show');  
-    setTimeout(() => popup.classList.remove('show'), 2000);  
+    setTimeout(()=>popup.classList.remove('show'),2000);  
   
-    // If admin is logged in, refresh orders  
+    // Refresh admin orders if admin  
     if(auth.currentUser && auth.currentUser.email === adminEmail){  
       loadOrders();  
     }  
@@ -349,7 +349,18 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
   }  
 });  
   
-// LOAD ORDERS (Admin Dashboard)  
+// ADMIN: VIEW ORDERS BUTTON  
+document.getElementById('viewOrdersBtn').addEventListener('click', ()=>{  
+  const ordersDiv = document.getElementById('adminOrders');  
+  if(ordersDiv.style.display === 'none' || ordersDiv.style.display === ''){  
+    ordersDiv.style.display='block';  
+    loadOrders();  
+  } else {  
+    ordersDiv.style.display='none';  
+  }  
+});  
+  
+// LOAD ORDERS  
 async function loadOrders(){  
   const ordersList = document.getElementById('ordersList');  
   ordersList.innerHTML = "Loading orders...";  
@@ -382,4 +393,4 @@ async function loadOrders(){
   });  
 }  
 </script>  </body>  
-    </html>
+          </html>
