@@ -1,241 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Ami Please Cafe & Restaurant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ami Please Restaurant</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-/* BACKGROUND */
-
 body{
-background:linear-gradient(135deg,#ff6a00,#ee0979);
-min-height:100vh;
+font-family:Poppins;
+margin:0;
+background:linear-gradient(135deg,#ff512f,#dd2476);
+color:white;
 }
 
-/* LOGIN PAGE */
-
-#loginPage{
+.login{
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
 }
 
-.loginBox{
+.box{
 background:white;
+color:black;
 padding:35px;
-border-radius:15px;
-width:320px;
+border-radius:12px;
+width:300px;
 text-align:center;
-box-shadow:0 10px 40px rgba(0,0,0,0.2);
-animation:fade 1s;
-}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
-}
-
-.loginBox h1{
-margin-bottom:15px;
-color:#ff4d4d;
 }
 
 input{
 width:100%;
 padding:10px;
-margin:10px 0;
-border-radius:6px;
-border:1px solid #ddd;
+margin:8px 0;
 }
 
 button{
-width:100%;
 padding:10px;
-background:#ff4d4d;
+width:100%;
+background:#ff512f;
 border:none;
 color:white;
-border-radius:6px;
-font-size:16px;
 cursor:pointer;
 }
 
-button:hover{
-background:#e63939;
-}
-
-.link{
-color:#ff4d4d;
-cursor:pointer;
-font-size:14px;
-margin-top:10px;
-display:block;
-}
-
-/* MENU PAGE */
-
-#menuPage{
+#menu{
 display:none;
-background:#f7f7f7;
-min-height:100vh;
-}
-
-header{
-background:#ff4d4d;
-color:white;
-text-align:center;
-padding:15px;
-font-size:22px;
-font-weight:600;
-}
-
-.foodGrid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:15px;
-padding:15px;
+padding:20px;
 }
 
 .food{
 background:white;
-border-radius:10px;
+color:black;
+margin:10px;
 padding:10px;
-text-align:center;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+border-radius:10px;
 }
 
-.food img{
-width:100%;
-height:120px;
-object-fit:cover;
-border-radius:8px;
+#adminPanel{
+display:none;
+background:black;
+padding:10px;
+margin:10px;
 }
-
-.food h4{
-margin:5px 0;
-}
-
-.addBtn{
-background:#ff4d4d;
-color:white;
-padding:5px 10px;
-border-radius:5px;
-cursor:pointer;
-}
-
-/* CART */
 
 #cartBtn{
 position:fixed;
 bottom:20px;
 right:20px;
 background:black;
-color:white;
-padding:12px 18px;
-border-radius:30px;
-cursor:pointer;
-}
-
-#cart{
-position:fixed;
-top:0;
-right:-350px;
-width:350px;
-height:100%;
-background:white;
-padding:20px;
-transition:0.4s;
-overflow:auto;
-}
-
-#overlay{
-position:fixed;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-background:black;
-color:white;
 padding:10px 20px;
-border-radius:20px;
-display:none;
+border-radius:30px;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div id="overlay"></div>
+<div class="login" id="loginPage">
 
-<!-- LOGIN PAGE -->
+<div class="box">
 
-<div id="loginPage">
-
-<div class="loginBox">
-
-<h1>Ami Please</h1>
-
-<div id="loginForm">
+<h2>Ami Please</h2>
 
 <input id="email" placeholder="Email">
 <input id="password" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
 
-<span class="link" onclick="showSignup()">Create Account</span>
-<span class="link" onclick="resetPass()">Forgot Password</span>
-
-</div>
-
-<div id="signupForm" style="display:none">
-
-<input id="sEmail" placeholder="Email">
-<input id="sPassword" type="password" placeholder="Password">
-
 <button onclick="signup()">Signup</button>
 
-<span class="link" onclick="showLogin()">Back to Login</span>
-
 </div>
 
 </div>
 
+
+<div id="menu">
+
+<h2>Ami Please Restaurant Menu</h2>
+
+<div id="adminPanel">
+
+<h3>Admin Panel</h3>
+
+<input type="file" id="imageUpload">
+
 </div>
 
-<!-- MENU PAGE -->
+<div id="foods"></div>
 
-<div id="menuPage">
-
-<header>Ami Please Cafe & Restaurant</header>
-
-<div class="foodGrid" id="menu"></div>
-
-<div id="cartBtn" onclick="openCart()">Cart (<span id="count">0</span>)</div>
-
-</div>
-
-<!-- CART -->
-
-<div id="cart">
-
-<h2>Your Cart</h2>
-
-<div id="cartItems"></div>
-
-<h3 id="total"></h3>
-
-<button onclick="closeCart()">Done</button>
+<div id="cartBtn" onclick="openCart()">Cart</div>
 
 </div>
 
@@ -243,99 +122,107 @@ display:none;
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
-/* FIREBASE CONFIG */
+import {
+getAuth,
+signInWithEmailAndPassword,
+createUserWithEmailAndPassword,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
-  authDomain: "ami-please-restaurant.firebaseapp.com",
-  projectId: "ami-please-restaurant",
-  storageBucket: "ami-please-restaurant.firebasestorage.app",
-  messagingSenderId: "590274660115",
-  appId: "1:590274660115:web:998a7c8bb31e4a2696fce6",
-  measurementId: "G-8FGXXT0Z8L"
+
+apiKey: "YOUR_API_KEY",
+authDomain: "YOUR_DOMAIN",
+projectId: "YOUR_PROJECT_ID",
+storageBucket: "YOUR_BUCKET",
+messagingSenderId: "YOUR_ID",
+appId: "YOUR_APP_ID"
+
 };
 
+
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
 
-/* LOGIN */
+
+const adminEmail = "beejumble43@gmail.com";
+
 
 window.login = function(){
 
 signInWithEmailAndPassword(auth,email.value,password.value)
-.then(()=>{
-
-loginPage.style.display="none"
-menuPage.style.display="block"
-
-})
 .catch(e=>alert(e.message))
 
 }
 
-/* SIGNUP */
 
 window.signup = function(){
 
-createUserWithEmailAndPassword(auth,sEmail.value,sPassword.value)
-.then(()=>alert("Account created"))
+createUserWithEmailAndPassword(auth,email.value,password.value)
 .catch(e=>alert(e.message))
 
 }
 
-/* RESET PASSWORD */
 
-window.resetPass = function(){
+onAuthStateChanged(auth,(user)=>{
 
-sendPasswordResetEmail(auth,email.value)
-.then(()=>alert("Reset email sent"))
+if(user){
+
+loginPage.style.display="none"
+
+menu.style.display="block"
+
+if(user.email===adminEmail){
+
+adminPanel.style.display="block"
 
 }
 
-/* FORM SWITCH */
-
-window.showSignup=function(){
-loginForm.style.display="none"
-signupForm.style.display="block"
 }
 
-window.showLogin=function(){
-signupForm.style.display="none"
-loginForm.style.display="block"
-}
+})
 
-/* MENU */
 
 const foods=[
-{name:"Veg Momos",price:80,img:"https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"},
-{name:"Fried Momos",price:100,img:"https://images.unsplash.com/photo-1625943553852-781c6dd46faa"},
-{name:"Pizza",price:250,img:"https://images.unsplash.com/photo-1601924928376-4c9b13e0a5d9"},
-{name:"Burger",price:150,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
-{name:"French Fries",price:90,img:"https://images.unsplash.com/photo-1541592106381-b31e9677c0e5"},
-{name:"Chicken Roll",price:120,img:"https://images.unsplash.com/photo-1601050690597-df0568f70950"}
+
+{name:"Steamed Momos",price:110},
+
+{name:"Fried Momos",price:110},
+
+{name:"Schezwan Momos",price:150},
+
+{name:"Crispy Momos",price:140},
+
+{name:"Chicken Biryani",price:160},
+
+{name:"Mutton Biryani",price:220},
+
+{name:"Chicken 65",price:150},
+
+{name:"French Fries",price:90},
+
+{name:"Tea",price:25},
+
+{name:"Coffee",price:40}
+
 ]
 
-let cart={}
 
-/* SHOW MENU */
+foods.forEach(f=>{
 
-function showMenu(){
-
-foods.forEach((f,i)=>{
-
-menu.innerHTML+=`
+foodsDiv.innerHTML+=`
 
 <div class="food">
 
-<img src="${f.img}">
-
-<h4>${f.name}</h4>
+<h3>${f.name}</h3>
 
 <p>₹${f.price}</p>
 
-<button class="addBtn" onclick="add(${i})">Add</button>
+<button>Add to Cart</button>
 
 </div>
 
@@ -343,61 +230,8 @@ menu.innerHTML+=`
 
 })
 
-}
-
-showMenu()
-
-/* ADD CART */
-
-window.add=function(i){
-
-cart[i]=(cart[i]||0)+1
-
-count.innerText=Object.values(cart).reduce((a,b)=>a+b)
-
-overlay.innerText=foods[i].name+" added"
-overlay.style.display="block"
-
-setTimeout(()=>overlay.style.display="none",1500)
-
-}
-
-/* OPEN CART */
-
-window.openCart=function(){
-
-cart.style.right="0"
-
-let total=0
-cartItems.innerHTML=""
-
-for(let i in cart){
-
-let item=foods[i]
-
-cartItems.innerHTML+=`
-
-<p>${item.name} x ${cart[i]} = ₹${item.price*cart[i]}</p>
-
-`
-
-total+=item.price*cart[i]
-
-}
-
-document.getElementById("total").innerText="Total ₹"+total
-
-}
-
-/* CLOSE CART */
-
-window.closeCart=function(){
-
-document.getElementById("cart").style.right="-350px"
-
-}
-
 </script>
 
 </body>
+
 </html>
