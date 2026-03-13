@@ -1,4 +1,5 @@
-<!DOCTYPE html>  <html lang="en">  
+<!DOCTYPE html>
+<html lang="en">  
 <head>  
 <meta charset="UTF-8">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0">  
@@ -15,7 +16,8 @@
   --transition:0.3s;  
 }  
 body{margin:0;padding:0;font-family:'Poppins',sans-serif;background:var(--bg);}  
-button{cursor:pointer;}  /* LOGIN PAGE */
+button{cursor:pointer;}  
+/* LOGIN PAGE */
 #loginPage{
 position:fixed;top:0;left:0;width:100%;height:100%;
 background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #023e8a;
@@ -68,9 +70,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
 @keyframes fadeInOut{0%{opacity:0;}10%,90%{opacity:1;}100%{opacity:0;}}
 @keyframes cartAnim{0%{transform:scale(1);}50%{transform:scale(1.5);}100%{transform:scale(1);}}
 </style>
-
 </head>  
-<body>  <!-- LOGIN -->  <div id="loginPage">  
+<body>  
+<!-- LOGIN -->  
+<div id="loginPage">  
   <div class="loginBox">  
     <h2>Ami Please</h2>  
     <div class="input-group"><label>Email</label><input id="email" type="email" placeholder="Enter your email"></div>  
@@ -79,7 +82,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
     <button id="signupBtn">Signup</button>  
     <div class="auth-toggle"><a id="forgotLink" style="cursor:pointer;color:var(--primary)">Forgot Password?</a></div>  
   </div>  
-</div>  <!-- MENU -->  <div id="menu" style="display:none;">  
+</div>  
+
+<!-- MENU -->  
+<div id="menu" style="display:none;">  
   <header>  
     <div class="logo"><i class="fas fa-utensils"></i> Ami Please</div>  
     <div>  
@@ -90,14 +96,26 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
       <button id="logoutBtn" style="margin-left:10px;">Logout</button>  
     </div>  
   </header>  
-  <div class="banner">Delicious Food Delivered</div>    <!-- ADMIN MENU -->    <div class="admin-menu" id="adminMenu">  
+  <div class="banner">Delicious Food Delivered</div>    
+    
+  <!-- ADMIN MENU -->    
+  <div class="admin-menu" id="adminMenu">  
     <button id="addFoodBtn">Add Food</button>  
     <button id="viewOrdersBtn">View Orders</button>  
-  </div>    <!-- FOOD LIST -->    <div class="container" id="foodList"></div>    <!-- ADMIN ORDERS -->    <div class="admin-orders" id="adminOrders">  
+  </div>    
+    
+  <!-- FOOD LIST -->    
+  <div class="container" id="foodList"></div>    
+    
+  <!-- ADMIN ORDERS -->    
+  <div class="admin-orders" id="adminOrders">  
     <h3>New Orders</h3>  
     <div id="ordersList"></div>  
   </div>  
-</div>  <!-- ADMIN PANEL -->  <div id="adminPanel">  
+</div>  
+
+<!-- ADMIN PANEL -->  
+<div id="adminPanel">  
   <div class="admin-form">  
     <h3 id="adminFormTitle">Add Food</h3>  
     <input type="text" id="foodName" placeholder="Food Name">  
@@ -106,7 +124,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
     <button id="submitFoodBtn">Submit</button>  
     <button id="closeAdminBtn" style="background:#ccc;color:#000;">Cancel</button>  
   </div>  
-</div>  <!-- CART -->  <div id="cartModal">  
+</div>  
+
+<!-- CART -->  
+<div id="cartModal">  
   <div class="cart-panel">  
     <div class="cart-header"><h3>Your Cart</h3><span class="close-cart" id="closeCart" style="cursor:pointer;">&times;</span></div>  
     <div id="cartItems" class="cart-items"></div>  
@@ -115,7 +136,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
       <button id="placeOrderBtn">Done</button>  
     </div>  
   </div>  
-</div>  <!-- ORDER FORM -->  <div id="orderFormOverlay">  
+</div>  
+
+<!-- ORDER FORM -->  
+<div id="orderFormOverlay">  
   <div class="order-form">  
     <input id="phone" placeholder="Phone number">  
     <input id="pincode" placeholder="Pincode">  
@@ -126,7 +150,11 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
     <button id="confirmOrderBtn" disabled>Place Order</button>  
     <button id="closeOrderFormBtn">Cancel</button>  
   </div>  
-</div>  <div id="thanksPopup">Thanks for visiting Ami Please!</div>  <script type="module">  
+</div>  
+
+<div id="thanksPopup">Thanks for visiting Ami Please!</div>  
+
+<script type="module">  
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";  
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";  
 import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";  
@@ -247,33 +275,23 @@ function updateCartUI(){
 document.getElementById('cartBtn').addEventListener('click',()=>document.getElementById('cartModal').style.display='flex');  
 document.getElementById('closeCart').addEventListener('click',()=>document.getElementById('cartModal').style.display='none');  
   
-<!-- Part 10: Admin Orders and Final Scripts -->  
-<script type="module">  
-  // Your existing imports and code are already here  
-  // At the bottom, add:  
+// VIEW ORDERS BUTTON  
+const viewOrdersBtn = document.getElementById('viewOrdersBtn');  
+const adminOrdersDiv = document.getElementById('adminOrders');  
   
-  // VIEW ORDERS BUTTON  
-  const viewOrdersBtn = document.getElementById('viewOrdersBtn');  
-  const adminOrdersDiv = document.getElementById('adminOrders');  
+viewOrdersBtn.addEventListener('click', () => {  
+  if (adminOrdersDiv.style.display === 'none' || adminOrdersDiv.style.display === '') {  
+    adminOrdersDiv.style.display = 'block';  
+    loadOrders();  
+  } else {  
+    adminOrdersDiv.style.display = 'none';  
+  }  
+});  
   
-  viewOrdersBtn.addEventListener('click', () => {  
-    if (adminOrdersDiv.style.display === 'none' || adminOrdersDiv.style.display === '') {  
-      adminOrdersDiv.style.display = 'block';  
-      loadOrders();  
-    } else {  
-      adminOrdersDiv.style.display = 'none';  
-    }  
-  });  
-  
-  // Make sure the admin sees the view orders button on login  
-  onAuthStateChanged(auth, user => {  
-    if (user && user.email === adminEmail) {  
-      viewOrdersBtn.style.display = 'inline-block';  
-      adminOrdersDiv.style.display = 'block';  
-      loadOrders();  
-    } else {  
-      viewOrdersBtn.style.display = 'none';  
-      adminOrdersDiv.style.display = 'none';  
-    }  
-  });  
-    </script>
+// Placeholder functions for admin features (to prevent errors)  
+async function loadOrders(){}  
+function editFood(id){}  
+function deleteFood(id){}  
+</script>
+</body>
+</html>
