@@ -1,186 +1,170 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Ami Please Restaurant</title>
+<title>Ami Please</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
 <style>
 
-body{font-family:Poppins;margin:0;background:#f5f5f5}
-
-/* LOGIN */
-
-#loginPage{
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover
+body{
+font-family:Poppins;
+margin:0;
+background:#f5f5f5;
 }
-
-.loginBox{
-background:white;
-padding:40px;
-border-radius:10px;
-width:300px;
-text-align:center
-}
-
-.loginBox input{width:100%;padding:10px;margin:6px 0}
-.loginBox button{width:100%;padding:10px;margin:4px 0;background:#ff4d4d;color:white;border:none}
-
-/* SITE */
-
-#site{display:none}
 
 header{
 display:flex;
-justify-content:space-between;
-background:white;
-padding:10px
-}
-
-#searchFood{padding:8px;width:200px}
-
-/* CATEGORIES */
-
-.categories{
-padding:10px;
-display:flex;
 gap:10px;
-overflow:auto
+align-items:center;
+background:white;
+padding:10px;
+position:sticky;
+top:0;
+z-index:10;
 }
-
-.categories button{padding:6px 12px}
-
-/* MENU */
 
 #menu{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:10px;
-padding:10px
-}
-
-.foodCard{
-background:white;
-border-radius:10px;
-padding:10px
-}
-
-.foodCard img{
-width:100%;
-height:120px;
-object-fit:cover
-}
-
-/* CART */
-
-#cart{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:white;
+gap:12px;
 padding:10px;
-display:none
 }
 
-/* ADMIN */
-
-#adminPanel{
-background:#222;
-color:white;
-padding:15px;
-margin:10px;
+.food{
+background:white;
 border-radius:10px;
-display:none
+overflow:hidden;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+position:relative;
+}
+
+.food img{
+width:100%;
+height:140px;
+object-fit:cover;
+}
+
+.foodInfo{
+padding:10px;
+}
+
+.adminMenu{
+position:absolute;
+bottom:6px;
+right:6px;
+}
+
+#cartButton{
+background:#ff4d4d;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+}
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#0008;
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.popupBox{
+background:white;
+padding:20px;
+border-radius:10px;
+width:300px;
+max-height:80vh;
+overflow:auto;
+}
+
+button{
+cursor:pointer;
 }
 
 </style>
-
 </head>
 
 <body>
-
-<!-- LOGIN -->
-
-<div id="loginPage">
-
-<div class="loginBox">
-
-<h1 style="font-family:Playfair Display">Ami Please</h1>
-
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-<button onclick="signup()">Signup</button>
-<button onclick="resetPass()">Forgot Password</button>
-
-</div>
-</div>
-
-
-<!-- WEBSITE -->
-
-<div id="site">
 
 <header>
 
 <h2 style="font-family:Playfair Display">Ami Please</h2>
 
-<input id="searchFood" placeholder="Search food">
+<input id="search" placeholder="Search food">
+
+<button id="cartButton" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+
+<div id="adminButtons" style="display:none">
+<button onclick="openUpload()">Upload Food</button>
+<button onclick="openOrders()">Orders</button>
+</div>
 
 <button onclick="logout()">Logout</button>
 
 </header>
 
-
-<div class="categories">
-
-<button onclick="filterCat('all')">All</button>
-<button onclick="filterCat('burger')">Burger</button>
-<button onclick="filterCat('pizza')">Pizza</button>
-<button onclick="filterCat('rice')">Rice</button>
-<button onclick="filterCat('drinks')">Drinks</button>
-
-</div>
-
-
 <div id="menu"></div>
 
+<!-- CART -->
 
-<div id="cart">
+<div id="cartPopup" class="popup">
 
-<span id="cartCount">0</span> items
+<div class="popupBox">
 
-<button onclick="placeOrder()">Order</button>
+<h3>Your Cart</h3>
+
+<div id="cartItems"></div>
+
+<h4>Total ₹ <span id="total">0</span></h4>
+
+<button onclick="placeOrder()">Place Order</button>
+
+<button onclick="closeCart()">Close</button>
 
 </div>
 
+</div>
 
-<div id="adminPanel">
+<!-- UPLOAD -->
 
-<h3>Admin Food Control</h3>
+<div id="uploadPopup" class="popup">
 
-<input id="foodName" placeholder="Food name">
-<input id="foodPrice" placeholder="Price">
-<input id="foodRating" placeholder="Rating">
+<div class="popupBox">
 
-<input type="file" id="foodImage">
+<h3>Add / Edit Food</h3>
 
-<button onclick="uploadFood()">Save Food</button>
+<input id="foodName" placeholder="Name"><br>
+<input id="foodPrice" placeholder="Price"><br>
+<input id="foodRating" placeholder="Rating"><br>
+<input type="file" id="foodImage"><br>
+
+<button onclick="saveFood()">Save</button>
+<button onclick="closeUpload()">Cancel</button>
+
+</div>
+
+</div>
+
+<!-- ORDERS -->
+
+<div id="ordersPopup" class="popup">
+
+<div class="popupBox">
 
 <h3>Orders</h3>
 
 <div id="orders"></div>
+
+<button onclick="closeOrders()">Close</button>
 
 </div>
 
@@ -189,163 +173,84 @@ display:none
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
+import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
+import { getFirestore,doc,setDoc,getDoc,collection,getDocs,addDoc,updateDoc,onSnapshot } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
+import { getStorage,ref,uploadBytes,getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js"
 
-import { getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,onAuthStateChanged,signOut }
-
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
-
-import { getFirestore,collection,addDoc,getDocs,doc,setDoc,getDoc,deleteDoc,updateDoc }
-
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
-
-import { getStorage,ref,uploadBytes,getDownloadURL }
-
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js"
-
-
-const firebaseConfig={
-
-apiKey:"AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
-authDomain:"ami-please-restaurant.firebaseapp.com",
-projectId:"ami-please-restaurant",
-storageBucket:"ami-please-restaurant.appspot.com",
-messagingSenderId:"590274660115",
-appId:"1:590274660115:web:998a7c8bb31e4a2696fce6"
-
+const firebaseConfig = {
+apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
+authDomain: "ami-please-restaurant.firebaseapp.com",
+projectId: "ami-please-restaurant",
+storageBucket: "ami-please-restaurant.appspot.com",
+messagingSenderId: "590274660115",
+appId: "1:590274660115:web:998a7c8bb31e4a2696fce6"
 }
 
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
+const storage = getStorage(app)
 
-const app=initializeApp(firebaseConfig)
-
-const auth=getAuth(app)
-const db=getFirestore(app)
-const storage=getStorage(app)
-
-const adminEmail="beejumble43@gmail.com"
-
+const adminEmail = "beejumble43@gmail.com"
 
 let cart=[]
 
-
 const foods=[
-
-{n:"Veg Burger",c:"burger"},
-{n:"Chicken Burger",c:"burger"},
-{n:"Cheese Burger",c:"burger"},
-{n:"Veg Pizza",c:"pizza"},
-{n:"Chicken Pizza",c:"pizza"},
-{n:"Paneer Pizza",c:"pizza"},
-{n:"BBQ Pizza",c:"pizza"},
-{n:"Veg Fried Rice",c:"rice"},
-{n:"Chicken Fried Rice",c:"rice"},
-{n:"Egg Fried Rice",c:"rice"},
-{n:"Chicken Biryani",c:"rice"},
-{n:"Mutton Biryani",c:"rice"},
-{n:"Veg Chowmein",c:"noodles"},
-{n:"Chicken Chowmein",c:"noodles"},
-{n:"Egg Chowmein",c:"noodles"},
-{n:"Veg Roll",c:"roll"},
-{n:"Chicken Roll",c:"roll"},
-{n:"Paneer Roll",c:"roll"},
-{n:"French Fries",c:"snacks"},
-{n:"Cheese Fries",c:"snacks"},
-{n:"Peri Peri Fries",c:"snacks"},
-{n:"Coffee",c:"drinks"},
-{n:"Cold Coffee",c:"drinks"},
-{n:"Cappuccino",c:"drinks"},
-{n:"Latte",c:"drinks"},
-{n:"Mocha",c:"drinks"},
-{n:"Mojito",c:"drinks"},
-{n:"Lemon Soda",c:"drinks"}
-
+"Veg Burger","Chicken Burger","Cheese Burger","Veg Pizza","Chicken Pizza",
+"Paneer Pizza","BBQ Pizza","Veg Fried Rice","Chicken Fried Rice",
+"Egg Fried Rice","Chicken Biryani","Mutton Biryani","Veg Chowmein",
+"Chicken Chowmein","Egg Chowmein","Veg Roll","Chicken Roll",
+"Paneer Roll","French Fries","Cheese Fries","Peri Peri Fries",
+"Coffee","Cold Coffee","Cappuccino","Latte","Mocha","Mojito",
+"Lemon Soda"
 ]
 
-
-window.login=()=>{
-
-signInWithEmailAndPassword(auth,email.value,password.value)
-
-}
-
-window.signup=()=>{
-
-createUserWithEmailAndPassword(auth,email.value,password.value)
-
-}
-
-window.resetPass=()=>{
-
-sendPasswordResetEmail(auth,email.value)
-
-}
-
-window.logout=()=>{
-
-signOut(auth).then(()=>location.reload())
-
-}
-
-
-onAuthStateChanged(auth,user=>{
-
-if(user){
-
-loginPage.style.display="none"
-site.style.display="block"
-
-if(user.email===adminEmail){
-
-adminPanel.style.display="block"
-loadOrders()
-
-}
-
-loadMenu()
-
-}
-
-})
-
-
-async function loadMenu(){
+async function loadFoods(){
 
 menu.innerHTML=""
 
-for(const food of foods){
+for(const name of foods){
 
-let price=""
-let rating=""
-let image=""
+let price="",rating="",image=""
 
-const snap=await getDoc(doc(db,"foods",food.n))
+const snap=await getDoc(doc(db,"foods",name))
 
 if(snap.exists()){
-
 const d=snap.data()
-
 price=d.price
 rating=d.rating
 image=d.image
-
 }
 
 menu.innerHTML+=`
 
-<div class="foodCard" data-category="${food.c}">
+<div class="food">
 
-<img src="${image || 'https://via.placeholder.com/300x150'}">
+<img src="${image||'https://via.placeholder.com/300'}">
 
-<h3>${food.n}</h3>
+<div class="foodInfo">
 
-₹ ${price || "-"}
+<h3>${name}</h3>
 
-<br>
-
-${"⭐".repeat(rating || 0)}
+₹ ${price||"-"}
 
 <br>
 
-<button onclick="addCart('${food.n}')">Add</button>
+${"⭐".repeat(rating||0)}
+
+<br>
+
+<button onclick="addCart('${name}',${price||0})">Add</button>
+
+</div>
+
+${auth.currentUser.email===adminEmail?`
+
+<div class="adminMenu">
+<button onclick="editFood('${name}','${price}','${rating}')">⋮</button>
+</div>
+
+`:""}
 
 </div>
 
@@ -355,87 +260,140 @@ ${"⭐".repeat(rating || 0)}
 
 }
 
+window.addCart=(name,price)=>{
 
-window.addCart=(name)=>{
+let item=cart.find(x=>x.name===name)
 
-cart.push(name)
+if(item)item.qty++
+else cart.push({name,price,qty:1})
 
-cart.style.display="block"
-
-cartCount.innerText=cart.length
+updateCart()
 
 }
 
+function updateCart(){
+
+cartItems.innerHTML=""
+
+let total=0,count=0
+
+cart.forEach((i,index)=>{
+
+total+=i.price*i.qty
+count+=i.qty
+
+cartItems.innerHTML+=`
+
+<div>
+
+${i.name}
+
+<button onclick="dec(${index})">-</button>
+
+${i.qty}
+
+<button onclick="inc(${index})">+</button>
+
+<button onclick="removeItem(${index})">❌</button>
+
+</div>
+
+`
+
+})
+
+document.getElementById("total").innerText=total
+document.getElementById("cartCount").innerText=count
+
+}
+
+window.inc=i=>{cart[i].qty++;updateCart()}
+window.dec=i=>{if(cart[i].qty>1)cart[i].qty--;else cart.splice(i,1);updateCart()}
+window.removeItem=i=>{cart.splice(i,1);updateCart()}
+
+window.openCart=()=>cartPopup.style.display="flex"
+window.closeCart=()=>cartPopup.style.display="none"
 
 window.placeOrder=async()=>{
 
 await addDoc(collection(db,"orders"),{
-
 email:auth.currentUser.email,
 items:cart,
 status:"Pending",
 time:new Date().toLocaleString()
-
 })
-
-alert("Thanks for visiting Ami Please")
 
 cart=[]
+updateCart()
+alert("Thanks for visiting Ami Please!")
 
 }
 
+window.openUpload=()=>uploadPopup.style.display="flex"
+window.closeUpload=()=>uploadPopup.style.display="none"
 
-window.uploadFood=async()=>{
+window.editFood=(n,p,r)=>{
+foodName.value=n
+foodPrice.value=p
+foodRating.value=r
+openUpload()
+}
 
-const file=foodImage.files[0]
+window.saveFood=async()=>{
 
-const storageRef=ref(storage,"foods/"+foodName.value)
+let name=foodName.value
+let price=foodPrice.value
+let rating=foodRating.value
+let file=foodImage.files[0]
 
+let image=""
+
+if(file){
+const storageRef=ref(storage,"foods/"+name)
 await uploadBytes(storageRef,file)
+image=await getDownloadURL(storageRef)
+}else{
+const snap=await getDoc(doc(db,"foods",name))
+if(snap.exists()) image=snap.data().image
+}
 
-const url=await getDownloadURL(storageRef)
+await setDoc(doc(db,"foods",name),{price,rating,image})
 
-await setDoc(doc(db,"foods",foodName.value),{
+alert("Food saved")
 
-price:foodPrice.value,
-rating:foodRating.value,
-image:url
+closeUpload()
 
-})
-
-loadMenu()
+loadFoods()
 
 }
 
+window.openOrders=()=>{
 
-async function loadOrders(){
+ordersPopup.style.display="flex"
+
+onSnapshot(collection(db,"orders"),snap=>{
 
 orders.innerHTML=""
 
-const q=await getDocs(collection(db,"orders"))
-
-q.forEach(d=>{
+snap.forEach(d=>{
 
 const o=d.data()
 
 orders.innerHTML+=`
 
-<div style="background:#444;padding:10px;margin:6px">
+<div>
 
 ${o.email}
 
 <br>
 
-${o.items}
+${o.items.map(i=>i.name+" x"+i.qty).join(",")}
 
 <br>
 
 Status: ${o.status}
 
-<br>
-
 <button onclick="updateStatus('${d.id}','Preparing')">Preparing</button>
-
 <button onclick="updateStatus('${d.id}','Delivered')">Delivered</button>
 
 </div>
@@ -444,54 +402,42 @@ Status: ${o.status}
 
 })
 
+})
+
 }
 
+window.closeOrders=()=>ordersPopup.style.display="none"
 
 window.updateStatus=async(id,status)=>{
+await updateDoc(doc(db,"orders",id),{status})
+}
 
-await updateDoc(doc(db,"orders",id),{
+window.logout=()=>signOut(auth).then(()=>location.reload())
 
-status:status
+onAuthStateChanged(auth,user=>{
 
-})
+if(user){
 
-loadOrders()
+if(user.email===adminEmail)
+document.getElementById("adminButtons").style.display="block"
+
+loadFoods()
 
 }
 
+})
 
-searchFood.oninput=()=>{
+search.oninput=()=>{
 
-const text=searchFood.value.toLowerCase()
+const t=search.value.toLowerCase()
 
-document.querySelectorAll(".foodCard").forEach(card=>{
-
-const name=card.innerText.toLowerCase()
-
-card.style.display=name.includes(text)?"block":"none"
-
+document.querySelectorAll(".food").forEach(c=>{
+c.style.display=c.innerText.toLowerCase().includes(t)?"block":"none"
 })
 
 }
-
-
-window.filterCat=(cat)=>{
-
-document.querySelectorAll(".foodCard").forEach(card=>{
-
-if(cat==="all"){card.style.display="block";return}
-
-card.style.display=
-card.dataset.category===cat?"block":"none"
-
-})
-
-}
-
-
-Notification.requestPermission()
 
 </script>
 
 </body>
-  </html>
+</html>
