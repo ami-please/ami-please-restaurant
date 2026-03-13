@@ -3,13 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Ami Please Restaurant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 
 body{
-font-family:Arial;
 margin:0;
-background:#f4f4f4;
+font-family:Arial;
+background:#f2f2f2;
+display:flex;
+justify-content:center;
+}
+
+#app{
+width:100%;
+max-width:420px;
+background:white;
+min-height:100vh;
 }
 
 header{
@@ -18,40 +28,6 @@ color:white;
 padding:15px;
 display:flex;
 justify-content:space-between;
-}
-
-button{
-padding:8px 12px;
-cursor:pointer;
-border:none;
-background:#457b9d;
-color:white;
-border-radius:5px;
-}
-
-input{
-padding:8px;
-margin:5px 0;
-width:100%;
-}
-
-#loginPage{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#1d3557;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.loginBox{
-background:white;
-padding:30px;
-border-radius:10px;
-width:250px;
 }
 
 .food-grid{
@@ -63,15 +39,53 @@ padding:10px;
 
 .food-card{
 background:white;
-padding:15px;
+padding:10px;
 border-radius:10px;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+text-align:center;
+}
+
+button{
+padding:8px;
+border:none;
+border-radius:8px;
+background:#457b9d;
+color:white;
+margin:3px;
+}
+
+input{
+width:100%;
+padding:8px;
+margin-bottom:6px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+#cartButton{
+position:fixed;
+bottom:15px;
+right:15px;
+width:60px;
+height:60px;
+background:#e63946;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+color:white;
 }
 
 #cartPanel{
+position:fixed;
+bottom:0;
+width:100%;
+max-width:420px;
 background:white;
-padding:10px;
-margin:10px;
-border-radius:10px;
+padding:12px;
+display:none;
+box-shadow:0 -3px 10px rgba(0,0,0,0.2);
 }
 
 #orderOverlay{
@@ -82,99 +96,92 @@ width:100%;
 height:100%;
 background:rgba(0,0,0,0.6);
 display:none;
-align-items:center;
 justify-content:center;
+align-items:center;
 }
 
 .orderBox{
 background:white;
 padding:20px;
-border-radius:10px;
-width:300px;
+border-radius:12px;
+width:90%;
+max-width:350px;
 }
 
-#adminOrders{
-display:none;
+#loginPage{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#1d3557;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.loginBox{
 background:white;
-margin:10px;
-padding:10px;
+padding:20px;
 border-radius:10px;
+width:80%;
+max-width:300px;
 }
 
-.orderCard{
-border-bottom:1px solid #ddd;
-padding:10px;
+.addAnimation{
+animation:pop 0.3s;
+}
+
+@keyframes pop{
+0%{transform:scale(1)}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
 }
 
 </style>
-
 </head>
 
 <body>
 
-<!-- LOGIN PAGE -->
-
-<div id="loginPage">
-
-<div class="loginBox">
-
-<h3>Login</h3>
-
-<input id="email" placeholder="Email">
-
-<input id="password" type="password" placeholder="Password">
-
-<button id="loginBtn">Login</button>
-
-<button id="signupBtn">Signup</button>
-
-<p id="forgotBtn" style="color:blue;cursor:pointer">Forgot Password</p>
-
-</div>
-
-</div>
-
-
-<!-- MAIN MENU -->
-
-<div id="menu" style="display:none">
+<div id="app">
 
 <header>
-
-<h3>Ami Please</h3>
-
-<div>
-
-Cart: <span id="cartCount">0</span>
-
-<button id="logoutBtn">Logout</button>
-
-</div>
-
+<div>Ami Please</div>
+<div>Cart: <span id="cartCount">0</span></div>
 </header>
+
+<div class="food-grid" id="foodList"></div>
 
 <div id="adminPanel" style="display:none;padding:10px">
 
+<h3>Admin Food Panel</h3>
+
+<input id="foodName" placeholder="Food name">
+<input id="foodPrice" placeholder="Price">
+<input id="foodRating" placeholder="Rating">
+
+<button id="addFoodBtn">Add Food</button>
+
+<hr>
+
 <button id="viewOrdersBtn">View Orders</button>
+
+<div id="adminOrders"></div>
 
 </div>
 
-<div class="food-grid" id="foodList"></div>
+</div>
+
+<div id="cartButton">🛒</div>
 
 <div id="cartPanel">
 
 <h3>Your Cart</h3>
-
 <div id="cartItems"></div>
 
 <button id="doneCartBtn">Done</button>
 
 </div>
-
-</div>
-
-
-<!-- ORDER FORM OVERLAY -->
 
 <div id="orderOverlay">
 
@@ -183,35 +190,33 @@ Cart: <span id="cartCount">0</span>
 <h3>Delivery Details</h3>
 
 <input id="phone" placeholder="Phone">
-
 <input id="area" placeholder="Area">
-
 <input id="city" placeholder="City">
-
 <input id="pincode" placeholder="Pincode">
-
 <input id="locationLink" placeholder="Location link">
 
-<button id="getLocationBtn">Get My Location</button>
-
+<button id="getLocationBtn">Get Location</button>
 <button id="confirmOrderBtn">Confirm Order</button>
 
 </div>
 
 </div>
 
+<div id="loginPage">
 
-<!-- ADMIN ORDERS -->
+<div class="loginBox">
 
-<div id="adminOrders">
+<h3>Login</h3>
 
-<h3>Orders</h3>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 
-<div id="ordersList"></div>
+<button id="loginBtn">Login</button>
+<button id="signupBtn">Signup</button>
 
 </div>
 
-
+</div>
 
 <script type="module">
 
@@ -221,9 +226,7 @@ import {
 getAuth,
 signInWithEmailAndPassword,
 createUserWithEmailAndPassword,
-sendPasswordResetEmail,
-onAuthStateChanged,
-signOut
+onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
 import {
@@ -231,85 +234,89 @@ getFirestore,
 collection,
 addDoc,
 getDocs,
-doc,
+deleteDoc,
 updateDoc,
+doc,
+onSnapshot,
 serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-
-const firebaseConfig = {
-
+const firebaseConfig={
 apiKey:"AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
 authDomain:"ami-please-restaurant.firebaseapp.com",
 projectId:"ami-please-restaurant",
 storageBucket:"ami-please-restaurant.appspot.com",
 messagingSenderId:"590274660115",
 appId:"1:590274660115:web:998a7c8bb31e4a2696fce6"
-
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
 
 const adminEmail="beejumble43@gmail.com";
-
-let foods=[
-{name:"Burger",price:120},
-{name:"Pizza",price:250},
-{name:"Pasta",price:180},
-{name:"Sandwich",price:100},
-{name:"Fries",price:80},
-{name:"Cold Coffee",price:90}
-];
 
 let cart=[];
 
 const foodList=document.getElementById("foodList");
 
-foods.forEach((f,i)=>{
+async function loadFoods(){
+
+foodList.innerHTML="";
+
+const snap=await getDocs(collection(db,"foods"));
+
+snap.forEach(d=>{
+
+const f=d.data();
 
 const div=document.createElement("div");
-
 div.className="food-card";
 
 div.innerHTML=`
-
 <h4>${f.name}</h4>
 <p>₹${f.price}</p>
-<button onclick="addCart(${i})">Add</button>
-
+<p>⭐ ${f.rating}</p>
+<button onclick="addCart('${d.id}','${f.name}',${f.price})">Add</button>
 `;
+
+if(auth.currentUser && auth.currentUser.email===adminEmail){
+
+div.innerHTML+=`
+<br>
+<button onclick="editFood('${d.id}','${f.name}',${f.price},'${f.rating}')">Edit</button>
+<button onclick="deleteFood('${d.id}')">Delete</button>
+`;
+
+}
 
 foodList.appendChild(div);
 
 });
 
+}
 
-window.addCart=(i)=>{
+window.addCart=(id,name,price)=>{
 
-cart.push(foods[i]);
+cart.push({name,price});
 
-document.getElementById("cartCount").innerText=cart.length;
+cartCount.innerText=cart.length;
+
+cartButton.classList.add("addAnimation");
+setTimeout(()=>cartButton.classList.remove("addAnimation"),300);
 
 renderCart();
 
 };
 
-
 function renderCart(){
-
-const cartItems=document.getElementById("cartItems");
 
 cartItems.innerHTML="";
 
-cart.forEach((c,index)=>{
+cart.forEach(c=>{
 
 const div=document.createElement("div");
-
-div.innerHTML=`
-${c.name} ₹${c.price}
-`;
+div.innerText=c.name+" ₹"+c.price;
 
 cartItems.appendChild(div);
 
@@ -317,62 +324,34 @@ cartItems.appendChild(div);
 
 }
 
+cartButton.onclick=()=>cartPanel.style.display="block";
 
-document.getElementById("doneCartBtn").onclick=()=>{
+doneCartBtn.onclick=()=>{
 
 if(cart.length===0){
-
 alert("Cart empty");
-
 return;
-
 }
 
-document.getElementById("orderOverlay").style.display="flex";
+orderOverlay.style.display="flex";
 
 };
 
-
-
-document.getElementById("getLocationBtn").onclick=()=>{
-
-navigator.geolocation.getCurrentPosition(pos=>{
-
-const lat=pos.coords.latitude;
-const lon=pos.coords.longitude;
-
-document.getElementById("locationLink").value=
-`https://maps.google.com/?q=${lat},${lon}`;
-
-});
-
-};
-
-
-
-document.getElementById("confirmOrderBtn").onclick=async()=>{
-
-const phone=document.getElementById("phone").value;
-const area=document.getElementById("area").value;
-const city=document.getElementById("city").value;
-const pincode=document.getElementById("pincode").value;
-const location=document.getElementById("locationLink").value;
+confirmOrderBtn.onclick=async()=>{
 
 await addDoc(collection(db,"orders"),{
 
 user:auth.currentUser.email,
-
 cart:cart,
 
-phone,
-area,
-city,
-pincode,
+phone:phone.value,
+area:area.value,
+city:city.value,
+pincode:pincode.value,
 
-location,
+location:locationLink.value,
 
 status:"pending",
-
 time:serverTimestamp()
 
 });
@@ -380,90 +359,84 @@ time:serverTimestamp()
 alert("Order placed");
 
 cart=[];
+cartCount.innerText=0;
 renderCart();
 
-document.getElementById("cartCount").innerText=0;
-
-document.getElementById("orderOverlay").style.display="none";
-
-};
-
-
-
-document.getElementById("loginBtn").onclick=async()=>{
-
-await signInWithEmailAndPassword(
-auth,
-email.value,
-password.value
-);
+orderOverlay.style.display="none";
+cartPanel.style.display="none";
 
 };
 
+addFoodBtn.onclick=async()=>{
 
-document.getElementById("signupBtn").onclick=async()=>{
+await addDoc(collection(db,"foods"),{
 
-await createUserWithEmailAndPassword(
-auth,
-email.value,
-password.value
-);
+name:foodName.value,
+price:foodPrice.value,
+rating:foodRating.value
 
-};
+});
 
-
-document.getElementById("forgotBtn").onclick=()=>{
-
-const mail=prompt("Enter email");
-
-sendPasswordResetEmail(auth,mail);
+loadFoods();
 
 };
 
+window.deleteFood=async(id)=>{
 
-document.getElementById("logoutBtn").onclick=()=>signOut(auth);
+await deleteDoc(doc(db,"foods",id));
 
+loadFoods();
 
+};
+
+window.editFood=async(id,name,price,rating)=>{
+
+const newName=prompt("Food name",name);
+const newPrice=prompt("Price",price);
+const newRating=prompt("Rating",rating);
+
+await updateDoc(doc(db,"foods",id),{
+
+name:newName,
+price:newPrice,
+rating:newRating
+
+});
+
+loadFoods();
+
+};
+
+loginBtn.onclick=()=>signInWithEmailAndPassword(auth,email.value,password.value);
+signupBtn.onclick=()=>createUserWithEmailAndPassword(auth,email.value,password.value);
 
 onAuthStateChanged(auth,user=>{
 
 if(user){
 
 loginPage.style.display="none";
-menu.style.display="block";
+
+loadFoods();
 
 if(user.email===adminEmail){
 
 adminPanel.style.display="block";
+
+listenOrders();
 
 }
 
 }else{
 
 loginPage.style.display="flex";
-menu.style.display="none";
 
 }
 
 });
 
+viewOrdersBtn.onclick=async()=>{
 
-
-document.getElementById("viewOrdersBtn").onclick=()=>{
-
-adminOrders.style.display="block";
-
-loadOrders();
-
-};
-
-
-
-async function loadOrders(){
-
-const list=document.getElementById("ordersList");
-
-list.innerHTML="";
+adminOrders.innerHTML="";
 
 const snap=await getDocs(collection(db,"orders"));
 
@@ -473,42 +446,58 @@ const o=d.data();
 
 const div=document.createElement("div");
 
-div.className="orderCard";
-
 div.innerHTML=`
 
-<p><b>User:</b> ${o.user}</p>
+<hr>
 
-<p><b>Phone:</b> ${o.phone}</p>
+<b>${o.user}</b><br>
 
-<p><b>Address:</b> ${o.area}, ${o.city}</p>
+${o.area}, ${o.city}<br>
 
-<p><b>Status:</b> ${o.status}</p>
+Phone: ${o.phone}<br>
+
+<a href="${o.location}" target="_blank">Location</a><br>
+
+Status: ${o.status}<br>
 
 <button onclick="updateStatus('${d.id}','preparing')">Preparing</button>
-
 <button onclick="updateStatus('${d.id}','delivered')">Delivered</button>
 
 `;
 
-list.appendChild(div);
+adminOrders.appendChild(div);
 
 });
 
-}
-
-
+};
 
 window.updateStatus=async(id,status)=>{
 
 await updateDoc(doc(db,"orders",id),{status});
 
-loadOrders();
-
 };
 
+function listenOrders(){
+
+onSnapshot(collection(db,"orders"),snap=>{
+
+alert("🔔 New Order Received!");
+
+});
+
+}
+
+getLocationBtn.onclick=()=>{
+
+navigator.geolocation.getCurrentPosition(p=>{
+
+locationLink.value=`https://maps.google.com/?q=${p.coords.latitude},${p.coords.longitude}`;
+
+});
+
+};
 
 </script>
 
 </body>
-</html>
+  </html>
