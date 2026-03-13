@@ -5,19 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ami Please Restaurant</title>
 
-<!-- Firebase SDKs -->
+<!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
   authDomain: "ami-please-restaurant.firebaseapp.com",
   projectId: "ami-please-restaurant",
-  storageBucket: "ami-please-restaurant.firebasestorage.app",
+  storageBucket: "ami-please-restaurant.appspot.com",
   messagingSenderId: "590274660115",
   appId: "1:590274660115:web:998a7c8bb31e4a2696fce6",
   measurementId: "G-8FGXXT0Z8L"
@@ -28,237 +27,268 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// DOM elements
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const adminBtn = document.getElementById("adminBtn");
-const foodGrid = document.getElementById("foodGrid");
-const cartCount = document.getElementById("cartCount");
-const cartSidebar = document.getElementById("cartSidebar");
-const cartItemsDiv = document.getElementById("cartItems");
-const cartTotalDiv = document.getElementById("cartTotal");
-const checkoutBtn = document.getElementById("checkoutBtn");
-const searchInput = document.getElementById("searchInput");
-const categoryButtons = document.querySelectorAll(".category-btn");
-const adminPanel = document.getElementById("adminPanel");
-const adminFoodList = document.getElementById("adminFoodList");
-
-// Cart state
+let foods = [];
 let cart = [];
-let allFoods = [];
 
-// === AUTH ===
-function showLogin() {
-  const email = prompt("Enter admin email:");
-  const password = prompt("Enter password:");
-  if(email && password){
-    signInWithEmailAndPassword(auth, email, password)
-    .then(userCredential => alert("Logged in!"))
-    .catch(err => alert(err.message));
-  }
-}
-
-function logout() {
-  signOut(auth).then(() => alert("Logged out!"));
-}
-
+// --- AUTH ---
 onAuthStateChanged(auth, user => {
-  if(user){
-    loginBtn.style.display = "none";
-    logoutBtn.style.display = "inline-block";
-    adminBtn.style.display = "inline-block";
-  } else {
-    loginBtn.style.display = "inline-block";
-    logoutBtn.style.display = "none";
-    adminBtn.style.display = "none";
-  }
+    if(user){
+        document.getElementById('loginBtn').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
+        document.getElementById('adminBtn').style.display = 'inline-block';
+    } else {
+        document.getElementById('loginBtn').style.display = 'inline-block';
+        document.getElementById('logoutBtn').style.display = 'none';
+        document.getElementById('adminBtn').style.display = 'none';
+    }
 });
 
-// === ADMIN PANEL ===
-function toggleAdmin() {
-  adminPanel.classList.toggle("open");
-  loadFoods();
+async function login(){
+    const email = prompt("Enter admin email:");
+    const password = prompt("Enter password:");
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Logged in successfully!");
+    } catch(e){
+        alert("Login failed: "+e.message);
+    }
 }
 
-// Add Food
-async function addFood(e) {
-  e.preventDefault();
-  const name = document.getElementById("foodName").value;
-  const category = document.getElementById("foodCategory").value;
-  const price = parseFloat(document.getElementById("foodPrice").value);
-  const file = document.getElementById("foodImage").files[0];
-
-  if(!name || !category || !price || !file) return alert("Fill all fields!");
-
-  const storageRef = ref(storage, "foods/" + file.name);
-  await uploadBytes(storageRef, file);
-  const imageUrl = await getDownloadURL(storageRef);
-
-  await addDoc(collection(db, "foods"), {name, category, price, imageUrl});
-  alert("Food added!");
-  document.getElementById("addFoodForm").reset();
-  loadFoods();
+async function logout(){
+    await signOut(auth);
+    alert("Logged out!");
 }
 
-// Load all foods
-async function loadFoods(){
-  allFoods = [];
-  foodGrid.innerHTML = "";
-  adminFoodList.innerHTML = "";
-  const snapshot = await getDocs(collection(db,"foods"));
-  snapshot.forEach(docSnap => {
-    const data = docSnap.data();
-    const id = docSnap.id;
-    allFoods.push({...data, id});
-    createFoodCard(data,id);
-    createAdminCard(data,id);
-  });
+// --- MENU ---
+async function fetchFoods(){
+    const snapshot = await getDocs(collection(db, "foods"));
+    if(snapshot.empty){
+        const sampleFoods = [
+            {name:"Paneer Butter Masala", price:250, category:"main", image:"https://images.unsplash.com/photo-1604908177520-c7d7aa49b092?fit=crop&w=400&q=80"},
+            {name:"Veg Biryani", price:180, category:"main", image:"https://images.unsplash.com/photo-1604908177520-c7d7aa49b092?fit=crop&w=400&q=80"},
+            {name:"Gulab Jamun", price:80, category:"dessert", image:"https://images.unsplash.com/photo-1617196039003-7b1c7891c92d?fit=crop&w=400&q=80"},
+            {name:"Spring Rolls", price:120, category:"starter", image:"https://images.unsplash.com/photo-1617196039003-7b1c7891c92d?fit=crop&w=400&q=80"}
+        ];
+        for(const f of sampleFoods) await addDoc(collection(db,"foods"), f);
+        return fetchFoods();
+    }
+    foods = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    displayFoods(foods);
 }
 
-// Food card
-function createFoodCard(data,id){
-  const card = document.createElement("div");
-  card.classList.add("food-card");
-  card.innerHTML = `
-    <img src="${data.imageUrl}" alt="${data.name}" class="food-image" />
-    <div class="food-info">
-      <h3>${data.name}</h3>
-      <p>₹${data.price.toFixed(2)}</p>
-      <button onclick="addToCart('${id}','${data.name}',${data.price})">Add to Cart</button>
-    </div>
-  `;
-  foodGrid.appendChild(card);
+function displayFoods(items){
+    const grid = document.getElementById('foodGrid');
+    grid.innerHTML = "";
+    items.forEach(f => {
+        const card = document.createElement('div');
+        card.className = 'food-card';
+        card.innerHTML = `
+            <div class="food-image"><img src="${f.image}" /></div>
+            <div class="food-info">
+                <h3 class="food-name">${f.name}</h3>
+                <div class="food-price">₹${f.price}</div>
+                <div class="quantity-controls">
+                    <button onclick="decreaseQty('${f.id}')" class="qty-btn">-</button>
+                    <span id="qty-${f.id}">1</span>
+                    <button onclick="increaseQty('${f.id}')" class="qty-btn">+</button>
+                </div>
+                <button class="add-to-cart" onclick="addToCart('${f.id}')">Add to Cart</button>
+            </div>
+            ${auth.currentUser ? `<div class="admin-dots">
+                <i onclick="editFood('${f.id}')" class="fa fa-pen"></i>
+                <i onclick="deleteFood('${f.id}')" class="fa fa-trash"></i>
+            </div>` : ''}
+        `;
+        grid.appendChild(card);
+    });
 }
 
-// Admin card
-function createAdminCard(data,id){
-  const div = document.createElement("div");
-  div.classList.add("admin-food-card");
-  div.innerHTML = `
-    <p>${data.name} - ₹${data.price.toFixed(2)}</p>
-    <button onclick="deleteFood('${id}')">Delete</button>
-  `;
-  adminFoodList.appendChild(div);
+// --- CART ---
+function increaseQty(id){
+    const el = document.getElementById(`qty-${id}`);
+    el.innerText = parseInt(el.innerText)+1;
 }
 
-// Delete Food
+function decreaseQty(id){
+    const el = document.getElementById(`qty-${id}`);
+    if(parseInt(el.innerText)>1) el.innerText = parseInt(el.innerText)-1;
+}
+
+function addToCart(id){
+    const food = foods.find(f => f.id===id);
+    const qty = parseInt(document.getElementById(`qty-${id}`).innerText);
+    const exists = cart.find(c => c.id===id);
+    if(exists){
+        exists.qty += qty;
+    } else {
+        cart.push({...food, qty});
+    }
+    updateCart();
+}
+
+function updateCart(){
+    const container = document.getElementById('cartItems');
+    container.innerHTML = '';
+    let total = 0;
+    cart.forEach(item=>{
+        total += item.price * item.qty;
+        container.innerHTML += `
+        <div class="cart-item">
+            <img src="${item.image}" />
+            <div class="cart-item-info">
+                <h4>${item.name}</h4>
+                <div class="price">₹${item.price} x ${item.qty}</div>
+            </div>
+        </div>`;
+    });
+    document.getElementById('cartTotal').innerText = `₹${total.toFixed(2)}`;
+    document.getElementById('checkoutBtn').innerText = `Done (₹${total.toFixed(2)})`;
+}
+
+function toggleCart(){
+    document.getElementById('cartSidebar').classList.toggle('open');
+}
+
+function showOrderOverlay(){
+    document.getElementById('orderOverlay').style.display = 'flex';
+}
+
+function placeOrder(){
+    alert("Order placed successfully!");
+    cart = [];
+    updateCart();
+    document.getElementById('orderOverlay').style.display = 'none';
+}
+
+// --- ADMIN ---
+async function addFood(){
+    const name = prompt("Food name:");
+    const price = parseFloat(prompt("Price:"));
+    const category = prompt("Category (starter/main/dessert):");
+    const imageUrl = prompt("Image URL:");
+    if(!name || !price || !imageUrl || !category) return;
+    await addDoc(collection(db,"foods"), {name, price, category, image:imageUrl});
+    alert("Food added!");
+    fetchFoods();
+}
+
+async function editFood(id){
+    const food = foods.find(f => f.id===id);
+    const name = prompt("Food name:", food.name);
+    const price = parseFloat(prompt("Price:", food.price));
+    const category = prompt("Category (starter/main/dessert):", food.category);
+    const imageUrl = prompt("Image URL:", food.image);
+    if(!name || !price || !imageUrl || !category) return;
+    await updateDoc(doc(db,"foods",id), {name, price, category, image:imageUrl});
+    alert("Food updated!");
+    fetchFoods();
+}
+
 async function deleteFood(id){
-  await deleteDoc(doc(db,"foods",id));
-  loadFoods();
+    if(confirm("Are you sure to delete?")){
+        await deleteDoc(doc(db,"foods",id));
+        fetchFoods();
+    }
 }
 
-// === CART SYSTEM ===
-function addToCart(id,name,price){
-  const index = cart.findIndex(item => item.id===id);
-  if(index>-1) cart[index].qty +=1;
-  else cart.push({id,name,price,qty:1});
-  updateCartUI();
+// --- SEARCH & CATEGORY ---
+function filterFoods(){
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    displayFoods(foods.filter(f=>f.name.toLowerCase().includes(search)));
 }
 
-function updateCartUI(){
-  cartItemsDiv.innerHTML = "";
-  let total=0;
-  cart.forEach(item=>{
-    total+=item.price*item.qty;
-    const div = document.createElement("div");
-    div.innerHTML = `<p>${item.name} x ${item.qty} - ₹${(item.price*item.qty).toFixed(2)}</p>`;
-    cartItemsDiv.appendChild(div);
-  });
-  cartTotalDiv.innerText = `₹${total.toFixed(2)}`;
-  cartCount.innerText = cart.length;
-  checkoutBtn.innerText = `Done (₹${total.toFixed(2)})`;
+function filterByCategory(cat){
+    const btns = document.querySelectorAll('.category-btn');
+    btns.forEach(b=>b.classList.remove('active'));
+    document.querySelector(`[data-category='${cat}']`).classList.add('active');
+    if(cat==='all') displayFoods(foods);
+    else displayFoods(foods.filter(f=>f.category===cat));
 }
 
-// Cart toggle
-function toggleCart(){ cartSidebar.classList.toggle("open"); }
+// Expose for HTML
+window.logout = logout;
+window.login = login;
+window.addFood = addFood;
+window.toggleCart = toggleCart;
+window.addToCart = addToCart;
+window.increaseQty = increaseQty;
+window.decreaseQty = decreaseQty;
+window.editFood = editFood;
+window.deleteFood = deleteFood;
+window.filterFoods = filterFoods;
+window.filterByCategory = filterByCategory;
+window.showOrderOverlay = showOrderOverlay;
+window.placeOrder = placeOrder;
 
-// Search filter
-searchInput.addEventListener("input", ()=>{
-  const q = searchInput.value.toLowerCase();
-  const filtered = allFoods.filter(f=>f.name.toLowerCase().includes(q));
-  foodGrid.innerHTML="";
-  filtered.forEach(f=>createFoodCard(f,f.id));
-});
-
-// Category filter
-categoryButtons.forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    categoryButtons.forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    const cat = btn.dataset.category;
-    const filtered = cat==="all"?allFoods: allFoods.filter(f=>f.category===cat);
-    foodGrid.innerHTML="";
-    filtered.forEach(f=>createFoodCard(f,f.id));
-  });
-});
-
-// Initial load
-loadFoods();
+fetchFoods();
 </script>
 
+<!-- CSS -->
 <style>
-body{font-family:sans-serif;margin:0;padding:0;background:#f9f5f0;}
-.header{position:fixed;top:0;width:100%;padding:1rem 2rem;background:#111;color:#fff;display:flex;justify-content:space-between;align-items:center;z-index:1000;}
-.btn{padding:0.6rem 1.5rem;border:none;border-radius:50px;cursor:pointer;}
-.btn-primary{background:#b8860b;color:#fff;}
-.btn-secondary{background:#fff;color:#111;border:1px solid #b8860b;}
-.food-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;padding:6rem 2rem;}
-.food-card{background:#fff;padding:1rem;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.1);}
-.food-card img{width:100%;border-radius:10px;}
-.cart-sidebar{position:fixed;top:0;right:-300px;width:300px;height:100%;background:#fff;padding:1rem;box-shadow:-5px 0 20px rgba(0,0,0,0.2);transition:0.3s;overflow-y:auto;}
+body{font-family:sans-serif;margin:0;padding:0;background:#fff;}
+.header{position:fixed;top:0;width:100%;background:#111;color:#fff;padding:1rem;display:flex;justify-content:space-between;align-items:center;z-index:1000;}
+.header button{padding:0.5rem 1rem;border:none;border-radius:8px;color:#111;background:#FFD700;cursor:pointer;margin-left:0.5rem;}
+.controls{display:flex;gap:0.5rem;padding:1rem;margin-top:70px;flex-wrap:wrap;}
+.search-box{flex:1;padding:0.5rem;border:1px solid #ccc;border-radius:8px;}
+.category-btn{padding:0.5rem 1rem;border:1px solid #ccc;border-radius:8px;cursor:pointer;background:#eee;}
+.category-btn.active{background:#FFD700;}
+.food-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:1rem;}
+.food-card{border:1px solid #eee;border-radius:12px;padding:0.5rem;position:relative;}
+.food-card img{border-radius:12px;width:100%;height:150px;object-fit:cover;}
+.cart-sidebar{position:fixed;top:0;right:-100%;width:90%;height:100%;background:#fff;box-shadow:-5px 0 20px rgba(0,0,0,0.2);transition:0.3s;padding:1rem;overflow-y:auto;z-index:1000;}
 .cart-sidebar.open{right:0;}
-.category-btn{padding:0.5rem 1rem;border:1px solid #b8860b;border-radius:50px;margin:0.3rem;cursor:pointer;}
-.category-btn.active,.category-btn:hover{background:#b8860b;color:#fff;}
-.admin-food-card{display:flex;justify-content:space-between;align-items:center;margin:0.5rem 0;}
+.cart-item{display:flex;gap:0.5rem;margin-bottom:0.5rem;}
+.qty-btn{padding:0.2rem 0.6rem;margin:0 0.2rem;}
+.add-to-cart{background:#FFD700;border:none;padding:0.5rem 1rem;border-radius:8px;width:100%;cursor:pointer;}
+.admin-dots{position:absolute;top:5px;right:5px;display:flex;gap:0.5rem;}
+.admin-dots i{cursor:pointer;color:red;}
+.order-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;z-index:2000;}
+.order-form{background:#fff;padding:2rem;border-radius:12px;width:90%;max-width:400px;}
+.order-form input{width:100%;padding:0.5rem;margin-bottom:1rem;border:1px solid #ccc;border-radius:8px;}
+@media(max-width:600px){.food-grid{grid-template-columns:1fr;}.controls{flex-direction:column;}}
 </style>
-</head>
+
 <body>
 
-<header class="header">
-<div class="logo">Ami Please</div>
-<div>
-<button class="btn btn-primary" id="loginBtn" onclick="showLogin()">Login</button>
-<button class="btn btn-secondary" id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
-<button class="btn btn-secondary" id="adminBtn" onclick="toggleAdmin()" style="display:none;">Admin</button>
+<div class="header">
+    <div class="logo">Ami Please</div>
+    <div>
+        <button id="loginBtn" onclick="login()">Login</button>
+        <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+        <button id="adminBtn" onclick="addFood()" style="display:none;">Add Food</button>
+        <button onclick="toggleCart()">Cart</button>
+    </div>
 </div>
-</header>
 
-<main>
-<div style="text-align:center;margin-top:6rem;">
-<input type="text" id="searchInput" placeholder="Search dishes..." style="padding:0.5rem 1rem;border-radius:50px;border:1px solid #b8860b;">
-<div style="margin:1rem 0;">
-<button class="category-btn active" data-category="all">All</button>
-<button class="category-btn" data-category="starter">Starters</button>
-<button class="category-btn" data-category="main">Mains</button>
-<button class="category-btn" data-category="dessert">Desserts</button>
+<div class="controls">
+    <input type="text" class="search-box" id="searchInput" placeholder="Search..." oninput="filterFoods()">
+    <div class="category-btn active" data-category="all" onclick="filterByCategory('all')">All</div>
+    <div class="category-btn" data-category="starter" onclick="filterByCategory('starter')">Starters</div>
+    <div class="category-btn" data-category="main" onclick="filterByCategory('main')">Mains</div>
+    <div class="category-btn" data-category="dessert" onclick="filterByCategory('dessert')">Desserts</div>
 </div>
+
+<div class="food-grid" id="foodGrid">
+<!-- Foods loaded dynamically -->
 </div>
-<div class="food-grid" id="foodGrid"></div>
-</main>
 
 <div class="cart-sidebar" id="cartSidebar">
-<h2>Cart</h2>
-<div id="cartItems"></div>
-<div id="cartTotal">₹0.00</div>
-<button class="btn btn-primary" id="checkoutBtn" onclick="alert('Order placed!')">Done</button>
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <div id="cartTotal">₹0.00</div>
+    <button id="checkoutBtn" onclick="showOrderOverlay()">Checkout</button>
 </div>
 
-<!-- Admin Panel -->
-<div id="adminPanel" style="position:fixed;top:0;right:0;width:400px;height:100%;background:#fff;box-shadow:-5px 0 20px rgba(0,0,0,0.2);padding:2rem;display:none;overflow-y:auto;">
-<h2>Admin Panel</h2>
-<form id="addFoodForm" onsubmit="addFood(event)">
-<input type="text" id="foodName" placeholder="Food Name" required><br><br>
-<select id="foodCategory" required>
-<option value="main">Main</option>
-<option value="starter">Starter</option>
-<option value="dessert">Dessert</option>
-</select><br><br>
-<input type="number" id="foodPrice" placeholder="Price" required><br><br>
-<input type="file" id="foodImage" required><br><br>
-<button class="btn btn-primary" type="submit">Add Food</button>
-</form>
-<div id="adminFoodList"></div>
+<div class="order-overlay" id="orderOverlay">
+    <div class="order-form">
+        <h2>Complete Your Order</h2>
+        <input type="tel" id="phone" placeholder="Phone Number">
+        <input type="text" id="pincode" placeholder="Pincode">
+        <input type="text" id="area" placeholder="Area">
+        <input type="text" id="city" placeholder="City">
+        <button onclick="placeOrder()">Place Order</button>
+    </div>
 </div>
 
 </body>
-</html>
+      </html>
