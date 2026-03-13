@@ -1,4 +1,4 @@
-<!DOCTYPE html>  <html lang="en">  
+<!-- PART 1: LOGIN + HEADER + BANNER -->  <!DOCTYPE html>  <html lang="en">  
 <head>  
 <meta charset="UTF-8">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0">  
@@ -6,26 +6,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">  
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
 <style>  
-:root {  
-  --primary:#0077b6;  
-  --secondary:#023e8a;  
-  --bg:#f0f4f8;  
-  --card-bg:#fff;  
-  --radius:12px;  
-  --transition:0.3s;  
-}  
+:root {--primary:#0077b6;--secondary:#023e8a;--bg:#f0f4f8;--card-bg:#fff;--radius:12px;--transition:0.3s;}  
 body{margin:0;padding:0;font-family:'Poppins',sans-serif;background:var(--bg);}  
 button{cursor:pointer;}  
 /* Login Page */  
-#loginPage{  
-  position:fixed;top:0;left:0;width:100%;height:100%;  
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #023e8a;  
-  display:flex;align-items:center;justify-content:center;z-index:1000;  
-}  
-.loginBox{  
-  background:#fff;padding:40px;border-radius:var(--radius);width:90%;max-width:400px;text-align:center;  
-  box-shadow:0 8px 20px rgba(0,0,0,0.3);  
-}  
+#loginPage{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #023e8a;display:flex;align-items:center;justify-content:center;z-index:1000;}  
+.loginBox{background:#fff;padding:40px;border-radius:var(--radius);width:90%;max-width:400px;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,0.3);}  
 .loginBox h2{font-family:'Playfair Display',serif;color:var(--primary);margin-bottom:10px;}  
 .input-group{margin-bottom:15px;text-align:left;}  
 .input-group label{font-weight:500;display:block;margin-bottom:5px;}  
@@ -37,36 +23,22 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
 .cart-badge{position:absolute;top:-8px;right:-8px;background:var(--primary);color:white;font-size:12px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;}  
 /* Banner */  
 .banner{background: var(--primary);height:120px;display:flex;align-items:center;justify-content:center;color:white;font-family:'Playfair Display',serif;font-size:28px;font-weight:600;margin-bottom:20px;border-radius:var(--radius);}  
-/* Foods Grid */  
-.container{max-width:1200px;margin:0 auto;padding:0 15px;display:grid;grid-template-columns:repeat(2,1fr);gap:15px;}  
-.food-card{background:var(--card-bg);padding:15px;border-radius:var(--radius);box-shadow:0 4px 15px rgba(0,0,0,0.08);display:flex;flex-direction:column;align-items:center;transition:transform var(--transition);}  
-.food-card:hover{transform:scale(1.02);}  
-.food-info{margin-top:10px;text-align:center;}  
-.food-actions{display:flex;justify-content:center;align-items:center;margin-top:10px;gap:10px;}  
-.add-btn,.minus-btn{background:var(--primary);color:white;border:none;border-radius:50%;width:30px;height:30px;font-weight:bold;font-size:18px;transition: transform var(--transition);}  
-.add-btn:hover,.minus-btn:hover{transform:scale(1.2);}  
-.admin-menu{display:none;margin:10px 0;gap:10px;text-align:center;}  
-.admin-menu button{background:var(--secondary);color:white;border:none;padding:10px 15px;border-radius:var(--radius);transition:0.3s;}  
-.admin-menu button:hover{background:var(--primary);}  
-/* Modals */  
-#adminPanel,#cartModal,#orderFormOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:1000;}  
-.admin-form,.cart-panel,.order-form{background:white;padding:20px;border-radius:var(--radius);width:90%;max-width:400px;display:flex;flex-direction:column;gap:10px;}  
-.cart-items{max-height:300px;overflow-y:auto;}  
-.cart-item{display:flex;justify-content:space-between;padding:5px 0;}  
-#thanksPopup{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--primary);color:white;padding:15px 25px;border-radius:var(--radius);display:none;z-index:1000;font-weight:600;}  
-#thanksPopup.show{display:block;animation:fadeInOut 2s forwards;}  
-@keyframes fadeInOut{0%{opacity:0;}10%,90%{opacity:1;}100%{opacity:0;}}  
-@keyframes cartAnim{0%{transform:scale(1);}50%{transform:scale(1.5);}100%{transform:scale(1);}}  
 </style>  
 </head>  
-<body>  <!-- LOGIN -->  <div id="loginPage">  
+<body>  <!-- LOGIN PAGE -->  <div id="loginPage">  
   <div class="loginBox">  
-    <h2>Ami Please</h2>  
-    <div class="input-group"><label>Email</label><input id="email" type="email" placeholder="Enter your email"></div>  
-    <div class="input-group"><label>Password</label><input id="password" type="password" placeholder="Enter your password"></div>  
+    <h2>Ami Please Login</h2>  
+    <div class="input-group">  
+      <label>Email</label>  
+      <input type="email" id="email" placeholder="Enter email">  
+    </div>  
+    <div class="input-group">  
+      <label>Password</label>  
+      <input type="password" id="password" placeholder="Enter password">  
+    </div>  
     <button id="loginBtn">Login</button>  
-    <button id="signupBtn">Signup</button>  
-    <div class="auth-toggle"><a id="forgotLink" style="cursor:pointer;color:var(--primary)">Forgot Password?</a></div>  
+    <button id="signupBtn">Sign Up</button>  
+    <p><a href="#" id="forgotLink">Forgot password?</a></p>  
   </div>  
 </div>  <!-- MENU -->  <div id="menu" style="display:none;">  
   <header>  
@@ -84,7 +56,9 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
     <button id="addFoodBtn">Add Food</button>  
   </div>  
   <div class="container" id="foodList"></div>  
-</div>  <!-- ADMIN PANEL -->  <div id="adminPanel">  
+</div><!-- PART 2: ADMIN PANEL, CART MODAL, ORDER FORM -->  
+<!-- ADMIN PANEL -->  
+<div id="adminPanel">  
   <div class="admin-form">  
     <h3 id="adminFormTitle">Add Food</h3>  
     <input type="text" id="foodName" placeholder="Food Name">  
@@ -93,214 +67,254 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
     <button id="submitFoodBtn">Submit</button>  
     <button id="closeAdminBtn" style="background:#ccc;color:#000;">Cancel</button>  
   </div>  
-</div>  <!-- CART -->  <div id="cartModal">  
+</div>  <!-- CART MODAL -->  <div id="cartModal">  
   <div class="cart-panel">  
-    <div class="cart-header"><h3>Your Cart</h3><span class="close-cart" id="closeCart" style="cursor:pointer;">&times;</span></div>  
-    <div id="cartItems" class="cart-items"></div>  
-    <div class="cart-footer"><div class="total-row"><span>Total:</span><span id="cartTotal">₹0</span></div>  
-    <button id="placeOrderBtn">Done</button></div>  
+    <h3>Cart</h3>  
+    <div class="cart-items" id="cartItems"></div>  
+    <p>Total: <span id="cartTotal">₹0</span></p>  
+    <button id="placeOrderBtn">Place Order</button>  
+    <button id="closeCart">Close</button>  
   </div>  
-</div>  <!-- ORDER FORM -->  <div id="orderFormOverlay">  
+</div>  <!-- ORDER FORM OVERLAY -->  <div id="orderFormOverlay">  
   <div class="order-form">  
-    <input id="phone" placeholder="Phone number">  
-    <input id="pincode" placeholder="Pincode">  
-    <input id="area" placeholder="Area">  
-    <input id="city" placeholder="City">  
-    <input id="locationLink" placeholder="Current location link">  
-    <button type="button" id="getLocationBtn">Get My Location</button>  
-    <button id="confirmOrderBtn" disabled>Place Order</button>  
+    <h3>Order Details</h3>  
+    <input type="text" id="phone" placeholder="Phone Number">  
+    <input type="text" id="pincode" placeholder="Pincode">  
+    <input type="text" id="area" placeholder="Area">  
+    <input type="text" id="city" placeholder="City">  
+    <input type="text" id="locationLink" placeholder="Location Link">  
+    <button id="getLocationBtn">Get Current Location</button>  
+    <button id="confirmOrderBtn" disabled>Confirm Order</button>  
+    <button id="closeOrderForm" onclick="document.getElementById('orderFormOverlay').style.display='none'">Cancel</button>  
   </div>  
-</div>  <div id="thanksPopup">Thanks for visiting Ami Please!</div>  <script type="module">  
+</div>  <!-- THANK YOU POPUP -->  <div id="thanksPopup">Thanks for visiting Ami Please!</div><!-- PART 3: FIREBASE CONFIG + AUTH -->  
+<script type="module">  
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";  
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";  
-import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";  
-  
-const firebaseConfig = {  
-  apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",  
-  authDomain: "ami-please-restaurant.firebaseapp.com",  
-  projectId: "ami-please-restaurant",  
-  storageBucket: "ami-please-restaurant.appspot.com",  
-  messagingSenderId: "590274660115",  
-  appId: "1:590274660115:web:998a7c8bb31e4a2696fce6",  
-  measurementId: "G-8FGXXT0Z8L"  
-};  
-  
-const app = initializeApp(firebaseConfig);  
-const auth = getAuth(app);  
-const db = getFirestore(app);  
-  
-const adminEmail="beejumble43@gmail.com";  
-let cart=[], foods=[], editingFoodId=null;  
-  
-// LOGIN / SIGNUP / FORGOT  
-document.getElementById('loginBtn').addEventListener('click', ()=>{   
-  const e=document.getElementById('email').value,p=document.getElementById('password').value;  
-  if(!e||!p) return alert("Fill all fields");  
-  signInWithEmailAndPassword(auth,e,p).catch(err=>alert(err.message));  
-});  
-document.getElementById('signupBtn').addEventListener('click', ()=>{   
-  const e=document.getElementById('email').value,p=document.getElementById('password').value;  
-  if(!e||!p) return alert("Fill all fields");  
-  createUserWithEmailAndPassword(auth,e,p).catch(err=>alert(err.message));  
-});  
-document.getElementById('forgotLink').addEventListener('click', ()=>{  
-  const e=prompt("Enter your email");   
-  if(e) sendPasswordResetEmail(auth,e).then(()=>alert("Reset email sent")).catch(err=>alert(err.message));  
-});  
-document.getElementById('logoutBtn').addEventListener('click', ()=>signOut(auth).catch(err=>alert(err.message)));  
-  
-// AUTH STATE  
-onAuthStateChanged(auth,user=>{  
-  if(user){  
-    document.getElementById('loginPage').style.display="none";  
-    document.getElementById('menu').style.display="block";  
-    if(user.email===adminEmail) document.getElementById('adminMenu').style.display="flex";  
-    loadFoods();  
-  } else {  
-    document.getElementById('loginPage').style.display="flex";  
-    document.getElementById('menu').style.display="none";  
-    document.getElementById('adminMenu').style.display="none";  
-  }  
-});  
-  
-// LOAD FOODS  
-async function loadFoods(){  
+import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";  // --- Firebase Configuration ---
+const firebaseConfig = {
+apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
+authDomain: "ami-please-restaurant.firebaseapp.com",
+projectId: "ami-please-restaurant",
+storageBucket: "ami-please-restaurant.appspot.com",
+messagingSenderId: "590274660115",
+appId: "1:590274660115:web:998a7c8bb31e4a2696fce6",
+measurementId: "G-8FGXXT0Z8L"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const adminEmail = "beejumble43@gmail.com";
+let cart = [], foods = [], editingFoodId = null;
+
+// --- LOGIN / SIGNUP / FORGOT ---
+document.getElementById('loginBtn').addEventListener('click', ()=>{
+const e = document.getElementById('email').value;
+const p = document.getElementById('password').value;
+if(!e || !p) return alert("Fill all fields");
+signInWithEmailAndPassword(auth, e, p).catch(err=>alert(err.message));
+});
+
+document.getElementById('signupBtn').addEventListener('click', ()=>{
+const e = document.getElementById('email').value;
+const p = document.getElementById('password').value;
+if(!e || !p) return alert("Fill all fields");
+createUserWithEmailAndPassword(auth, e, p).catch(err=>alert(err.message));
+});
+
+document.getElementById('forgotLink').addEventListener('click', ()=>{
+const e = prompt("Enter your email");
+if(e) sendPasswordResetEmail(auth, e).then(()=>alert("Reset email sent")).catch(err=>alert(err.message));
+});
+
+document.getElementById('logoutBtn').addEventListener('click', ()=>signOut(auth).catch(err=>alert(err.message)));
+
+// --- AUTH STATE CHANGE ---
+onAuthStateChanged(auth, user=>{
+if(user){
+document.getElementById('loginPage').style.display="none";
+document.getElementById('menu').style.display="block";
+if(user.email===adminEmail) document.getElementById('adminMenu').style.display="flex";
+loadFoods();
+} else {
+document.getElementById('loginPage').style.display="flex";
+document.getElementById('menu').style.display="none";
+document.getElementById('adminMenu').style.display="none";
+}
+});
+</script><!-- PART 4: LOAD FOODS + CART + ADMIN -->
+
+<script type="module">  
+// --- LOAD FOODS FROM FIRESTORE ---  
+async function loadFoods() {  
   foods=[];  
-  const snap=await getDocs(collection(db,"foods"));  
-  snap.forEach(d=>{ const data=d.data(); if(!data.deleted) foods.push({id:d.id,...data}); });  
+  const snap = await getDocs(collection(db,"foods"));  
+  snap.forEach(d=>{  
+    const data = d.data();  
+    if(!data.deleted) foods.push({id:d.id,...data});  
+  });  
   renderFoods();  
 }  
   
-// RENDER FOODS  
+// --- RENDER FOODS ---  
 function renderFoods(){  
-  const container=document.getElementById('foodList');  
+  const container = document.getElementById('foodList');  
   container.innerHTML="";  
   foods.forEach(f=>{  
-    const div=document.createElement('div'); div.className="food-card";  
-    div.innerHTML=`<div class="food-info"><h3>${f.name}</h3><p>₹${f.price} - ⭐ ${f.rating}</p></div>  
-    <div class="food-actions">  
-      <button class="minus-btn">-</button>  
-      <span id="qty-${f.id}">0</span>  
-      <button class="add-btn">+</button>  
-    </div>  
-    ${auth.currentUser&&auth.currentUser.email===adminEmail?`<div style="margin-top:10px;"><button class="edit-btn">Edit</button> <button class="delete-btn">Delete</button></div>`:""}`;  
+    const div=document.createElement('div');  
+    div.className="food-card";  
+    div.innerHTML=`  
+      <div class="food-info">  
+        <h3>${f.name}</h3>  
+        <p>₹${f.price} - ⭐ ${f.rating}</p>  
+      </div>  
+      <div class="food-actions">  
+        <button class="minus-btn">-</button>  
+        <span id="qty-${f.id}">0</span>  
+        <button class="add-btn">+</button>  
+      </div>  
+      ${auth.currentUser && auth.currentUser.email===adminEmail?  
+        `<div style="margin-top:10px;">  
+          <button class="edit-btn">Edit</button>  
+          <button class="delete-btn">Delete</button>  
+        </div>`:""}  
+    `;  
     container.appendChild(div);  
-  
     div.querySelector('.add-btn').addEventListener('click', ()=>updateCart(f.id,1));  
     div.querySelector('.minus-btn').addEventListener('click', ()=>updateCart(f.id,-1));  
-    const editBtn = div.querySelector('.edit-btn'); if(editBtn) editBtn.addEventListener('click', ()=>editFood(f.id));  
-    const delBtn = div.querySelector('.delete-btn'); if(delBtn) delBtn.addEventListener('click', ()=>deleteFood(f.id));  
+    const editBtn=div.querySelector('.edit-btn'); if(editBtn) editBtn.addEventListener('click', ()=>editFood(f.id));  
+    const delBtn=div.querySelector('.delete-btn'); if(delBtn) delBtn.addEventListener('click', ()=>deleteFood(f.id));  
   });  
 }  
   
-// CART LOGIC  
+// --- UPDATE CART ---  
 function updateCart(id,change){  
   let item = cart.find(i=>i.id===id);  
-  if(item){ item.qty+=change; if(item.qty<0)item.qty=0; } else if(change>0){ cart.push({id,qty:change}); }  
-  document.getElementById(`qty-${id}`).innerText = (cart.find(i=>i.id===id)||{qty:0}).qty;  
+  if(item){item.qty+=change; if(item.qty<0)item.qty=0;}  
+  else if(change>0) cart.push({id,qty:change});  
+  document.getElementById(`qty-${id}`).innerText=(cart.find(i=>i.id===id)||{qty:0}).qty;  
   updateCartUI();  
-  if(change>0){ const badge = document.getElementById('cartCount'); badge.style.animation='cartAnim 0.5s'; setTimeout(()=>badge.style.animation='none',500); }  
+  if(change>0){const badge=document.getElementById('cartCount'); badge.style.animation='cartAnim 0.5s'; setTimeout(()=>badge.style.animation='none',500);}  
 }  
   
+// --- UPDATE CART UI ---  
 function updateCartUI(){  
-  const ci=document.getElementById('cartItems'); ci.innerHTML=""; let total=0;  
-  cart.forEach(c=>{ const f=foods.find(ff=>ff.id===c.id); if(f){ total+=f.price*c.qty; const div=document.createElement('div'); div.className='cart-item'; div.innerHTML=`<span>${f.name} x ${c.qty}</span><span>₹${f.price*c.qty}</span>`; ci.appendChild(div); } });  
+  const ci=document.getElementById('cartItems'); ci.innerHTML="";  
+  let total=0;  
+  cart.forEach(c=>{  
+    const f=foods.find(ff=>ff.id===c.id);  
+    if(f){total+=f.price*c.qty;  
+      const div=document.createElement('div');  
+      div.className='cart-item';  
+      div.innerHTML=`<span>${f.name} x ${c.qty}</span><span>₹${f.price*c.qty}</span>`;  
+      ci.appendChild(div);  
+    }  
+  });  
   document.getElementById('cartTotal').innerText=`₹${total}`;  
   document.getElementById('cartCount').innerText=cart.reduce((a,b)=>a+b.qty,0);  
 }  
   
-// CART MODAL  
-document.getElementById('cartBtn').addEventListener('click',()=>document.getElementById('cartModal').style.display='flex');  
-document.getElementById('closeCart').addEventListener('click',()=>document.getElementById('cartModal').style.display='none');  
+// --- OPEN/CLOSE CART MODAL ---  
+document.getElementById('cartBtn').addEventListener('click', ()=>document.getElementById('cartModal').style.display='flex');  
+document.getElementById('closeCart').addEventListener('click', ()=>document.getElementById('cartModal').style.display='none');  
   
-// ADMIN PANEL  
-document.getElementById('addFoodBtn').addEventListener('click', ()=>{ editingFoodId=null; document.getElementById('adminFormTitle').innerText='Add Food'; document.getElementById('foodName').value=''; document.getElementById('foodPrice').value=''; document.getElementById('foodRating').value=''; document.getElementById('adminPanel').style.display='flex'; });  
+// --- ADMIN PANEL OPEN ---  
+document.getElementById('addFoodBtn').addEventListener('click', ()=>{  
+  editingFoodId=null;  
+  document.getElementById('adminFormTitle').innerText='Add Food';  
+  document.getElementById('foodName').value='';  
+  document.getElementById('foodPrice').value='';  
+  document.getElementById('foodRating').value='';  
+  document.getElementById('adminPanel').style.display='flex';  
+});  
 document.getElementById('closeAdminBtn').addEventListener('click', ()=>document.getElementById('adminPanel').style.display='none');  
+  
+// --- SUBMIT FOOD ---  
 document.getElementById('submitFoodBtn').addEventListener('click', async ()=>{  
-  const name=document.getElementById('foodName').value; const price=Number(document.getElementById('foodPrice').value); const rating=Number(document.getElementById('foodRating').value);  
-  if(!name||!price||!rating){ alert("Fill all fields"); return; }  
-  if(editingFoodId){ const foodRef=doc(db,"foods",editingFoodId); await updateDoc(foodRef,{name,price,rating}); editingFoodId=null; } else { await addDoc(collection(db,"foods"),{name,price,rating}); }  
-  document.getElementById('adminPanel').style.display='none'; loadFoods();  
+  const name=document.getElementById('foodName').value;  
+  const price=Number(document.getElementById('foodPrice').value);  
+  const rating=Number(document.getElementById('foodRating').value);  
+  if(!name||!price||!rating){alert("Fill all fields"); return;}  
+  if(editingFoodId){  
+    const foodRef=doc(db,"foods",editingFoodId);  
+    await updateDoc(foodRef,{name,price,rating}); editingFoodId=null;  
+  } else { await addDoc(collection(db,"foods"),{name,price,rating}); }  
+  document.getElementById('adminPanel').style.display='none';  
+  loadFoods();  
 });  
   
-// EDIT / DELETE FOOD  
-function editFood(id){ const f=foods.find(ff=>ff.id===id); if(!f) return; editingFoodId=id; document.getElementById('adminFormTitle').innerText='Edit Food'; document.getElementById('foodName').value=f.name; document.getElementById('foodPrice').value=f.price; document.getElementById('foodRating').value=f.rating; document.getElementById('adminPanel').style.display='flex'; }  
-async function deleteFood(id){ if(!confirm("Delete this food?")) return; const foodRef=doc(db,"foods",id); await updateDoc(foodRef,{deleted:true}); loadFoods(); }  
-  
-// PLACE ORDER  
-document.getElementById('placeOrderBtn').addEventListener('click',()=>{  
-  if(cart.length===0){ alert("Cart is empty"); return; }  
+// --- EDIT/DELETE FOOD ---  
+function editFood(id){  
+  const f=foods.find(ff=>ff.id===id); if(!f) return;  
+  editingFoodId=id;  
+  document.getElementById('adminFormTitle').innerText='Edit Food';  
+  document.getElementById('foodName').value=f.name;  
+  document.getElementById('foodPrice').value=f.price;  
+  document.getElementById('foodRating').value=f.rating;  
+  document.getElementById('adminPanel').style.display='flex';  
+}  
+async function deleteFood(id){  
+  if(!confirm("Delete this food?")) return;  
+  const foodRef=doc(db,"foods",id); await updateDoc(foodRef,{deleted:true});  
+  loadFoods();  
+}  
+</script><!-- PART 5: ORDER FORM + CONFIRM ORDER + THANKS POPUP -->  <script type="module">  
+// --- PLACE ORDER BUTTON ---  
+document.getElementById('placeOrderBtn').addEventListener('click', ()=>{  
+  if(cart.length===0){alert("Cart is empty"); return;}  
   document.getElementById('orderFormOverlay').style.display='flex';  
 });  
   
-// GET CURRENT LOCATION & ENABLE PLACE ORDER BUTTON  
+// --- CHECK ORDER FORM INPUTS ---  
 function checkOrderForm(){  
-  const phone = document.getElementById('phone').value;  
-  const pincode = document.getElementById('pincode').value;  
-  const area = document.getElementById('area').value;  
-  const city = document.getElementById('city').value;  
-  const loc = document.getElementById('locationLink').value;  
-  const btn = document.getElementById('confirmOrderBtn');  
-  btn.disabled = !(phone && pincode && area && city && loc);  
+  const phone=document.getElementById('phone').value;  
+  const pincode=document.getElementById('pincode').value;  
+  const area=document.getElementById('area').value;  
+  const city=document.getElementById('city').value;  
+  const loc=document.getElementById('locationLink').value;  
+  document.getElementById('confirmOrderBtn').disabled=!(phone&&pincode&&area&&city&&loc);  
 }  
-['phone','pincode','area','city','locationLink'].forEach(id=>{  
-  document.getElementById(id).addEventListener('input', checkOrderForm);  
-});  
+['phone','pincode','area','city','locationLink'].forEach(id=>document.getElementById(id).addEventListener('input', checkOrderForm));  
   
+// --- GET CURRENT LOCATION ---  
 document.getElementById('getLocationBtn').addEventListener('click', ()=>{  
   if(navigator.geolocation){  
     navigator.geolocation.getCurrentPosition(pos=>{  
-      const lat = pos.coords.latitude;  
-      const lng = pos.coords.longitude;  
-      document.getElementById('locationLink').value = `https://www.google.com/maps?q=${lat},${lng}`;  
+      const lat=pos.coords.latitude;  
+      const lng=pos.coords.longitude;  
+      document.getElementById('locationLink').value=`https://www.google.com/maps?q=${lat},${lng}`;  
       checkOrderForm();  
-    }, err=>alert("Unable to fetch location"));  
+    }, ()=>alert("Unable to fetch location"));  
   } else alert("Geolocation not supported");  
 });  
   
-// CONFIRM ORDER  
-document.getElementById('confirmOrder// CONFIRM ORDER  
+// --- CONFIRM ORDER ---  
 document.getElementById('confirmOrderBtn').addEventListener('click', async ()=>{  
-  const phone = document.getElementById('phone').value;  
-  const pincode = document.getElementById('pincode').value;  
-  const area = document.getElementById('area').value;  
-  const city = document.getElementById('city').value;  
-  const loc = document.getElementById('locationLink').value;  
+  const phone=document.getElementById('phone').value;  
+  const pincode=document.getElementById('pincode').value;  
+  const area=document.getElementById('area').value;  
+  const city=document.getElementById('city').value;  
+  const loc=document.getElementById('locationLink').value;  
+  if(!phone||!pincode||!area||!city||!loc){alert("Fill all fields"); return;}  
   
-  if(!phone || !pincode || !area || !city || !loc){  
-    alert("Fill all fields");  
-    return;  
-  }  
-  
-  // Save order to Firestore  
-  try {  
-    await addDoc(collection(db, "orders"), {  
-      user: auth.currentUser.email,  
-      cart: cart,  
-      phone: phone,  
-      pincode: pincode,  
-      area: area,  
-      city: city,  
-      locationLink: loc,  
-      timestamp: Date.now()  
+  try{  
+    await addDoc(collection(db,"orders"),{  
+      user:auth.currentUser.email,  
+      cart:cart,  
+      phone, pincode, area, city, locationLink:loc,  
+      timestamp:Date.now()  
     });  
+    cart=[]; updateCartUI();  
+    document.getElementById('orderFormOverlay').style.display='none';  
+    document.getElementById('cartModal').style.display='none';  
+    ['phone','pincode','area','city','locationLink'].forEach(id=>document.getElementById(id).value="");  
   
-    // Clear cart and order form  
-    cart = [];  
-    updateCartUI();  
-    document.getElementById('orderFormOverlay').style.display = 'none';  
-    document.getElementById('cartModal').style.display = 'none';  
-  
-    ['phone','pincode','area','city','locationLink'].forEach(id => document.getElementById(id).value = "");  
-  
-    // Show thank you popup  
-    const popup = document.getElementById('thanksPopup');  
-    popup.classList.add('show');  
-    setTimeout(()=>popup.classList.remove('show'), 2000);  
-  
-  } catch(err) {  
-    alert("Error placing order: " + err.message);  
-  }  
+    // Show popup  
+    const popup=document.getElementById('thanksPopup');  
+    popup.classList.add('show'); setTimeout(()=>popup.classList.remove('show'),2000);  
+  } catch(err){alert("Error placing order: "+err.message);}  
 });  
 </script>  </body>  
   </html>
