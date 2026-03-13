@@ -25,9 +25,35 @@ min-height:100vh;
 header{
 background:#1d3557;
 color:white;
-padding:15px;
+padding:14px;
 display:flex;
 justify-content:space-between;
+align-items:center;
+}
+
+.header-right{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.header-btn{
+padding:6px 10px;
+font-size:14px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+#ordersIcon{
+font-size:20px;
+cursor:pointer;
+display:none;
+}
+
+#logoutBtn{
+background:#e63946;
+color:white;
 }
 
 .food-grid{
@@ -146,27 +172,38 @@ animation:pop 0.3s;
 <div id="app">
 
 <header>
+
 <div>Ami Please</div>
-<div>Cart: <span id="cartCount">0</span></div>
+
+<div class="header-right">
+
+<span>Cart: <span id="cartCount">0</span></span>
+
+<div id="ordersIcon">📦</div>
+
+<button id="logoutBtn" class="header-btn">Logout</button>
+
+</div>
+
 </header>
 
 <div class="food-grid" id="foodList"></div>
 
 <div id="adminPanel" style="display:none;padding:10px">
 
-<h3>Admin Food Panel</h3>
+<h3>Admin Orders</h3>
+
+<div id="adminOrders"></div>
+
+<hr>
+
+<h3>Food Panel</h3>
 
 <input id="foodName" placeholder="Food name">
 <input id="foodPrice" placeholder="Price">
 <input id="foodRating" placeholder="Rating">
 
 <button id="addFoodBtn">Add Food</button>
-
-<hr>
-
-<button id="viewOrdersBtn">View Orders</button>
-
-<div id="adminOrders"></div>
 
 </div>
 
@@ -226,7 +263,8 @@ import {
 getAuth,
 signInWithEmailAndPassword,
 createUserWithEmailAndPassword,
-onAuthStateChanged
+onAuthStateChanged,
+signOut
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
 import {
@@ -257,8 +295,6 @@ const db=getFirestore(app);
 const adminEmail="beejumble43@gmail.com";
 
 let cart=[];
-
-const foodList=document.getElementById("foodList");
 
 async function loadFoods(){
 
@@ -367,6 +403,58 @@ cartPanel.style.display="none";
 
 };
 
+ordersIcon.onclick=()=>{
+
+adminPanel.style.display=
+adminPanel.style.display==="none"?"block":"none";
+
+loadOrders();
+
+};
+
+async function loadOrders(){
+
+adminOrders.innerHTML="";
+
+const snap=await getDocs(collection(db,"orders"));
+
+snap.forEach(d=>{
+
+const o=d.data();
+
+const div=document.createElement("div");
+
+div.innerHTML=`
+
+<hr>
+
+<b>${o.user}</b><br>
+
+${o.area}, ${o.city}<br>
+
+Phone: ${o.phone}<br>
+
+<a href="${o.location}" target="_blank">Location</a><br>
+
+Status: ${o.status}<br>
+
+<button onclick="updateStatus('${d.id}','preparing')">Preparing</button>
+<button onclick="updateStatus('${d.id}','delivered')">Delivered</button>
+
+`;
+
+adminOrders.appendChild(div);
+
+});
+
+}
+
+window.updateStatus=async(id,status)=>{
+
+await updateDoc(doc(db,"orders",id),{status});
+
+};
+
 addFoodBtn.onclick=async()=>{
 
 await addDoc(collection(db,"foods"),{
@@ -410,6 +498,8 @@ loadFoods();
 loginBtn.onclick=()=>signInWithEmailAndPassword(auth,email.value,password.value);
 signupBtn.onclick=()=>createUserWithEmailAndPassword(auth,email.value,password.value);
 
+logoutBtn.onclick=()=>signOut(auth);
+
 onAuthStateChanged(auth,user=>{
 
 if(user){
@@ -420,7 +510,7 @@ loadFoods();
 
 if(user.email===adminEmail){
 
-adminPanel.style.display="block";
+ordersIcon.style.display="block";
 
 listenOrders();
 
@@ -433,49 +523,6 @@ loginPage.style.display="flex";
 }
 
 });
-
-viewOrdersBtn.onclick=async()=>{
-
-adminOrders.innerHTML="";
-
-const snap=await getDocs(collection(db,"orders"));
-
-snap.forEach(d=>{
-
-const o=d.data();
-
-const div=document.createElement("div");
-
-div.innerHTML=`
-
-<hr>
-
-<b>${o.user}</b><br>
-
-${o.area}, ${o.city}<br>
-
-Phone: ${o.phone}<br>
-
-<a href="${o.location}" target="_blank">Location</a><br>
-
-Status: ${o.status}<br>
-
-<button onclick="updateStatus('${d.id}','preparing')">Preparing</button>
-<button onclick="updateStatus('${d.id}','delivered')">Delivered</button>
-
-`;
-
-adminOrders.appendChild(div);
-
-});
-
-};
-
-window.updateStatus=async(id,status)=>{
-
-await updateDoc(doc(db,"orders",id),{status});
-
-};
 
 function listenOrders(){
 
