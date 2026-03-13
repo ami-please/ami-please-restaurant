@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Ami Please Restaurant</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
 margin:0;
 font-family:Poppins;
-background:#f8f9fa;
 }
 
 /* LOGIN PAGE */
@@ -23,128 +22,97 @@ height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-background:
-linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover;
+background:url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover;
 }
 
 .loginBox{
-background:white;
-padding:30px;
-border-radius:15px;
+background:rgba(255,255,255,0.95);
+padding:40px;
+border-radius:12px;
 width:300px;
 text-align:center;
+}
+
+.loginBox h2{
+margin-bottom:20px;
 }
 
 input{
 width:100%;
 padding:10px;
 margin:8px 0;
-border-radius:8px;
-border:1px solid #ddd;
 }
 
 button{
 width:100%;
 padding:10px;
-margin-top:8px;
-border:none;
-border-radius:8px;
 background:#ff4d4d;
+border:none;
 color:white;
 cursor:pointer;
 }
 
 a{
+cursor:pointer;
 display:block;
 margin-top:8px;
-color:#ff4d4d;
-cursor:pointer;
-}
-
-/* MENU */
-
-#menu{display:none;}
-
-header{
-background:white;
-padding:15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-
-.logo{
-font-weight:700;
+font-size:14px;
 color:#ff4d4d;
 }
 
-.cart-icon{
-cursor:pointer;
+/* MENU PAGE */
+
+#menu{
+display:none;
+background:#f6f6f6;
+min-height:100vh;
 }
+
+/* TOP BANNER */
 
 .banner{
-height:180px;
 background:url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5") center/cover;
+height:200px;
+color:white;
 display:flex;
 align-items:center;
 justify-content:center;
-color:white;
-font-size:24px;
+font-size:32px;
 font-weight:600;
 }
 
-.container{padding:15px;}
+/* FOOD */
 
-.food-card{
+.food{
 background:white;
+margin:10px;
 padding:15px;
 border-radius:10px;
-margin-bottom:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 4px 10px rgba(0,0,0,0.05);
 }
 
-.food-card button{
-width:35px;
-height:35px;
-border-radius:50%;
+.add{
+background:black;
+color:white;
+padding:5px 12px;
+margin-top:6px;
 }
 
-/* CART */
-
-#cartModal{
+#cart{
 position:fixed;
-top:0;
-right:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
+bottom:20px;
+right:20px;
+background:black;
+color:white;
+padding:12px 18px;
+border-radius:30px;
+cursor:pointer;
+}
+
+#adminPanel{
 display:none;
-justify-content:flex-end;
-}
-
-.cart-panel{
-background:white;
-width:350px;
-height:100%;
-padding:20px;
-display:flex;
-flex-direction:column;
-}
-
-.cart-items{
-flex:1;
-overflow:auto;
-}
-
-.cart-item{
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
+background:#222;
+color:white;
+padding:10px;
 }
 
 </style>
@@ -153,7 +121,7 @@ margin-bottom:10px;
 
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
 
 <div id="loginPage">
 
@@ -162,10 +130,12 @@ margin-bottom:10px;
 <h2>Ami Please</h2>
 
 <input id="email" placeholder="Email">
+
 <input id="password" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
-<button onclick="signup()">Create Account</button>
+
+<button onclick="signup()">Signup</button>
 
 <a onclick="forgot()">Forgot Password?</a>
 
@@ -174,42 +144,26 @@ margin-bottom:10px;
 </div>
 
 
-<!-- MENU -->
+<!-- MENU PAGE -->
 
 <div id="menu">
 
-<header>
-<div class="logo">Ami Please</div>
-<div class="cart-icon" onclick="toggleCart()">
-<i class="fas fa-shopping-cart"></i>
-<span id="cartCount">0</span>
-</div>
-</header>
+<div class="banner">
 
-<div class="banner">Delicious Food Delivered</div>
-
-<div class="container" id="foodList"></div>
+Ami Please Restaurant
 
 </div>
 
+<div id="adminPanel">
 
-<!-- CART -->
-
-<div id="cartModal">
-
-<div class="cart-panel">
-
-<h3>Your Cart</h3>
-
-<div id="cartItems" class="cart-items"></div>
-
-<h3>Total: <span id="cartTotal">₹0</span></h3>
-
-<button onclick="checkout()">Checkout</button>
-
-<button onclick="toggleCart()">Close</button>
+Admin Panel  
+<input type="file">
 
 </div>
+
+<div id="foodList"></div>
+
+<div id="cart">Cart</div>
 
 </div>
 
@@ -244,24 +198,27 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
+
 const adminEmail="beejumble43@gmail.com";
 
 
-window.login=()=>{
+window.login=function(){
 
 signInWithEmailAndPassword(auth,email.value,password.value)
 .catch(e=>alert(e.message))
 
 }
 
-window.signup=()=>{
+
+window.signup=function(){
 
 createUserWithEmailAndPassword(auth,email.value,password.value)
 .catch(e=>alert(e.message))
 
 }
 
-window.forgot=()=>{
+
+window.forgot=function(){
 
 sendPasswordResetEmail(auth,email.value)
 .then(()=>alert("Reset email sent"))
@@ -274,9 +231,14 @@ onAuthStateChanged(auth,(user)=>{
 if(user){
 
 loginPage.style.display="none"
+
 menu.style.display="block"
 
-renderFoods()
+if(user.email===adminEmail){
+
+adminPanel.style.display="block"
+
+}
 
 }
 
@@ -286,121 +248,48 @@ renderFoods()
 const foods=[
 
 {name:"Steamed Momos",price:110},
+
 {name:"Fried Momos",price:110},
+
 {name:"Schezwan Momos",price:150},
+
 {name:"Crispy Momos",price:140},
-{name:"Chicken Biryani",price:180},
+
+{name:"Chicken Biryani",price:160},
+
 {name:"Mutton Biryani",price:220},
+
 {name:"Chicken 65",price:150},
+
 {name:"French Fries",price:90},
+
 {name:"Tea",price:25},
+
 {name:"Coffee",price:40}
 
 ]
 
 
-let cart=[]
-
-
-function renderFoods(){
-
-foodList.innerHTML=""
-
-foods.forEach((f,i)=>{
+foods.forEach(f=>{
 
 foodList.innerHTML+=`
 
-<div class="food-card">
-
-<div>
+<div class="food">
 
 <h3>${f.name}</h3>
+
 <p>₹${f.price}</p>
 
-</div>
-
-<button onclick="addToCart(${i})">
-
-<i class="fas fa-plus"></i>
-
-</button>
+<button class="add">Add</button>
 
 </div>
 
 `
 
 })
-
-}
-
-
-window.addToCart=(i)=>{
-
-cart.push(foods[i])
-
-updateCart()
-
-}
-
-
-function updateCart(){
-
-cartCount.textContent=cart.length
-
-let total=0
-
-cartItems.innerHTML=""
-
-cart.forEach(item=>{
-
-total+=item.price
-
-cartItems.innerHTML+=`
-
-<div class="cart-item">
-
-<span>${item.name}</span>
-<span>₹${item.price}</span>
-
-</div>
-
-`
-
-})
-
-cartTotal.textContent="₹"+total
-
-}
-
-
-window.toggleCart=()=>{
-
-cartModal.style.display=
-cartModal.style.display=="flex"?"none":"flex"
-
-}
-
-
-window.checkout=()=>{
-
-if(cart.length==0){
-
-alert("Cart empty")
-return
-
-}
-
-alert("Order placed!")
-
-cart=[]
-
-updateCart()
-
-toggleCart()
-
-}
 
 </script>
 
 </body>
-  </html>
+
+</html>
