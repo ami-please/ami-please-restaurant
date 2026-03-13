@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Ami Please Restaurant</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 
 <style>
 
@@ -17,7 +17,7 @@ font-family:Poppins;
 background:#fafafa;
 }
 
-/* LOGIN PAGE */
+/* LOGIN */
 
 #loginPage{
 height:100vh;
@@ -25,14 +25,14 @@ display:flex;
 justify-content:center;
 align-items:center;
 background:
-linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
 url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover;
 }
 
 .loginBox{
 background:white;
 padding:40px;
-border-radius:15px;
+border-radius:16px;
 width:320px;
 text-align:center;
 }
@@ -46,77 +46,105 @@ border:1px solid #ddd;
 }
 
 button{
-width:100%;
 padding:12px;
-margin-top:8px;
+width:100%;
 border:none;
-border-radius:8px;
 background:#ff4d4d;
 color:white;
-cursor:pointer;
-}
-
-a{
-display:block;
+border-radius:8px;
 margin-top:8px;
-color:#ff4d4d;
 cursor:pointer;
 }
 
-/* MENU */
+/* MAIN SITE */
 
 #menu{display:none;}
 
 header{
-background:white;
-padding:15px;
 display:flex;
 justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
+padding:15px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
 }
 
 .logo{
-font-weight:700;
+font-family:Playfair Display;
+font-size:22px;
 color:#ff4d4d;
 }
 
 .banner{
-height:180px;
-background:url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5") center/cover;
+height:220px;
+background:
+linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),
+url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5") center/cover;
 display:flex;
 align-items:center;
 justify-content:center;
 color:white;
-font-size:24px;
+font-size:32px;
+font-family:Playfair Display;
+}
+
+/* FOOD GRID */
+
+.menuGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+padding:16px;
+}
+
+.foodCard{
+background:white;
+border-radius:14px;
+box-shadow:0 3px 12px rgba(0,0,0,0.1);
+overflow:hidden;
+}
+
+.foodImg{
+height:140px;
+background:#eee;
+}
+
+.foodInfo{
+padding:10px;
+}
+
+.foodTitle{
 font-weight:600;
 }
 
-.container{
-padding:15px;
+.price{
+color:#ff4d4d;
+font-weight:600;
 }
 
-.food-card{
-background:white;
-padding:15px;
-border-radius:10px;
-margin-bottom:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
+.rating{
+color:orange;
+font-size:14px;
 }
 
-.add-btn{
-background:black;
-color:white;
-width:35px;
-height:35px;
-border-radius:50%;
+.qty{
 display:flex;
 align-items:center;
-justify-content:center;
-cursor:pointer;
+gap:10px;
+margin-top:6px;
+}
+
+.qty button{
+width:28px;
+height:28px;
+padding:0;
+}
+
+.added{
+animation:pop .3s ease;
+}
+
+@keyframes pop{
+50%{transform:scale(1.2)}
 }
 
 /* ADMIN PANEL */
@@ -130,43 +158,12 @@ margin:10px;
 border-radius:10px;
 }
 
-/* CART */
-
-#cartModal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.6);
-display:none;
-justify-content:center;
-align-items:center;
-}
-
-.cart-box{
-background:white;
-padding:20px;
-width:320px;
-border-radius:12px;
-}
-
-.cart-item{
-display:flex;
-justify-content:space-between;
-margin:6px 0;
-}
-
 </style>
-
 </head>
 
 <body>
 
-<!-- LOGIN -->
-
 <div id="loginPage">
-
 <div class="loginBox">
 
 <h2>Ami Please</h2>
@@ -175,15 +172,12 @@ margin:6px 0;
 <input id="password" type="password" placeholder="Password">
 
 <button onclick="login()">Login</button>
-<button onclick="signup()">Create Account</button>
+<button onclick="signup()">Signup</button>
 
-<a onclick="forgot()">Forgot Password?</a>
-
-</div>
+<button onclick="forgot()">Forgot Password</button>
 
 </div>
-
-<!-- MENU -->
+</div>
 
 <div id="menu">
 
@@ -192,11 +186,7 @@ margin:6px 0;
 <div class="logo">Ami Please</div>
 
 <div>
-
-<span onclick="toggleCart()" style="cursor:pointer">Cart (<span id="cartCount">0</span>)</span>
-
-<button onclick="logout()" style="margin-left:10px">Logout</button>
-
+<button onclick="logout()">Logout</button>
 </div>
 
 </header>
@@ -206,137 +196,62 @@ Delicious Food Delivered
 </div>
 
 <div id="adminPanel">
-Admin Panel — You are logged in as Admin
-</div>
 
-<div class="container" id="foodList"></div>
+<h3>Admin Food Upload</h3>
 
-</div>
+<input id="foodName" placeholder="Food name">
+<input id="foodPrice" placeholder="Price">
+<input id="foodRating" placeholder="Rating">
+<input type="file" id="foodImage">
 
-<!-- CART -->
-
-<div id="cartModal">
-
-<div class="cart-box">
-
-<h3>Your Cart</h3>
-
-<div id="cartItems"></div>
-
-<h3>Total: ₹<span id="cartTotal">0</span></h3>
-
-<button onclick="checkout()">Checkout</button>
-<button onclick="toggleCart()">Close</button>
+<button onclick="uploadFood()">Upload Food</button>
 
 </div>
+
+<div class="menuGrid" id="menuGrid"></div>
 
 </div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-
-import {
-getAuth,
-signInWithEmailAndPassword,
-createUserWithEmailAndPassword,
-sendPasswordResetEmail,
-onAuthStateChanged,
-signOut
-}
-from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,onAuthStateChanged,signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getFirestore,collection,addDoc,getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { getStorage,ref,uploadBytes,getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
 
 const firebaseConfig={
 apiKey:"AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
 authDomain:"ami-please-restaurant.firebaseapp.com",
 projectId:"ami-please-restaurant",
-storageBucket:"ami-please-restaurant.firebasestorage.app",
+storageBucket:"ami-please-restaurant.appspot.com",
 messagingSenderId:"590274660115",
 appId:"1:590274660115:web:998a7c8bb31e4a2696fce6"
 };
 
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
+const db=getFirestore(app);
+const storage=getStorage(app);
 
 const adminEmail="beejumble43@gmail.com";
 
-let cart=[];
-
-const foods=[
-"Steamed Momos","Fried Momos","Paneer Momos","Chicken Momos",
-"Veg Burger","Chicken Burger","Cheese Burger",
-"Veg Pizza","Margherita Pizza","Farmhouse Pizza","Chicken Pizza",
-"Veg Roll","Chicken Roll","Paneer Roll","Egg Roll",
-"Veg Chowmein","Chicken Chowmein","Hakka Noodles",
-"Veg Fried Rice","Chicken Fried Rice","Egg Fried Rice",
-"Chicken Biryani","Mutton Biryani","Veg Biryani",
-"Paneer Butter Masala","Chicken Curry","Butter Chicken",
-"Garlic Naan","Butter Naan","Tandoori Roti",
-"French Fries","Peri Peri Fries",
-"Spring Rolls","Chicken Lollipop","Chilli Chicken",
-"Tea","Coffee","Cold Coffee",
-"Chocolate Shake","Vanilla Shake","Strawberry Shake",
-"Soft Drink","Lemon Soda","Mineral Water"
-];
-
-const foodList=document.getElementById("foodList");
-
-foods.forEach((f,i)=>{
-
-foodList.innerHTML+=`
-
-<div class="food-card">
-
-<span>${f}</span>
-
-<div class="add-btn" onclick="addToCart(${i})">+</div>
-
-</div>
-
-`;
-
-});
-
 window.login=()=>{
-
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
-
-if(email=="" || password==""){
-alert("Enter email and password");
-return;
-}
-
-signInWithEmailAndPassword(auth,email,password)
+signInWithEmailAndPassword(auth,email.value,password.value)
 .catch(e=>alert(e.message));
-
 }
 
 window.signup=()=>{
-
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
-
-createUserWithEmailAndPassword(auth,email,password)
+createUserWithEmailAndPassword(auth,email.value,password.value)
 .catch(e=>alert(e.message));
-
 }
 
 window.forgot=()=>{
-
-const email=document.getElementById("email").value;
-
-sendPasswordResetEmail(auth,email)
+sendPasswordResetEmail(auth,email.value)
 .then(()=>alert("Reset email sent"));
-
 }
 
 window.logout=()=>{
-
-signOut(auth).then(()=>{
-location.reload();
-});
-
+signOut(auth)
 }
 
 onAuthStateChanged(auth,(user)=>{
@@ -350,69 +265,98 @@ if(user.email===adminEmail){
 adminPanel.style.display="block";
 }
 
-}
-
-});
-
-window.addToCart=(i)=>{
-
-cart.push(foods[i]);
-
-updateCart();
+loadFoods()
 
 }
 
-function updateCart(){
+})
 
-let total=0;
+async function loadFoods(){
 
-cartItems.innerHTML="";
+menuGrid.innerHTML=""
 
-cart.forEach(item=>{
+const query=await getDocs(collection(db,"foods"))
 
-total+=100;
+query.forEach(doc=>{
 
-cartItems.innerHTML+=`
+const f=doc.data()
 
-<div class="cart-item">
+menuGrid.innerHTML+=`
 
-<span>${item}</span>
-<span>₹100</span>
+<div class="foodCard">
+
+<div class="foodImg" style="background:url('${f.image}') center/cover"></div>
+
+<div class="foodInfo">
+
+<div class="foodTitle">${f.name}</div>
+
+<div class="price">₹${f.price}</div>
+
+<div class="rating">${"⭐".repeat(Math.round(f.rating))}</div>
+
+<div class="qty">
+
+<button onclick="minus(this)">-</button>
+
+<span>1</span>
+
+<button onclick="plus(this)">+</button>
 
 </div>
 
-`;
+</div>
 
-});
+</div>
 
-cartTotal.innerText=total;
-cartCount.innerText=cart.length;
+`
 
-}
-
-window.toggleCart=()=>{
-
-cartModal.style.display=
-cartModal.style.display=="flex"?"none":"flex";
+})
 
 }
 
-window.checkout=()=>{
-
-if(cart.length==0){
-alert("Cart empty");
-return;
+window.plus=(btn)=>{
+const s=btn.parentElement.querySelector("span")
+s.innerText=parseInt(s.innerText)+1
+btn.classList.add("added")
+setTimeout(()=>btn.classList.remove("added"),300)
 }
 
-alert("Order placed!");
+window.minus=(btn)=>{
+const s=btn.parentElement.querySelector("span")
+if(parseInt(s.innerText)>1)
+s.innerText=parseInt(s.innerText)-1
+}
 
-cart=[];
-updateCart();
-toggleCart();
+window.uploadFood=async()=>{
+
+const name=foodName.value
+const price=foodPrice.value
+const rating=foodRating.value
+const file=foodImage.files[0]
+
+const storageRef=ref(storage,"foods/"+file.name)
+
+await uploadBytes(storageRef,file)
+
+const url=await getDownloadURL(storageRef)
+
+await addDoc(collection(db,"foods"),{
+
+name:name,
+price:price,
+rating:rating,
+image:url
+
+})
+
+alert("Food Uploaded")
+
+loadFoods()
 
 }
 
 </script>
 
 </body>
-                                                                                  </html>
+</html>
