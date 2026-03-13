@@ -53,6 +53,11 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
 .admin-menu button{background:var(--secondary);color:white;border:none;padding:10px 15px;border-radius:var(--radius);transition:0.3s;}
 .admin-menu button:hover{background:var(--primary);}
 
+/* ADMIN ORDERS */
+.admin-orders{display:none;margin:10px 15px;}
+.admin-orders h3{color:var(--primary);}
+.admin-orders .order-card{background:#fff;padding:15px;border-radius:var(--radius);margin-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+
 /* MODALS */
 #adminPanel,#cartModal,#orderFormOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:1000;}
 .admin-form,.cart-panel,.order-form{background:white;padding:20px;border-radius:var(--radius);width:90%;max-width:400px;display:flex;flex-direction:column;gap:10px;}
@@ -89,7 +94,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:15p
   <div class="admin-menu" id="adminMenu">  
     <button id="addFoodBtn">Add Food</button>  
   </div>  
-  <div class="container" id="foodList"></div>  
+  <div class="container" id="foodList"></div>    <!-- Admin Orders -->    <div class="admin-orders" id="adminOrders">  
+    <h3>New Orders</h3>  
+    <div id="ordersList"></div>  
+  </div>  
 </div>  <!-- ADMIN PANEL -->  <div id="adminPanel">  
   <div class="admin-form">  
     <h3 id="adminFormTitle">Add Food</h3>  
@@ -172,12 +180,20 @@ onAuthStateChanged(auth,user=>{
   if(user){  
     document.getElementById('loginPage').style.display="none";  
     document.getElementById('menu').style.display="block";  
-    document.getElementById('adminMenu').style.display = (user.email===adminEmail)?"flex":"none";  
+    if(user.email===adminEmail){  
+      document.getElementById('adminMenu').style.display = "flex";  
+      document.getElementById('adminOrders').style.display = "block";  
+      loadOrders();  
+    } else {  
+      document.getElementById('adminMenu').style.display = "none";  
+      document.getElementById('adminOrders').style.display = "none";  
+    }  
     loadFoods();  
   } else {  
     document.getElementById('loginPage').style.display="flex";  
     document.getElementById('menu').style.display="none";  
     document.getElementById('adminMenu').style.display="none";  
+    document.getElementById('adminOrders').style.display="none";  
   }  
 });  
   
@@ -251,7 +267,8 @@ async function deleteFood(id){ if(!confirm("Delete this food?")) return; await u
 // PLACE ORDER  
 document.getElementById('placeOrderBtn').addEventListener('click', ()=>{  
   if(cart.length===0){ alert("Cart is empty"); return; }  
-  document.getElementById('orderFormOverlay').style.display='flex';  
+  document.getElementById('orderFormOverlay').  
+.style.display='flex';  
 });  
   
 document.getElementById('closeOrderFormBtn').addEventListener('click', ()=>document.getElementById('orderFormOverlay').style.display='none');  
@@ -268,7 +285,6 @@ function checkOrderForm(){
 ['phone','pincode','area','city','locationLink'].forEach(id=>document.getElementById(id).addEventListener('input', checkOrderForm));  
   
 // GET LOCATION  
-document.getElementById('getLocationBtn').add  
 document.getElementById('getLocationBtn').addEventListener('click', () => {  
   if (navigator.geolocation) {  
     navigator.geolocation.getCurrentPosition(  
@@ -299,7 +315,7 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
   }  
   
   try {  
-    await addDoc(collection(db, "orders"), {  
+    const orderRef = await addDoc(collection(db, "orders"), {  
       user: auth.currentUser.email,  
       cart: cart,  
       phone: phone,  
@@ -307,7 +323,8 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
       area: area,  
       city: city,  
       locationLink: loc,  
-      timestamp: Date.now()  
+      timestamp: Date.now(),  
+      status: "pending"  
     });  
   
     // Clear cart and order form  
@@ -322,9 +339,47 @@ document.getElementById('confirmOrderBtn').addEventListener('click', async () =>
     popup.classList.add('show');  
     setTimeout(() => popup.classList.remove('show'), 2000);  
   
+    // If admin is logged in, refresh orders  
+    if(auth.currentUser && auth.currentUser.email === adminEmail){  
+      loadOrders();  
+    }  
+  
   } catch (err) {  
     alert("Error placing order: " + err.message);  
   }  
 });  
+  
+// LOAD ORDERS (Admin Dashboard)  
+async function loadOrders(){  
+  const ordersList = document.getElementById('ordersList');  
+  ordersList.innerHTML = "Loading orders...";  
+  const snap = await getDocs(collection(db,"orders"));  
+  ordersList.innerHTML = "";  
+  snap.forEach(d => {  
+    const o = d.data();  
+    const div = document.createElement('div');  
+    div.className = "order-card";  
+    let itemsText = o.cart.map(c=>{  
+      const f = foods.find(ff=>ff.id===c.id);  
+      return f ? `${f.name} x ${c.qty}` : '';  
+    }).join(", ");  
+    div.innerHTML = `  
+      <p><strong>User:</strong> ${o.user}</p>  
+      <p><strong>Items:</strong> ${itemsText}</p>  
+      <p><strong>Phone:</strong> ${o.phone}</p>  
+      <p><strong>Address:</strong> ${o.area}, ${o.city} - ${o.pincode}</p>  
+      <p><strong>Location:</strong> <a href="${o.locationLink}" target="_blank">Map</a></p>  
+      <p><strong>Time:</strong> ${new Date(o.timestamp).toLocaleString()}</p>  
+      <p><strong>Status:</strong> ${o.status}</p>  
+      <button class="complete-btn">Mark Complete</button>  
+    `;  
+    const completeBtn = div.querySelector('.complete-btn');  
+    completeBtn.addEventListener('click', async ()=>{  
+      await updateDoc(doc(db,"orders",d.id), {status:"completed"});  
+      loadOrders();  
+    });  
+    ordersList.appendChild(div);  
+  });  
+}  
 </script>  </body>  
-  </html>
+    </html>
