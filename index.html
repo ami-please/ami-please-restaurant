@@ -14,6 +14,7 @@
 <style>
 :root {
     --primary: #ff4d4d;
+    --primary-dark: #d63030;
     --secondary: #2d3436;
     --bg: #fafafa;
     --white: #fff;
@@ -21,46 +22,28 @@
     --transition: 0.3s;
 }
 
-/* General */
-body {
-    font-family: 'Poppins', sans-serif;
-    margin:0;
-    padding:0;
-    background: var(--bg);
-}
+/* GENERAL */
+body { font-family: 'Poppins', sans-serif; margin:0; padding:0; background: var(--bg); }
 
 /* LOGIN PAGE */
-#loginPage {
-    position: fixed;
-    top:0; left:0; width:100%; height:100%;
+#loginPage { position:fixed; top:0; left:0; width:100%; height:100%;
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
                 url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover no-repeat;
-    display:flex; align-items:center; justify-content:center;
-    z-index:1000;
+    display:flex; align-items:center; justify-content:center; z-index:1000;
 }
-.loginBox {
-    background: rgba(255,255,255,0.95);
-    padding:40px;
-    border-radius: var(--radius);
-    width: 90%; max-width:400px;
-    text-align:center;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
+.loginBox { background: rgba(255,255,255,0.95); padding:40px; border-radius: var(--radius); width: 90%; max-width:400px; text-align:center; box-shadow: 0 8px 20px rgba(0,0,0,0.3);}
 .loginBox h2 { font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom:10px;}
 .loginBox p { margin-bottom:20px; color:#666; }
-
 .input-group { margin-bottom:15px; text-align:left; }
 .input-group label { font-size:12px; margin-bottom:5px; display:block; color:#333; }
 .input-group input { width:100%; padding:12px; border-radius: var(--radius); border:1px solid #ddd; outline:none; }
-
 .btn { width:100%; padding:12px; border:none; border-radius: var(--radius); cursor:pointer; font-weight:600; margin-bottom:10px; }
 .btn-primary { background: var(--primary); color:white; }
 .btn-outline { background:transparent; border:2px solid var(--primary); color:var(--primary); }
-
 .auth-toggle { font-size:14px; margin-top:10px; }
 .auth-toggle a { color: var(--primary); cursor:pointer; text-decoration:none; }
 
-/* MAIN MENU */
+/* MAIN PAGE */
 #menu { display:none; padding-bottom:100px; }
 header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:white; position:sticky; top:0; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
 .logo { font-family: 'Playfair Display', serif; font-size:22px; color:var(--primary);}
@@ -70,7 +53,6 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 .banner { background: url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5") center/cover; height:180px; display:flex; align-items:center; justify-content:center; color:white; font-family: 'Playfair Display', serif; font-size:28px; font-weight:600; text-shadow:0 2px 6px rgba(0,0,0,0.4); margin-bottom:20px; }
 
 .container { max-width:1200px; margin:0 auto; padding:0 15px; display:grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap:15px; }
-
 .food-card { background:white; padding:15px; border-radius:var(--radius); box-shadow:0 4px 15px rgba(0,0,0,0.08); position:relative; display:flex; flex-direction:column; }
 .food-card img { width:100%; height:180px; object-fit:cover; border-radius:var(--radius);}
 .food-info { margin-top:10px; }
@@ -82,27 +64,6 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 
 .admin-menu { display:none; margin-bottom:20px; justify-content:flex-end; gap:10px; }
 .admin-menu button { padding:8px 15px; border:none; border-radius:var(--radius); cursor:pointer; font-weight:600; background:var(--primary); color:white; }
-.admin-food-options { position:absolute; bottom:10px; right:10px; cursor:pointer; font-size:20px; }
-
-/* CART MODAL */
-#cartModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:flex-end; z-index:20; }
-.cart-panel { background:white; width:85%; max-width:400px; height:100%; padding:20px; display:flex; flex-direction:column; }
-.cart-header { display:flex; justify-content:space-between; margin-bottom:15px; }
-.cart-items { flex:1; overflow-y:auto; }
-.cart-footer { margin-top:15px; border-top:1px solid #eee; padding-top:15px; }
-.total-row { display:flex; justify-content:space-between; font-weight:700; margin-bottom:15px; }
-.close-cart { cursor:pointer; font-size:24px; }
-
-/* OVERLAY DETAILS FORM */
-#orderFormOverlay { position:fixed; top:0; left:0;width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:30; }
-.order-form { background:white; padding:20px; border-radius:var(--radius); width:90%; max-width:400px; display:flex; flex-direction:column; gap:10px; }
-.order-form input { padding:10px; border-radius:var(--radius); border:1px solid #ddd; }
-.place-order-btn { background: var(--primary); color:white; padding:12px; border:none; border-radius:var(--radius); cursor:pointer; font-weight:600; margin-top:10px; }
-.place-order-btn:hover { opacity:0.9; }
-
-/* THANKS POPUP */
-#thanksPopup { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); background:var(--primary); color:white; padding:20px 30px; border-radius:var(--radius); z-index:40; font-size:18px; font-weight:600; transition:0.3s; }
-#thanksPopup.show { transform:translate(-50%,-50%) scale(1); }
 
 </style>
 </head>
@@ -141,7 +102,6 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
         <!-- Food cards injected here -->
     </div>
 </div>
-
 <!-- CART MODAL -->
 <div id="cartModal">
     <div class="cart-panel">
@@ -157,7 +117,7 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
     </div>
 </div>
 
-<!-- ORDER FORM -->
+<!-- ORDER FORM OVERLAY -->
 <div id="orderFormOverlay">
     <div class="order-form">
         <input id="phone" placeholder="Phone number">
@@ -171,12 +131,15 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 
 <!-- THANKS POPUP -->
 <div id="thanksPopup">Thanks for visiting Ami Please!</div>
+
+<!-- FOOD & CART SCRIPT -->
 <script type="module">
+
+// ----- INITIALIZE -----
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-// --- Firebase Config ---
 const firebaseConfig = {
   apiKey: "AIzaSyA1bN6g1EW62p-sDhZh6XsRe78fsJWSe9I",
   authDomain: "ami-please-restaurant.firebaseapp.com",
@@ -191,59 +154,56 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ----- GLOBAL VARIABLES -----
 const adminEmail = "beejumble43@gmail.com";
-
 let cart = [];
 let foods = [
-    {id:1,name:"Burger",price:100,rating:4,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
-    {id:2,name:"Pizza",price:250,rating:5,img:"https://images.unsplash.com/photo-1601924582975-1c8d3a9f10f2"},
-    {id:3,name:"Sandwich",price:150,rating:3,img:"https://images.unsplash.com/photo-1599785209707-1d9f5a7c9984"},
-    {id:4,name:"Pasta",price:200,rating:4,img:"https://images.unsplash.com/photo-1603079722225-0a11f8724f71"},
-    {id:5,name:"Sushi",price:350,rating:5,img:"https://images.unsplash.com/photo-1553621042-f6e147245754"}
+    {id:1,name:"Burger",price:100,rating:4,img:""},
+    {id:2,name:"Pizza",price:250,rating:5,img:""},
+    {id:3,name:"Sandwich",price:150,rating:3,img:""},
+    {id:4,name:"Pasta",price:200,rating:4,img:""},
+    {id:5,name:"Sushi",price:350,rating:5,img:""}
 ];
 
-// --- AUTH FUNCTIONS ---
-window.login = () => {
+// ----- AUTH FUNCTIONS -----
+window.login = ()=> {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    if(!email || !password) return alert("Fill all fields");
-    signInWithEmailAndPassword(auth,email,password)
-    .catch(e=>alert(e.message));
+    if(!email||!password) return alert("Fill all fields");
+    signInWithEmailAndPassword(auth,email,password).catch(e=>alert(e.message));
 }
 
-window.signup = () => {
+window.signup = ()=> {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    if(!email || !password) return alert("Fill all fields");
-    createUserWithEmailAndPassword(auth,email,password)
-    .catch(e=>alert(e.message));
+    if(!email||!password) return alert("Fill all fields");
+    createUserWithEmailAndPassword(auth,email,password).catch(e=>alert(e.message));
 }
 
-window.forgot = () => {
+window.forgot = ()=>{
     const email = prompt("Enter your email");
     if(email) sendPasswordResetEmail(auth,email).then(()=>alert("Reset email sent")).catch(e=>alert(e.message));
 }
 
-window.logout = () => {
+window.logout = ()=>{
     signOut(auth).then(()=>console.log("Logged out")).catch(e=>alert(e.message));
 }
 
-// --- AUTH STATE MONITOR ---
+// ----- AUTH STATE -----
 onAuthStateChanged(auth,user=>{
     if(user){
         document.getElementById('loginPage').style.display="none";
         document.getElementById('menu').style.display="block";
         if(user.email===adminEmail) document.getElementById('adminMenu').style.display="flex";
         renderFoods();
-        updateCartUI();
-    }else{
+    } else {
         document.getElementById('loginPage').style.display="flex";
         document.getElementById('menu').style.display="none";
         document.getElementById('adminMenu').style.display="none";
     }
 });
 
-// --- RENDER FOOD CARDS ---
+// ----- RENDER FOODS -----
 function renderFoods(){
     const foodList = document.getElementById('foodList');
     foodList.innerHTML="";
@@ -251,7 +211,7 @@ function renderFoods(){
         const div=document.createElement('div');
         div.className="food-card";
         div.innerHTML=`
-            <img src="${food.img}" alt="${food.name}">
+            <img src="${food.img||'https://via.placeholder.com/300x180'}" alt="${food.name}">
             <div class="food-info">
                 <h3>${food.name}</h3>
                 <p>₹${food.price} - ⭐ ${food.rating}</p>
@@ -261,16 +221,16 @@ function renderFoods(){
                 <span id="qty-${food.id}">0</span>
                 <button class="add-btn" onclick="updateCart(${food.id},1)">+</button>
             </div>
-            ${auth.currentUser && auth.currentUser.email===adminEmail ? `<div class="admin-food-options" onclick="editFood(${food.id})"><i class="fas fa-ellipsis-h"></i></div>` : ""}
+            ${auth.currentUser && auth.currentUser.email===adminEmail?`<div class="admin-food-options" onclick="editFood(${food.id})"><i class="fas fa-ellipsis-h"></i></div>`:""}
         `;
         foodList.appendChild(div);
     });
 }
 
-// --- CART HANDLING ---
-window.updateCart = (id,change) => {
+// ----- CART -----
+function updateCart(id,change){
     const item = cart.find(i=>i.id===id);
-    if(item){ item.qty+=change; if(item.qty<0)item.qty=0; }
+    if(item){ item.qty+=change; if(item.qty<0)item.qty=0;}
     else if(change>0) cart.push({id,qty:change});
     document.getElementById(`qty-${id}`).innerText=(cart.find(i=>i.id===id)||{qty:0}).qty;
     updateCartUI();
@@ -291,184 +251,115 @@ function updateCartUI(){
     document.getElementById('cartTotal').innerText=`₹${total}`;
 }
 
-window.toggleCart = () => {
+window.toggleCart = ()=>{
     const cm=document.getElementById('cartModal');
     cm.style.display = cm.style.display==="flex"?"none":"flex";
 }
 
-window.showOrderForm = () => {
+window.showOrderForm = ()=>{
     if(cart.length===0){ alert("Cart is empty"); return;}
     document.getElementById('orderFormOverlay').style.display="flex";
 }
 
-window.placeOrder = async () => {
+window.placeOrder = ()=>{
     const phone=document.getElementById('phone').value;
     const pin=document.getElementById('pincode').value;
     const area=document.getElementById('area').value;
     const city=document.getElementById('city').value;
     const loc=document.getElementById('locationLink').value;
     if(!phone || !pin || !area || !city || !loc){ alert("Fill all fields"); return;}
-
-    try{
-        const ordersRef = collection(db,"orders");
-        await addDoc(ordersRef,{
-            user: auth.currentUser.email,
-            phone, pin, area, city, loc,
-            items: cart.map(ci=>({id:ci.id,name:foods.find(f=>f.id===ci.id).name,qty:ci.qty})),
-            total: cart.reduce((sum,ci)=>sum+foods.find(f=>f.id===ci.id).price*ci.qty,0),
-            timestamp: Date.now()
-        });
-    }catch(e){ alert("Failed to save order: "+e.message); }
+    
+    // --- SEND ORDER TO FIRESTORE ---
+    addDoc(collection(db,"orders"),{
+        user: auth.currentUser.email,
+        cart: cart,
+        phone: phone,
+        pincode: pin,
+        area: area,
+        city: city,
+        location: loc,
+        time: new Date()
+    }).then(()=>console.log("Order placed")).catch(e=>alert(e.message));
 
     document.getElementById('orderFormOverlay').style.display="none";
     document.getElementById('cartModal').style.display="none";
     cart=[];
     updateCartUI();
-
     const popup=document.getElementById('thanksPopup');
     popup.classList.add('show');
     setTimeout(()=>{ popup.classList.remove('show'); },3000);
 }
-
-// --- ADMIN FUNCTIONS ---
-window.showUploadPanel = ()=>{ alert("Upload food panel (implement UI)"); }
-window.showOrders = async ()=>{
-    const ordersRef = collection(db,"orders");
-    const snapshot = await getDocs(ordersRef);
-    let text = "Orders:\n";
-    snapshot.forEach(doc=>{ text+=JSON.stringify(doc.data())+"\n"; });
-    alert(text);
-}
-window.editFood = (id)=>{ alert("Edit food "+id+" (implement UI to edit image,name,price,rating)"); }
-
 </script>
+<!-- ADMIN UPLOAD & EDIT PANEL -->
+<div id="adminPanelOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:50;">
+    <div style="background:white; padding:20px; border-radius:12px; width:90%; max-width:400px; display:flex; flex-direction:column; gap:10px;">
+        <h3 id="adminPanelTitle">Upload Food</h3>
+        <input type="text" id="foodName" placeholder="Food Name">
+        <input type="number" id="foodPrice" placeholder="Price">
+        <input type="number" id="foodRating" placeholder="Rating (1-5)" min="1" max="5">
+        <input type="file" id="foodImage">
+        <button onclick="saveFood()" class="place-order-btn">Save</button>
+        <button onclick="closeAdminPanel()" class="place-order-btn" style="background:#d63030;">Cancel</button>
+    </div>
+</div>
+
 <script type="module">
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-storage.js";
 
-// --- Firebase Storage ---
+// ----- ADMIN PANEL LOGIC -----
+let editingFoodId = null;
 const storage = getStorage(app);
 
-// --- ADMIN UPLOAD PANEL ---
-window.showUploadPanel = () => {
-    // Create overlay
-    let overlay = document.createElement('div');
-    overlay.id = 'uploadOverlay';
-    overlay.style = `position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:50;`;
-
-    overlay.innerHTML = `
-        <div style="background:white;padding:20px;border-radius:12px;width:90%;max-width:400px;display:flex;flex-direction:column;gap:10px;">
-            <h3>Upload Food</h3>
-            <input id="foodName" placeholder="Food Name">
-            <input id="foodPrice" type="number" placeholder="Price">
-            <input id="foodRating" type="number" placeholder="Rating 1-5" min="1" max="5">
-            <input id="foodImage" type="file" accept="image/*">
-            <div style="display:flex;justify-content:space-between;margin-top:10px;">
-                <button onclick="uploadFood()">Upload</button>
-                <button onclick="closeUploadPanel()">Cancel</button>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(overlay);
+window.showUploadPanel = ()=>{
+    editingFoodId = null;
+    document.getElementById('adminPanelTitle').innerText = "Upload Food";
+    document.getElementById('foodName').value="";
+    document.getElementById('foodPrice').value="";
+    document.getElementById('foodRating').value="";
+    document.getElementById('foodImage').value="";
+    document.getElementById('adminPanelOverlay').style.display="flex";
 }
 
-window.closeUploadPanel = () => {
-    const ov = document.getElementById('uploadOverlay');
-    if(ov) ov.remove();
+window.editFood = (id)=>{
+    editingFoodId = id;
+    const f = foods.find(f=>f.id===id);
+    document.getElementById('adminPanelTitle').innerText = "Edit Food";
+    document.getElementById('foodName').value=f.name;
+    document.getElementById('foodPrice').value=f.price;
+    document.getElementById('foodRating').value=f.rating;
+    document.getElementById('adminPanelOverlay').style.display="flex";
 }
 
-// --- UPLOAD FOOD TO FIREBASE STORAGE ---
-window.uploadFood = async () => {
+window.closeAdminPanel = ()=>{
+    document.getElementById('adminPanelOverlay').style.display="none";
+}
+
+window.saveFood = async ()=>{
     const name = document.getElementById('foodName').value;
-    const price = Number(document.getElementById('foodPrice').value);
-    const rating = Number(document.getElementById('foodRating').value);
-    const file = document.getElementById('foodImage').files[0];
-
-    if(!name || !price || !rating || !file) return alert("Fill all fields and select image");
-
-    try {
-        const storageRef = ref(storage, 'foods/' + Date.now() + '-' + file.name);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-
-        const newFood = {id:Date.now(), name, price, rating, img:url};
-        foods.push(newFood);
-        renderFoods();
-        closeUploadPanel();
-        alert("Food uploaded successfully!");
-    } catch(e) { alert("Upload failed: "+e.message); }
-}
-
-// --- EDIT FOOD FUNCTION ---
-window.editFood = (id) => {
-    const food = foods.find(f=>f.id===id);
-    if(!food) return alert("Food not found");
-
-    let overlay = document.createElement('div');
-    overlay.id = 'editOverlay';
-    overlay.style = `position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:50;`;
-
-    overlay.innerHTML = `
-        <div style="background:white;padding:20px;border-radius:12px;width:90%;max-width:400px;display:flex;flex-direction:column;gap:10px;">
-            <h3>Edit Food</h3>
-            <input id="editFoodName" value="${food.name}" placeholder="Food Name">
-            <input id="editFoodPrice" type="number" value="${food.price}" placeholder="Price">
-            <input id="editFoodRating" type="number" value="${food.rating}" placeholder="Rating 1-5" min="1" max="5">
-            <input id="editFoodImage" type="file" accept="image/*">
-            <div style="display:flex;justify-content:space-between;margin-top:10px;">
-                <button onclick="saveFood(${id})">Save</button>
-                <button onclick="closeEditPanel()">Cancel</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(overlay);
-}
-
-window.closeEditPanel = () => {
-    const ov = document.getElementById('editOverlay');
-    if(ov) ov.remove();
-}
-
-// --- SAVE EDITED FOOD ---
-window.saveFood = async (id) => {
-    const food = foods.find(f=>f.id===id);
-    if(!food) return;
-
-    const name = document.getElementById('editFoodName').value;
-    const price = Number(document.getElementById('editFoodPrice').value);
-    const rating = Number(document.getElementById('editFoodRating').value);
-    const file = document.getElementById('editFoodImage').files[0];
+    const price = parseInt(document.getElementById('foodPrice').value);
+    const rating = parseInt(document.getElementById('foodRating').value);
+    const imageFile = document.getElementById('foodImage').files[0];
 
     if(!name || !price || !rating) return alert("Fill all fields");
 
-    food.name = name;
-    food.price = price;
-    food.rating = rating;
+    let imageUrl = "";
+    if(imageFile){
+        const storageRef = ref(storage, `foods/${Date.now()}_${imageFile.name}`);
+        await uploadBytes(storageRef,imageFile);
+        imageUrl = await getDownloadURL(storageRef);
+    }
 
-    if(file){
-        try {
-            const storageRef = ref(storage, 'foods/' + Date.now() + '-' + file.name);
-            await uploadBytes(storageRef, file);
-            const url = await getDownloadURL(storageRef);
-            food.img = url;
-        } catch(e){ alert("Image upload failed: "+e.message); }
+    if(editingFoodId){
+        // Edit existing
+        const idx = foods.findIndex(f=>f.id===editingFoodId);
+        foods[idx] = {...foods[idx], name, price, rating, img: imageUrl||foods[idx].img};
+    } else {
+        // Add new
+        const newId = foods.length ? foods[foods.length-1].id+1 : 1;
+        foods.push({id:newId,name,price,rating,img:imageUrl});
     }
 
     renderFoods();
-    closeEditPanel();
-    alert("Food updated!");
+    closeAdminPanel();
 }
-
-// --- MOBILE OPTIMIZATION ---
-const style = document.createElement('style');
-style.innerHTML = `
-@media (max-width:600px){
-    header { flex-direction:column; gap:10px; }
-    .container { grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); }
-    .food-card img { height:150px; }
-    .cart-panel { width:95%; max-width:350px; }
-    .order-form { width:95%; max-width:350px; }
-}
-`;
-document.head.appendChild(style);
 </script>
