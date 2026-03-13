@@ -8,12 +8,12 @@
 
 body{
 font-family:Arial;
-background:#f2f2f2;
 margin:0;
+background:#f4f4f4;
 }
 
 header{
-background:#0077b6;
+background:#1d3557;
 color:white;
 padding:15px;
 display:flex;
@@ -22,15 +22,17 @@ justify-content:space-between;
 
 button{
 padding:8px 12px;
-margin:5px;
 cursor:pointer;
+border:none;
+background:#457b9d;
+color:white;
+border-radius:5px;
 }
 
-.food-card{
-background:white;
-padding:15px;
-margin:10px;
-border-radius:10px;
+input{
+padding:8px;
+margin:5px 0;
+width:100%;
 }
 
 #loginPage{
@@ -39,7 +41,7 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:#023e8a;
+background:#1d3557;
 display:flex;
 align-items:center;
 justify-content:center;
@@ -49,65 +51,101 @@ justify-content:center;
 background:white;
 padding:30px;
 border-radius:10px;
+width:250px;
 }
 
-#adminMenu{
+.food-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+padding:10px;
+}
+
+.food-card{
+background:white;
+padding:15px;
+border-radius:10px;
+}
+
+#cartPanel{
+background:white;
+padding:10px;
+margin:10px;
+border-radius:10px;
+}
+
+#orderOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
 display:none;
+align-items:center;
+justify-content:center;
+}
+
+.orderBox{
+background:white;
+padding:20px;
+border-radius:10px;
+width:300px;
 }
 
 #adminOrders{
 display:none;
 background:white;
-padding:15px;
-margin:15px;
+margin:10px;
+padding:10px;
+border-radius:10px;
 }
 
-.order-card{
-border:1px solid #ddd;
+.orderCard{
+border-bottom:1px solid #ddd;
 padding:10px;
-margin:10px 0;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
 
 <div id="loginPage">
 
 <div class="loginBox">
 
-<h2>Ami Please Login</h2>
+<h3>Login</h3>
 
-<input id="email" placeholder="email"><br><br>
+<input id="email" placeholder="Email">
 
-<input id="password" type="password" placeholder="password"><br><br>
+<input id="password" type="password" placeholder="Password">
 
 <button id="loginBtn">Login</button>
 
 <button id="signupBtn">Signup</button>
 
-<br><br>
-
-<a id="forgotLink">Forgot password</a>
+<p id="forgotBtn" style="color:blue;cursor:pointer">Forgot Password</p>
 
 </div>
 
 </div>
 
-<!-- MENU -->
+
+<!-- MAIN MENU -->
 
 <div id="menu" style="display:none">
 
 <header>
 
-<div>Ami Please</div>
+<h3>Ami Please</h3>
 
 <div>
 
-<span id="cartCount">0</span>
+Cart: <span id="cartCount">0</span>
 
 <button id="logoutBtn">Logout</button>
 
@@ -115,45 +153,53 @@ margin:10px 0;
 
 </header>
 
-<div id="adminMenu">
+<div id="adminPanel" style="display:none;padding:10px">
 
 <button id="viewOrdersBtn">View Orders</button>
 
 </div>
 
-<h3>Foods</h3>
+<div class="food-grid" id="foodList"></div>
 
-<div id="foodList"></div>
+<div id="cartPanel">
 
 <h3>Your Cart</h3>
 
 <div id="cartItems"></div>
 
-<button id="placeOrderBtn">Place Order</button>
+<button id="doneCartBtn">Done</button>
 
 </div>
 
-<!-- ORDER FORM -->
+</div>
 
-<div id="orderForm" style="display:none">
+
+<!-- ORDER FORM OVERLAY -->
+
+<div id="orderOverlay">
+
+<div class="orderBox">
 
 <h3>Delivery Details</h3>
 
-<input id="phone" placeholder="phone"><br><br>
+<input id="phone" placeholder="Phone">
 
-<input id="area" placeholder="area"><br><br>
+<input id="area" placeholder="Area">
 
-<input id="city" placeholder="city"><br><br>
+<input id="city" placeholder="City">
 
-<input id="pincode" placeholder="pincode"><br><br>
+<input id="pincode" placeholder="Pincode">
 
-<input id="locationLink" placeholder="location"><br><br>
+<input id="locationLink" placeholder="Location link">
 
-<button id="getLocationBtn">Get Location</button>
+<button id="getLocationBtn">Get My Location</button>
 
 <button id="confirmOrderBtn">Confirm Order</button>
 
 </div>
+
+</div>
+
 
 <!-- ADMIN ORDERS -->
 
@@ -165,31 +211,29 @@ margin:10px 0;
 
 </div>
 
+
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 
 import {
-
 getAuth,
 signInWithEmailAndPassword,
 createUserWithEmailAndPassword,
 sendPasswordResetEmail,
 onAuthStateChanged,
 signOut
-
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
 import {
-
 getFirestore,
 collection,
 addDoc,
 getDocs,
-updateDoc,
 doc,
+updateDoc,
 serverTimestamp
-
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
 
@@ -205,9 +249,7 @@ appId:"1:590274660115:web:998a7c8bb31e4a2696fce6"
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
 const adminEmail="beejumble43@gmail.com";
@@ -215,7 +257,10 @@ const adminEmail="beejumble43@gmail.com";
 let foods=[
 {name:"Burger",price:120},
 {name:"Pizza",price:250},
-{name:"Pasta",price:180}
+{name:"Pasta",price:180},
+{name:"Sandwich",price:100},
+{name:"Fries",price:80},
+{name:"Cold Coffee",price:90}
 ];
 
 let cart=[];
@@ -229,14 +274,17 @@ const div=document.createElement("div");
 div.className="food-card";
 
 div.innerHTML=`
-<h3>${f.name}</h3>
+
+<h4>${f.name}</h4>
 <p>₹${f.price}</p>
 <button onclick="addCart(${i})">Add</button>
+
 `;
 
 foodList.appendChild(div);
 
 });
+
 
 window.addCart=(i)=>{
 
@@ -248,97 +296,67 @@ renderCart();
 
 };
 
+
 function renderCart(){
 
 const cartItems=document.getElementById("cartItems");
 
 cartItems.innerHTML="";
 
-cart.forEach(c=>{
+cart.forEach((c,index)=>{
 
-const d=document.createElement("div");
+const div=document.createElement("div");
 
-d.innerText=c.name+" ₹"+c.price;
+div.innerHTML=`
+${c.name} ₹${c.price}
+`;
 
-cartItems.appendChild(d);
-
-});
-
-}
-
-document.getElementById("loginBtn").onclick=async()=>{
-
-const email=email.value;
-
-const password=password.value;
-
-await signInWithEmailAndPassword(auth,email,password);
-
-};
-
-document.getElementById("signupBtn").onclick=async()=>{
-
-const email=email.value;
-
-const password=password.value;
-
-await createUserWithEmailAndPassword(auth,email,password);
-
-};
-
-document.getElementById("logoutBtn").onclick=()=>signOut(auth);
-
-document.getElementById("forgotLink").onclick=()=>{
-
-const emailPrompt=prompt("Enter email");
-
-sendPasswordResetEmail(auth,emailPrompt);
-
-};
-
-onAuthStateChanged(auth,user=>{
-
-if(user){
-
-loginPage.style.display="none";
-
-menu.style.display="block";
-
-if(user.email===adminEmail){
-
-adminMenu.style.display="block";
-
-loadOrders();
-
-}
-
-}else{
-
-loginPage.style.display="flex";
-
-menu.style.display="none";
-
-}
+cartItems.appendChild(div);
 
 });
 
-document.getElementById("placeOrderBtn").onclick=()=>{
+}
 
-orderForm.style.display="block";
+
+document.getElementById("doneCartBtn").onclick=()=>{
+
+if(cart.length===0){
+
+alert("Cart empty");
+
+return;
+
+}
+
+document.getElementById("orderOverlay").style.display="flex";
 
 };
+
+
+
+document.getElementById("getLocationBtn").onclick=()=>{
+
+navigator.geolocation.getCurrentPosition(pos=>{
+
+const lat=pos.coords.latitude;
+const lon=pos.coords.longitude;
+
+document.getElementById("locationLink").value=
+`https://maps.google.com/?q=${lat},${lon}`;
+
+});
+
+};
+
+
 
 document.getElementById("confirmOrderBtn").onclick=async()=>{
 
-const phone=phone.value;
-
-const area=area.value;
-
-const city=city.value;
-
-const pincode=pincode.value;
-
-const locationLink=locationLink.value;
+const phone=document.getElementById("phone").value;
+const area=document.getElementById("area").value;
+const city=document.getElementById("city").value;
+const pincode=document.getElementById("pincode").value;
+const location=document.getElementById("locationLink").value;
 
 await addDoc(collection(db,"orders"),{
 
@@ -347,42 +365,99 @@ user:auth.currentUser.email,
 cart:cart,
 
 phone,
-
 area,
-
 city,
-
 pincode,
 
-locationLink,
+location,
 
 status:"pending",
 
-timestamp:serverTimestamp()
+time:serverTimestamp()
 
 });
 
 alert("Order placed");
 
 cart=[];
-
 renderCart();
+
+document.getElementById("cartCount").innerText=0;
+
+document.getElementById("orderOverlay").style.display="none";
 
 };
 
-document.getElementById("getLocationBtn").onclick=()=>{
 
-navigator.geolocation.getCurrentPosition(p=>{
 
-const lat=p.coords.latitude;
+document.getElementById("loginBtn").onclick=async()=>{
 
-const lon=p.coords.longitude;
+await signInWithEmailAndPassword(
+auth,
+email.value,
+password.value
+);
 
-locationLink.value=`https://maps.google.com/?q=${lat},${lon}`;
+};
+
+
+document.getElementById("signupBtn").onclick=async()=>{
+
+await createUserWithEmailAndPassword(
+auth,
+email.value,
+password.value
+);
+
+};
+
+
+document.getElementById("forgotBtn").onclick=()=>{
+
+const mail=prompt("Enter email");
+
+sendPasswordResetEmail(auth,mail);
+
+};
+
+
+document.getElementById("logoutBtn").onclick=()=>signOut(auth);
+
+
+
+onAuthStateChanged(auth,user=>{
+
+if(user){
+
+loginPage.style.display="none";
+menu.style.display="block";
+
+if(user.email===adminEmail){
+
+adminPanel.style.display="block";
+
+}
+
+}else{
+
+loginPage.style.display="flex";
+menu.style.display="none";
+
+}
 
 });
 
+
+
+document.getElementById("viewOrdersBtn").onclick=()=>{
+
+adminOrders.style.display="block";
+
+loadOrders();
+
 };
+
+
 
 async function loadOrders(){
 
@@ -398,12 +473,17 @@ const o=d.data();
 
 const div=document.createElement("div");
 
-div.className="order-card";
+div.className="orderCard";
 
 div.innerHTML=`
 
-<p>User: ${o.user}</p>
-<p>Status: ${o.status}</p>
+<p><b>User:</b> ${o.user}</p>
+
+<p><b>Phone:</b> ${o.phone}</p>
+
+<p><b>Address:</b> ${o.area}, ${o.city}</p>
+
+<p><b>Status:</b> ${o.status}</p>
 
 <button onclick="updateStatus('${d.id}','preparing')">Preparing</button>
 
@@ -417,6 +497,8 @@ list.appendChild(div);
 
 }
 
+
+
 window.updateStatus=async(id,status)=>{
 
 await updateDoc(doc(db,"orders",id),{status});
@@ -424,6 +506,7 @@ await updateDoc(doc(db,"orders",id),{status});
 loadOrders();
 
 };
+
 
 </script>
 
