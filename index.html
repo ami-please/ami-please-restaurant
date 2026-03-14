@@ -9,7 +9,7 @@
 
 body{
 margin:0;
-font-family:Arial;
+font-family:Arial, sans-serif;
 background:#f2f2f2;
 display:flex;
 justify-content:center;
@@ -37,14 +37,6 @@ align-items:center;
 gap:8px;
 }
 
-.header-btn{
-padding:6px 10px;
-font-size:14px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
-
 #ordersIcon{
 font-size:20px;
 cursor:pointer;
@@ -53,7 +45,26 @@ display:none;
 
 #logoutBtn{
 background:#e63946;
+border:none;
 color:white;
+padding:6px 10px;
+border-radius:6px;
+}
+
+.banner{
+background:linear-gradient(120deg,#1d3557,#457b9d);
+color:white;
+padding:25px 15px;
+font-size:24px;
+font-weight:bold;
+letter-spacing:1px;
+text-align:center;
+}
+
+.banner span{
+font-size:14px;
+display:block;
+opacity:0.9;
 }
 
 .food-grid{
@@ -65,7 +76,7 @@ padding:10px;
 
 .food-card{
 background:white;
-padding:10px;
+padding:12px;
 border-radius:10px;
 box-shadow:0 2px 6px rgba(0,0,0,0.1);
 text-align:center;
@@ -164,6 +175,13 @@ animation:pop 0.3s;
 100%{transform:scale(1)}
 }
 
+#adminPanel{
+display:none;
+padding:10px;
+background:#fafafa;
+border-top:1px solid #eee;
+}
+
 </style>
 </head>
 
@@ -173,29 +191,23 @@ animation:pop 0.3s;
 
 <header>
 
-<div>Ami Please</div>
+<div>Cart: <span id="cartCount">0</span></div>
 
 <div class="header-right">
-
-<span>Cart: <span id="cartCount">0</span></span>
-
 <div id="ordersIcon">📦</div>
-
-<button id="logoutBtn" class="header-btn">Logout</button>
-
+<button id="logoutBtn">Logout</button>
 </div>
 
 </header>
 
+<div class="banner">
+Ami Please Restaurant
+<span>Fresh • Fast • Delicious</span>
+</div>
+
 <div class="food-grid" id="foodList"></div>
 
-<div id="adminPanel" style="display:none;padding:10px">
-
-<h3>Admin Orders</h3>
-
-<div id="adminOrders"></div>
-
-<hr>
+<div id="adminPanel">
 
 <h3>Food Panel</h3>
 
@@ -205,6 +217,11 @@ animation:pop 0.3s;
 
 <button id="addFoodBtn">Add Food</button>
 
+<hr>
+
+<h3>Orders</h3>
+<div id="adminOrders"></div>
+
 </div>
 
 </div>
@@ -212,18 +229,13 @@ animation:pop 0.3s;
 <div id="cartButton">🛒</div>
 
 <div id="cartPanel">
-
 <h3>Your Cart</h3>
 <div id="cartItems"></div>
-
 <button id="doneCartBtn">Done</button>
-
 </div>
 
 <div id="orderOverlay">
-
 <div class="orderBox">
-
 <h3>Delivery Details</h3>
 
 <input id="phone" placeholder="Phone">
@@ -236,11 +248,9 @@ animation:pop 0.3s;
 <button id="confirmOrderBtn">Confirm Order</button>
 
 </div>
-
 </div>
 
 <div id="loginPage">
-
 <div class="loginBox">
 
 <h3>Login</h3>
@@ -252,7 +262,6 @@ animation:pop 0.3s;
 <button id="signupBtn">Signup</button>
 
 </div>
-
 </div>
 
 <script type="module">
@@ -313,7 +322,7 @@ div.innerHTML=`
 <h4>${f.name}</h4>
 <p>₹${f.price}</p>
 <p>⭐ ${f.rating}</p>
-<button onclick="addCart('${d.id}','${f.name}',${f.price})">Add</button>
+<button onclick="addCart('${f.name}',${f.price})">Add</button>
 `;
 
 if(auth.currentUser && auth.currentUser.email===adminEmail){
@@ -332,7 +341,7 @@ foodList.appendChild(div);
 
 }
 
-window.addCart=(id,name,price)=>{
+window.addCart=(name,price)=>{
 
 cart.push({name,price});
 
@@ -379,14 +388,11 @@ await addDoc(collection(db,"orders"),{
 
 user:auth.currentUser.email,
 cart:cart,
-
 phone:phone.value,
 area:area.value,
 city:city.value,
 pincode:pincode.value,
-
 location:locationLink.value,
-
 status:"pending",
 time:serverTimestamp()
 
@@ -402,6 +408,48 @@ orderOverlay.style.display="none";
 cartPanel.style.display="none";
 
 };
+
+addFoodBtn.onclick=async()=>{
+
+await addDoc(collection(db,"foods"),{
+
+name:foodName.value,
+price:foodPrice.value,
+rating:foodRating.value
+
+});
+
+loadFoods();
+
+};
+
+window.deleteFood=async(id)=>{
+
+await deleteDoc(doc(db,"foods",id));
+loadFoods();
+
+};
+
+window.editFood=async(id,name,price,rating)=>{
+
+const newName=prompt("Food name",name);
+const newPrice=prompt("Price",price);
+const newRating=prompt("Rating",rating);
+
+await updateDoc(doc(db,"foods",id),{
+name:newName,
+price:newPrice,
+rating:newRating
+});
+
+loadFoods();
+
+};
+
+loginBtn.onclick=()=>signInWithEmailAndPassword(auth,email.value,password.value);
+signupBtn.onclick=()=>createUserWithEmailAndPassword(auth,email.value,password.value);
+
+logoutBtn.onclick=()=>signOut(auth);
 
 ordersIcon.onclick=()=>{
 
@@ -455,51 +503,6 @@ await updateDoc(doc(db,"orders",id),{status});
 
 };
 
-addFoodBtn.onclick=async()=>{
-
-await addDoc(collection(db,"foods"),{
-
-name:foodName.value,
-price:foodPrice.value,
-rating:foodRating.value
-
-});
-
-loadFoods();
-
-};
-
-window.deleteFood=async(id)=>{
-
-await deleteDoc(doc(db,"foods",id));
-
-loadFoods();
-
-};
-
-window.editFood=async(id,name,price,rating)=>{
-
-const newName=prompt("Food name",name);
-const newPrice=prompt("Price",price);
-const newRating=prompt("Rating",rating);
-
-await updateDoc(doc(db,"foods",id),{
-
-name:newName,
-price:newPrice,
-rating:newRating
-
-});
-
-loadFoods();
-
-};
-
-loginBtn.onclick=()=>signInWithEmailAndPassword(auth,email.value,password.value);
-signupBtn.onclick=()=>createUserWithEmailAndPassword(auth,email.value,password.value);
-
-logoutBtn.onclick=()=>signOut(auth);
-
 onAuthStateChanged(auth,user=>{
 
 if(user){
@@ -511,6 +514,7 @@ loadFoods();
 if(user.email===adminEmail){
 
 ordersIcon.style.display="block";
+adminPanel.style.display="none";
 
 listenOrders();
 
@@ -547,4 +551,4 @@ locationLink.value=`https://maps.google.com/?q=${p.coords.latitude},${p.coords.l
 </script>
 
 </body>
-  </html>
+</html>
